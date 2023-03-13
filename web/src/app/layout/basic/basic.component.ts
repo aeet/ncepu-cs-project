@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
+import { environment } from '@env/environment';
 import { SettingsService, User } from '@yelon/theme';
 import { LayoutDefaultOptions } from '@yelon/theme/layout-default';
-import { environment } from '@env/environment';
 
 @Component({
   selector: 'layout-basic',
@@ -68,12 +68,12 @@ import { environment } from '@env/environment';
 
     <setting-drawer *ngIf="showSettingDrawer"></setting-drawer>
     <theme-btn></theme-btn>
-  `,
+  `
 })
 export class LayoutBasicComponent {
   options: LayoutDefaultOptions = {
     logoExpanded: `./assets/logo-full.svg`,
-    logoCollapsed: `./assets/logo.svg`,
+    logoCollapsed: `./assets/logo.svg`
   };
   searchToggleStatus = false;
   showSettingDrawer = !environment.production;

@@ -8,7 +8,6 @@ import (
 func Setup(api *echo.Group) {
 	studentAPI := api.Group("/student")
 	studentAPI.Use(middleware.ValidateTokenMiddleware)
-	studentAPI.Use(middleware.InjectUserMiddlerWare)
 	routes(studentAPI)
 }
 
