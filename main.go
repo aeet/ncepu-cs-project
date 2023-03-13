@@ -51,6 +51,7 @@ func main() {
 	}
 	api := app.Group(config.Value.Server.Path)
 	api.Static(config.Value.Server.Path+"/static/asset", "static/asset")
+	api.Static(config.Value.Server.Path+"/page", "static/page")
 	routes.Routes(api)
 	app.Logger.Debug(app.Start(fmt.Sprintf("%s:%d", config.Value.Server.Host, config.Value.Server.Port)))
 }
