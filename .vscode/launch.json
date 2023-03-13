@@ -2,11 +2,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "NCU-AUTH",
+            "name": "GOGOGO",
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "ncu-auth/main.go"
+            "program": "main.go"
         }
     ]
 }

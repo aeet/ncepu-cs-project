@@ -1,7 +1,0 @@
-http://localhost:8888/auth/ {
-	reverse_proxy 127.0.0.1:8080/auth/
-}
-
-http://localhost/8888/basic/ {
-	reverse_proxy 127.0.0.1:8080/auth/
-}
