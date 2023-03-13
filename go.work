@@ -1,0 +1,11 @@
+go 1.20
+
+use (
+	./ncu-auth
+	./ncu-domain
+)
+
+replace (
+	github.com/devcui/ncepu-cs-project/ncu-auth => ./ncu-auth
+	github.com/devcui/ncepu-cs-project/ncu-domain => ./ncu-domain
+)

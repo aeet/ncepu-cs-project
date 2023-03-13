@@ -1,0 +1,32 @@
+auth:
+  access_token_expire: 3600
+  refresh_token_expire: 86400
+server:
+  path: /auth
+  port: 8080
+  host: 127.0.0.1
+jwt:
+  signed_key: k2bjI75JJHolp0i
+redis:
+  host: 127.0.0.1
+  port: 6379
+  db: 0
+  password: 123456
+  expire: 3600
+redis_session:
+  debug: false
+  index: 1
+  prefix: auth
+  domain: 
+  path: /
+  cookie_name: auth
+  http_only: true
+  secure: true
+  life_time: 3600
+  pool_size: 10
+mysql:
+  host: 127.0.0.1
+  port: 3306
+  username: root
+  password: 123456
+  schema: ncepu
