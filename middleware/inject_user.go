@@ -1,0 +1,9 @@
+package middleware
+
+import "github.com/labstack/echo"
+
+func InjectUserMiddlerWare(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(ctx echo.Context) error {
+		return nil
+	}
+}
