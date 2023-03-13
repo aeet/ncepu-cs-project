@@ -8,7 +8,7 @@ import { LayoutDefaultOptions } from '@yelon/theme/layout-default';
   template: `
     <layout-default [options]="options" [asideUser]="asideUserTpl" [content]="contentTpl" [customError]="null">
       <layout-default-header-item direction="left">
-        <a layout-default-header-item-trigger href="//github.com/hbyunzai/ng-yunzai" target="_blank">
+        <a layout-default-header-item-trigger href="//github.com/devcui/ncepu-cs-project" target="_blank">
           <i nz-icon nzType="github"></i>
         </a>
       </layout-default-header-item>
@@ -61,8 +61,9 @@ import { LayoutDefaultOptions } from '@yelon/theme/layout-default';
           </ul>
         </nz-dropdown-menu>
       </ng-template>
-      <ng-template #contentTpl>
-        <router-outlet></router-outlet>
+      <ng-template class="yunzai-default__content" #contentTpl>
+        <reuse-tab #reuseTab></reuse-tab>
+        <router-outlet (activate)="reuseTab.activate($event)"></router-outlet>
       </ng-template>
     </layout-default>
 

@@ -3,10 +3,14 @@ package mysql
 import (
 	"context"
 
+	"github.com/devcui/ncepu-cs-project/config"
 	"github.com/devcui/ncepu-cs-project/domain/migrate"
 )
 
 func setupTable() error {
+	if !config.Value.MySQLOption.Init {
+		return nil
+	}
 	client, err := Open()
 	if err != nil {
 		return err

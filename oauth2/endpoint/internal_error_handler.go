@@ -7,5 +7,5 @@ import (
 
 func InternalErrorHandler(err error) (re *errors.Response) {
 	log.Errorf("InternalErrorHandler: %s", err.Error())
-	return re
+	return errors.NewResponse(err, 500)
 }

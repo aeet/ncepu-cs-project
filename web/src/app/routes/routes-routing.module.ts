@@ -1,17 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { environment } from '@env/environment';
+import { SimpleGuard } from '@yelon/auth';
 
 import { LayoutBasicComponent } from '../layout/basic/basic.component';
 import { LayoutPassportComponent } from '../layout/passport/passport.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { UserLockComponent } from './passport/lock/lock.component';
-// passport pages
 import { UserLoginComponent } from './passport/login/login.component';
 
 const routes: Routes = [
   {
     path: '',
+    canActivate: [SimpleGuard],
     component: LayoutBasicComponent,
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },

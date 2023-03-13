@@ -1,10 +1,10 @@
-import { NgModule, Type } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule, Type } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { YunzaiThemeModule } from '@yelon/theme';
 import { YelonACLModule } from '@yelon/acl';
 import { YelonFormModule } from '@yelon/form';
+import { YunzaiThemeModule } from '@yelon/theme';
 
 import { SHARED_YELON_MODULES } from './shared-yelon.module';
 import { SHARED_ZORRO_MODULES } from './shared-zorro.module';
@@ -58,4 +58,4 @@ const DIRECTIVES: Array<Type<void>> = [];
     ...DIRECTIVES
   ]
 })
-export class SharedModule { }
+export class SharedModule {}

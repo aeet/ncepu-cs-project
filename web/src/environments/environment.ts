@@ -10,10 +10,11 @@ import * as MOCKDATA from '../../_mock';
 export const environment = {
   production: false,
   useHash: true,
+  path: '',
   api: {
     baseUrl: './',
     refreshTokenEnabled: true,
-    refreshTokenType: 'auth-refresh'
+    refreshTokenType: 're-request'
   },
   modules: [YelonMockModule.forRoot({ data: MOCKDATA })]
 } as Environment;

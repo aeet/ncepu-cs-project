@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService } from '@shared';
 import { YA_SERVICE_TOKEN, ITokenService } from '@yelon/auth';
 import { SettingsService, User } from '@yelon/theme';
 
@@ -39,10 +40,17 @@ export class HeaderUserComponent {
     return this.settings.user;
   }
 
-  constructor(private settings: SettingsService, private router: Router, @Inject(YA_SERVICE_TOKEN) private tokenService: ITokenService) {}
+  constructor(
+    private settings: SettingsService,
+    private router: Router,
+    @Inject(YA_SERVICE_TOKEN) private tokenService: ITokenService,
+    private userService: UserService
+  ) {}
 
   logout(): void {
+    const token = this.tokenService.get()?.token;
+    localStorage.clear();
     this.tokenService.clear();
-    this.router.navigateByUrl(this.tokenService.login_url!);
+    window.location.href = `http://localhost:8080/auth/logout?token=${token}&redirect_uri=http://localhost:4200`;
   }
 }

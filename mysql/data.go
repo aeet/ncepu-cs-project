@@ -9,6 +9,9 @@ import (
 )
 
 func SetupData() error {
+	if !config.Value.MySQLOption.Init {
+		return nil
+	}
 	client, err := Open()
 	if err != nil {
 		return err

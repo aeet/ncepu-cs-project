@@ -12,5 +12,5 @@ func Setup(api *echo.Group) {
 }
 
 func routes(api *echo.Group) {
-	api.GET("/", UserHandler)
+	api.GET("", UserHandler)
 }

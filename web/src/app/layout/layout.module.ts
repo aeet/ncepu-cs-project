@@ -34,17 +34,18 @@ const HEADERCOMPONENTS = [
   HeaderFullScreenComponent,
   HeaderI18nComponent,
   HeaderClearStorageComponent,
-  HeaderUserComponent,
+  HeaderUserComponent
 ];
 
 // passport
 import { LayoutPassportComponent } from './passport/passport.component';
-const PASSPORT = [
-  LayoutPassportComponent
-];
+import { ReuseTabModule } from '@yelon/abc/reuse-tab';
+import { SharedModule } from '../shared/shared.module';
+const PASSPORT = [LayoutPassportComponent];
 
 @NgModule({
   imports: [
+    SharedModule,
     CommonModule,
     FormsModule,
     RouterModule,
@@ -62,9 +63,9 @@ const PASSPORT = [
     NzSpinModule,
     NzBadgeModule,
     NzAvatarModule,
-    NzIconModule,
+    NzIconModule
   ],
   declarations: [...COMPONENTS, ...HEADERCOMPONENTS, ...PASSPORT],
-  exports: [...COMPONENTS, ...PASSPORT],
+  exports: [...COMPONENTS, ...PASSPORT]
 })
-export class LayoutModule { }
+export class LayoutModule {}

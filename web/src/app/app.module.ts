@@ -19,7 +19,7 @@ const LANG = {
   ng: ngLang,
   zorro: zorroLang,
   date: dateLang,
-  yelon: yelonLang,
+  yelon: yelonLang
 };
 // register angular
 import { registerLocaleData } from '@angular/common';
@@ -28,31 +28,28 @@ const LANG_PROVIDES = [
   { provide: LOCALE_ID, useValue: LANG.abbr },
   { provide: NZ_I18N, useValue: LANG.zorro },
   { provide: NZ_DATE_LOCALE, useValue: LANG.date },
-  { provide: YELON_LOCALE, useValue: LANG.yelon },
+  { provide: YELON_LOCALE, useValue: LANG.yelon }
 ];
 // #endregion
 // #region i18n services
 import { YUNZAI_I18N_TOKEN } from '@yelon/theme';
 import { I18NService } from '@core';
 
-const I18NSERVICE_PROVIDES = [
-  { provide: YUNZAI_I18N_TOKEN, useClass: I18NService, multi: false }
-];
+const I18NSERVICE_PROVIDES = [{ provide: YUNZAI_I18N_TOKEN, useClass: I18NService, multi: false }];
 // #region
 
 // #region JSON Schema form (using @yelon/form)
 import { JsonSchemaModule } from '@shared';
-const FORM_MODULES = [ JsonSchemaModule ];
+const FORM_MODULES = [JsonSchemaModule];
 // #endregion
-
 
 // #region Http Interceptors
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DefaultInterceptor } from '@core';
 import { SimpleInterceptor } from '@yelon/auth';
 const INTERCEPTOR_PROVIDES = [
-  { provide: HTTP_INTERCEPTORS, useClass: SimpleInterceptor, multi: true},
-  { provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true}
+  { provide: HTTP_INTERCEPTORS, useClass: SimpleInterceptor, multi: true },
+  { provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true }
 ];
 // #endregion
 
@@ -85,9 +82,7 @@ import { SharedModule } from './shared/shared.module';
 import { STWidgetModule } from './shared/st-widget/st-widget.module';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -103,12 +98,7 @@ import { STWidgetModule } from './shared/st-widget/st-widget.module';
     ...FORM_MODULES,
     ...GLOBAL_THIRD_MODULES
   ],
-  providers: [
-    ...LANG_PROVIDES,
-    ...INTERCEPTOR_PROVIDES,
-    ...I18NSERVICE_PROVIDES,
-    ...APPINIT_PROVIDES
-  ],
+  providers: [...LANG_PROVIDES, ...INTERCEPTOR_PROVIDES, ...I18NSERVICE_PROVIDES, ...APPINIT_PROVIDES],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

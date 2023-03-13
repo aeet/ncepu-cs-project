@@ -44,6 +44,6 @@ func SetupServer() error {
 	Server.SetClientInfoHandler(endpoint.ClientInfoHandler)
 	Server.SetPreRedirectErrorHandler(endpoint.PreRedirectErrorHandler)
 	Server.SetInternalErrorHandler(endpoint.InternalErrorHandler)
-	Server.SetResponseErrorHandler(endpoint.ResponseErrorHandler)
+	// Server.SetResponseErrorHandler(endpoint.ResponseErrorHandler)
 	return nil
 }
