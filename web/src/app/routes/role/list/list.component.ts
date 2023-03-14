@@ -20,7 +20,6 @@ import { RoleService } from '../role.service';
 export class RoleListComponent implements OnInit {
   data = [];
   loading = false;
-  @ViewChild('st') private readonly st!: STComponent;
   columns: STColumn[] = [
     { title: '角色名称', type: '', index: 'role_name' },
     { title: '角色值', type: '', index: 'role_value' },
