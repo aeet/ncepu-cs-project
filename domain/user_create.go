@@ -11,6 +11,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/devcui/ncepu-cs-project/domain/resource"
 	"github.com/devcui/ncepu-cs-project/domain/role"
+	"github.com/devcui/ncepu-cs-project/domain/student"
 	"github.com/devcui/ncepu-cs-project/domain/user"
 )
 
@@ -79,6 +80,25 @@ func (uc *UserCreate) AddResource(r ...*Resource) *UserCreate {
 		ids[i] = r[i].ID
 	}
 	return uc.AddResourceIDs(ids...)
+}
+
+// SetStudentID sets the "student" edge to the Student entity by ID.
+func (uc *UserCreate) SetStudentID(id int) *UserCreate {
+	uc.mutation.SetStudentID(id)
+	return uc
+}
+
+// SetNillableStudentID sets the "student" edge to the Student entity by ID if the given value is not nil.
+func (uc *UserCreate) SetNillableStudentID(id *int) *UserCreate {
+	if id != nil {
+		uc = uc.SetStudentID(*id)
+	}
+	return uc
+}
+
+// SetStudent sets the "student" edge to the Student entity.
+func (uc *UserCreate) SetStudent(s *Student) *UserCreate {
+	return uc.SetStudentID(s.ID)
 }
 
 // Mutation returns the UserMutation object of the builder.
@@ -204,10 +224,7 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 			Columns: user.RolePrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: role.FieldID,
-				},
+				IDSpec: sqlgraph.NewFieldSpec(role.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -223,10 +240,23 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 			Columns: user.ResourcePrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: resource.FieldID,
-				},
+				IDSpec: sqlgraph.NewFieldSpec(resource.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := uc.mutation.StudentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   user.StudentTable,
+			Columns: []string{user.StudentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(student.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

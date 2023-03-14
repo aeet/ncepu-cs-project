@@ -21,6 +21,8 @@ const (
 	EdgeRole = "role"
 	// EdgeResource holds the string denoting the resource edge name in mutations.
 	EdgeResource = "resource"
+	// EdgeStudent holds the string denoting the student edge name in mutations.
+	EdgeStudent = "student"
 	// Table holds the table name of the user in the database.
 	Table = "users"
 	// RoleTable is the table that holds the role relation/edge. The primary key declared below.
@@ -33,6 +35,13 @@ const (
 	// ResourceInverseTable is the table name for the Resource entity.
 	// It exists in this package in order to avoid circular dependency with the "resource" package.
 	ResourceInverseTable = "resources"
+	// StudentTable is the table that holds the student relation/edge.
+	StudentTable = "students"
+	// StudentInverseTable is the table name for the Student entity.
+	// It exists in this package in order to avoid circular dependency with the "student" package.
+	StudentInverseTable = "students"
+	// StudentColumn is the table column denoting the student relation/edge.
+	StudentColumn = "user_student"
 )
 
 // Columns holds all SQL columns for user fields.

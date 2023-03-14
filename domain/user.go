@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"entgo.io/ent/dialect/sql"
+	"github.com/devcui/ncepu-cs-project/domain/student"
 	"github.com/devcui/ncepu-cs-project/domain/user"
 )
 
@@ -36,9 +37,11 @@ type UserEdges struct {
 	Role []*Role `json:"role,omitempty"`
 	// Resource holds the value of the resource edge.
 	Resource []*Resource `json:"resource,omitempty"`
+	// Student holds the value of the student edge.
+	Student *Student `json:"student,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [2]bool
+	loadedTypes [3]bool
 }
 
 // RoleOrErr returns the Role value or an error if the edge
@@ -57,6 +60,19 @@ func (e UserEdges) ResourceOrErr() ([]*Resource, error) {
 		return e.Resource, nil
 	}
 	return nil, &NotLoadedError{edge: "resource"}
+}
+
+// StudentOrErr returns the Student value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e UserEdges) StudentOrErr() (*Student, error) {
+	if e.loadedTypes[2] {
+		if e.Student == nil {
+			// Edge was loaded but was not found.
+			return nil, &NotFoundError{label: student.Label}
+		}
+		return e.Student, nil
+	}
+	return nil, &NotLoadedError{edge: "student"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -134,6 +150,11 @@ func (u *User) QueryRole() *RoleQuery {
 // QueryResource queries the "resource" edge of the User entity.
 func (u *User) QueryResource() *ResourceQuery {
 	return NewUserClient(u.config).QueryResource(u)
+}
+
+// QueryStudent queries the "student" edge of the User entity.
+func (u *User) QueryStudent() *StudentQuery {
+	return NewUserClient(u.config).QueryStudent(u)
 }
 
 // Update returns a builder for updating this User.

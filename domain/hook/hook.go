@@ -45,6 +45,18 @@ func (f RoleFunc) Mutate(ctx context.Context, m domain.Mutation) (domain.Value, 
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *domain.RoleMutation", m)
 }
 
+// The StudentFunc type is an adapter to allow the use of ordinary
+// function as Student mutator.
+type StudentFunc func(context.Context, *domain.StudentMutation) (domain.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f StudentFunc) Mutate(ctx context.Context, m domain.Mutation) (domain.Value, error) {
+	if mv, ok := m.(*domain.StudentMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *domain.StudentMutation", m)
+}
+
 // The UserFunc type is an adapter to allow the use of ordinary
 // function as User mutator.
 type UserFunc func(context.Context, *domain.UserMutation) (domain.Value, error)

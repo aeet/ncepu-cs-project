@@ -3,7 +3,7 @@ module github.com/devcui/ncepu-cs-project
 go 1.20
 
 require (
-	entgo.io/ent v0.11.9
+	entgo.io/ent v0.11.10
 	github.com/auula/gws v1.2.1
 	github.com/go-oauth2/oauth2/v4 v4.5.2
 	github.com/go-redis/redis/v8 v8.11.5
@@ -17,7 +17,7 @@ require (
 )
 
 require (
-	ariga.io/atlas v0.9.1 // indirect
+	ariga.io/atlas v0.9.2-0.20230303073438-03a4779a6338 // indirect
 	github.com/agext/levenshtein v1.2.1 // indirect
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
@@ -43,7 +43,7 @@ require (
 	github.com/zclconf/go-cty v1.8.0 // indirect
 	golang.org/x/crypto v0.0.0-20220517005047-85d78b3ac167 // indirect
 	golang.org/x/mod v0.8.0 // indirect
-	golang.org/x/net v0.0.0-20220225172249-27dd8689420f // indirect
+	golang.org/x/net v0.6.0 // indirect
 	golang.org/x/sys v0.5.0 // indirect
-	golang.org/x/text v0.3.8 // indirect
+	golang.org/x/text v0.7.0 // indirect
 )

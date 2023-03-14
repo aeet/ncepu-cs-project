@@ -129,6 +129,7 @@ export class DefaultInterceptor implements HttpInterceptor {
   }
 
   private toLogin(): void {
+    this.tokenSrv.clear();
     this.notification.error(`未登录或登录已过期，请重新登录。`, ``);
     this.goTo(this.tokenSrv.login_url!);
   }

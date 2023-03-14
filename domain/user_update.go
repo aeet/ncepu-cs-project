@@ -13,6 +13,7 @@ import (
 	"github.com/devcui/ncepu-cs-project/domain/predicate"
 	"github.com/devcui/ncepu-cs-project/domain/resource"
 	"github.com/devcui/ncepu-cs-project/domain/role"
+	"github.com/devcui/ncepu-cs-project/domain/student"
 	"github.com/devcui/ncepu-cs-project/domain/user"
 )
 
@@ -89,6 +90,25 @@ func (uu *UserUpdate) AddResource(r ...*Resource) *UserUpdate {
 	return uu.AddResourceIDs(ids...)
 }
 
+// SetStudentID sets the "student" edge to the Student entity by ID.
+func (uu *UserUpdate) SetStudentID(id int) *UserUpdate {
+	uu.mutation.SetStudentID(id)
+	return uu
+}
+
+// SetNillableStudentID sets the "student" edge to the Student entity by ID if the given value is not nil.
+func (uu *UserUpdate) SetNillableStudentID(id *int) *UserUpdate {
+	if id != nil {
+		uu = uu.SetStudentID(*id)
+	}
+	return uu
+}
+
+// SetStudent sets the "student" edge to the Student entity.
+func (uu *UserUpdate) SetStudent(s *Student) *UserUpdate {
+	return uu.SetStudentID(s.ID)
+}
+
 // Mutation returns the UserMutation object of the builder.
 func (uu *UserUpdate) Mutation() *UserMutation {
 	return uu.mutation
@@ -134,6 +154,12 @@ func (uu *UserUpdate) RemoveResource(r ...*Resource) *UserUpdate {
 		ids[i] = r[i].ID
 	}
 	return uu.RemoveResourceIDs(ids...)
+}
+
+// ClearStudent clears the "student" edge to the Student entity.
+func (uu *UserUpdate) ClearStudent() *UserUpdate {
+	uu.mutation.ClearStudent()
+	return uu
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -223,10 +249,7 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Columns: user.RolePrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: role.FieldID,
-				},
+				IDSpec: sqlgraph.NewFieldSpec(role.FieldID, field.TypeInt),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
@@ -239,10 +262,7 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Columns: user.RolePrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: role.FieldID,
-				},
+				IDSpec: sqlgraph.NewFieldSpec(role.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -258,10 +278,7 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Columns: user.RolePrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: role.FieldID,
-				},
+				IDSpec: sqlgraph.NewFieldSpec(role.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -277,10 +294,7 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Columns: user.ResourcePrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: resource.FieldID,
-				},
+				IDSpec: sqlgraph.NewFieldSpec(resource.FieldID, field.TypeInt),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
@@ -293,10 +307,7 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Columns: user.ResourcePrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: resource.FieldID,
-				},
+				IDSpec: sqlgraph.NewFieldSpec(resource.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -312,10 +323,36 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Columns: user.ResourcePrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: resource.FieldID,
-				},
+				IDSpec: sqlgraph.NewFieldSpec(resource.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uu.mutation.StudentCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   user.StudentTable,
+			Columns: []string{user.StudentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(student.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.StudentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   user.StudentTable,
+			Columns: []string{user.StudentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(student.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -403,6 +440,25 @@ func (uuo *UserUpdateOne) AddResource(r ...*Resource) *UserUpdateOne {
 	return uuo.AddResourceIDs(ids...)
 }
 
+// SetStudentID sets the "student" edge to the Student entity by ID.
+func (uuo *UserUpdateOne) SetStudentID(id int) *UserUpdateOne {
+	uuo.mutation.SetStudentID(id)
+	return uuo
+}
+
+// SetNillableStudentID sets the "student" edge to the Student entity by ID if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableStudentID(id *int) *UserUpdateOne {
+	if id != nil {
+		uuo = uuo.SetStudentID(*id)
+	}
+	return uuo
+}
+
+// SetStudent sets the "student" edge to the Student entity.
+func (uuo *UserUpdateOne) SetStudent(s *Student) *UserUpdateOne {
+	return uuo.SetStudentID(s.ID)
+}
+
 // Mutation returns the UserMutation object of the builder.
 func (uuo *UserUpdateOne) Mutation() *UserMutation {
 	return uuo.mutation
@@ -448,6 +504,12 @@ func (uuo *UserUpdateOne) RemoveResource(r ...*Resource) *UserUpdateOne {
 		ids[i] = r[i].ID
 	}
 	return uuo.RemoveResourceIDs(ids...)
+}
+
+// ClearStudent clears the "student" edge to the Student entity.
+func (uuo *UserUpdateOne) ClearStudent() *UserUpdateOne {
+	uuo.mutation.ClearStudent()
+	return uuo
 }
 
 // Where appends a list predicates to the UserUpdate builder.
@@ -567,10 +629,7 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			Columns: user.RolePrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: role.FieldID,
-				},
+				IDSpec: sqlgraph.NewFieldSpec(role.FieldID, field.TypeInt),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
@@ -583,10 +642,7 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			Columns: user.RolePrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: role.FieldID,
-				},
+				IDSpec: sqlgraph.NewFieldSpec(role.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -602,10 +658,7 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			Columns: user.RolePrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: role.FieldID,
-				},
+				IDSpec: sqlgraph.NewFieldSpec(role.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -621,10 +674,7 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			Columns: user.ResourcePrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: resource.FieldID,
-				},
+				IDSpec: sqlgraph.NewFieldSpec(resource.FieldID, field.TypeInt),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
@@ -637,10 +687,7 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			Columns: user.ResourcePrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: resource.FieldID,
-				},
+				IDSpec: sqlgraph.NewFieldSpec(resource.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -656,10 +703,36 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			Columns: user.ResourcePrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: resource.FieldID,
-				},
+				IDSpec: sqlgraph.NewFieldSpec(resource.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uuo.mutation.StudentCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   user.StudentTable,
+			Columns: []string{user.StudentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(student.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.StudentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   user.StudentTable,
+			Columns: []string{user.StudentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(student.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

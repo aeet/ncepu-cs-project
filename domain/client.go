@@ -17,6 +17,7 @@ import (
 	"github.com/devcui/ncepu-cs-project/domain/authorization"
 	"github.com/devcui/ncepu-cs-project/domain/resource"
 	"github.com/devcui/ncepu-cs-project/domain/role"
+	"github.com/devcui/ncepu-cs-project/domain/student"
 	"github.com/devcui/ncepu-cs-project/domain/user"
 )
 
@@ -31,6 +32,8 @@ type Client struct {
 	Resource *ResourceClient
 	// Role is the client for interacting with the Role builders.
 	Role *RoleClient
+	// Student is the client for interacting with the Student builders.
+	Student *StudentClient
 	// User is the client for interacting with the User builders.
 	User *UserClient
 }
@@ -49,6 +52,7 @@ func (c *Client) init() {
 	c.Authorization = NewAuthorizationClient(c.config)
 	c.Resource = NewResourceClient(c.config)
 	c.Role = NewRoleClient(c.config)
+	c.Student = NewStudentClient(c.config)
 	c.User = NewUserClient(c.config)
 }
 
@@ -135,6 +139,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		Authorization: NewAuthorizationClient(cfg),
 		Resource:      NewResourceClient(cfg),
 		Role:          NewRoleClient(cfg),
+		Student:       NewStudentClient(cfg),
 		User:          NewUserClient(cfg),
 	}, nil
 }
@@ -158,6 +163,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		Authorization: NewAuthorizationClient(cfg),
 		Resource:      NewResourceClient(cfg),
 		Role:          NewRoleClient(cfg),
+		Student:       NewStudentClient(cfg),
 		User:          NewUserClient(cfg),
 	}, nil
 }
@@ -190,6 +196,7 @@ func (c *Client) Use(hooks ...Hook) {
 	c.Authorization.Use(hooks...)
 	c.Resource.Use(hooks...)
 	c.Role.Use(hooks...)
+	c.Student.Use(hooks...)
 	c.User.Use(hooks...)
 }
 
@@ -199,6 +206,7 @@ func (c *Client) Intercept(interceptors ...Interceptor) {
 	c.Authorization.Intercept(interceptors...)
 	c.Resource.Intercept(interceptors...)
 	c.Role.Intercept(interceptors...)
+	c.Student.Intercept(interceptors...)
 	c.User.Intercept(interceptors...)
 }
 
@@ -211,6 +219,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.Resource.mutate(ctx, m)
 	case *RoleMutation:
 		return c.Role.mutate(ctx, m)
+	case *StudentMutation:
+		return c.Student.mutate(ctx, m)
 	case *UserMutation:
 		return c.User.mutate(ctx, m)
 	default:
@@ -668,6 +678,140 @@ func (c *RoleClient) mutate(ctx context.Context, m *RoleMutation) (Value, error)
 	}
 }
 
+// StudentClient is a client for the Student schema.
+type StudentClient struct {
+	config
+}
+
+// NewStudentClient returns a client for the Student from the given config.
+func NewStudentClient(c config) *StudentClient {
+	return &StudentClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `student.Hooks(f(g(h())))`.
+func (c *StudentClient) Use(hooks ...Hook) {
+	c.hooks.Student = append(c.hooks.Student, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `student.Intercept(f(g(h())))`.
+func (c *StudentClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Student = append(c.inters.Student, interceptors...)
+}
+
+// Create returns a builder for creating a Student entity.
+func (c *StudentClient) Create() *StudentCreate {
+	mutation := newStudentMutation(c.config, OpCreate)
+	return &StudentCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Student entities.
+func (c *StudentClient) CreateBulk(builders ...*StudentCreate) *StudentCreateBulk {
+	return &StudentCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Student.
+func (c *StudentClient) Update() *StudentUpdate {
+	mutation := newStudentMutation(c.config, OpUpdate)
+	return &StudentUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *StudentClient) UpdateOne(s *Student) *StudentUpdateOne {
+	mutation := newStudentMutation(c.config, OpUpdateOne, withStudent(s))
+	return &StudentUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *StudentClient) UpdateOneID(id int) *StudentUpdateOne {
+	mutation := newStudentMutation(c.config, OpUpdateOne, withStudentID(id))
+	return &StudentUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Student.
+func (c *StudentClient) Delete() *StudentDelete {
+	mutation := newStudentMutation(c.config, OpDelete)
+	return &StudentDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *StudentClient) DeleteOne(s *Student) *StudentDeleteOne {
+	return c.DeleteOneID(s.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *StudentClient) DeleteOneID(id int) *StudentDeleteOne {
+	builder := c.Delete().Where(student.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &StudentDeleteOne{builder}
+}
+
+// Query returns a query builder for Student.
+func (c *StudentClient) Query() *StudentQuery {
+	return &StudentQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeStudent},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Student entity by its id.
+func (c *StudentClient) Get(ctx context.Context, id int) (*Student, error) {
+	return c.Query().Where(student.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *StudentClient) GetX(ctx context.Context, id int) *Student {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryUser queries the user edge of a Student.
+func (c *StudentClient) QueryUser(s *Student) *UserQuery {
+	query := (&UserClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := s.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(student.Table, student.FieldID, id),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, true, student.UserTable, student.UserColumn),
+		)
+		fromV = sqlgraph.Neighbors(s.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *StudentClient) Hooks() []Hook {
+	return c.hooks.Student
+}
+
+// Interceptors returns the client interceptors.
+func (c *StudentClient) Interceptors() []Interceptor {
+	return c.inters.Student
+}
+
+func (c *StudentClient) mutate(ctx context.Context, m *StudentMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&StudentCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&StudentUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&StudentUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&StudentDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("domain: unknown Student mutation op: %q", m.Op())
+	}
+}
+
 // UserClient is a client for the User schema.
 type UserClient struct {
 	config
@@ -793,6 +937,22 @@ func (c *UserClient) QueryResource(u *User) *ResourceQuery {
 	return query
 }
 
+// QueryStudent queries the student edge of a User.
+func (c *UserClient) QueryStudent(u *User) *StudentQuery {
+	query := (&StudentClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := u.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, id),
+			sqlgraph.To(student.Table, student.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, user.StudentTable, user.StudentColumn),
+		)
+		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *UserClient) Hooks() []Hook {
 	return c.hooks.User
@@ -821,9 +981,9 @@ func (c *UserClient) mutate(ctx context.Context, m *UserMutation) (Value, error)
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		Authorization, Resource, Role, User []ent.Hook
+		Authorization, Resource, Role, Student, User []ent.Hook
 	}
 	inters struct {
-		Authorization, Resource, Role, User []ent.Interceptor
+		Authorization, Resource, Role, Student, User []ent.Interceptor
 	}
 )

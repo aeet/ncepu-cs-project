@@ -209,10 +209,7 @@ func (ac *AuthorizationCreate) createSpec() (*Authorization, *sqlgraph.CreateSpe
 			Columns: authorization.ResourcePrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: resource.FieldID,
-				},
+				IDSpec: sqlgraph.NewFieldSpec(resource.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

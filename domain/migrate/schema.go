@@ -40,7 +40,7 @@ var (
 	// RolesColumns holds the columns for the "roles" table.
 	RolesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "role_name", Type: field.TypeString},
+		{Name: "role_name", Type: field.TypeString, Unique: true},
 		{Name: "role_value", Type: field.TypeString},
 	}
 	// RolesTable holds the schema information for the "roles" table.
@@ -48,6 +48,25 @@ var (
 		Name:       "roles",
 		Columns:    RolesColumns,
 		PrimaryKey: []*schema.Column{RolesColumns[0]},
+	}
+	// StudentsColumns holds the columns for the "students" table.
+	StudentsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "user_student", Type: field.TypeInt, Unique: true},
+	}
+	// StudentsTable holds the schema information for the "students" table.
+	StudentsTable = &schema.Table{
+		Name:       "students",
+		Columns:    StudentsColumns,
+		PrimaryKey: []*schema.Column{StudentsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "students_users_student",
+				Columns:    []*schema.Column{StudentsColumns[1]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.NoAction,
+			},
+		},
 	}
 	// UsersColumns holds the columns for the "users" table.
 	UsersColumns = []*schema.Column{
@@ -169,6 +188,7 @@ var (
 		AuthorizationsTable,
 		ResourcesTable,
 		RolesTable,
+		StudentsTable,
 		UsersTable,
 		AuthorizationResourceTable,
 		RoleResourceTable,
@@ -178,6 +198,7 @@ var (
 )
 
 func init() {
+	StudentsTable.ForeignKeys[0].RefTable = UsersTable
 	AuthorizationResourceTable.ForeignKeys[0].RefTable = AuthorizationsTable
 	AuthorizationResourceTable.ForeignKeys[1].RefTable = ResourcesTable
 	RoleResourceTable.ForeignKeys[0].RefTable = RolesTable

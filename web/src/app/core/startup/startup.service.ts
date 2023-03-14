@@ -59,13 +59,29 @@ export class StartupService {
           this.aclService.setFull(true);
           this.menuService.add([
             {
-              text: 'Main',
+              text: '主导航',
               group: true,
               children: [
                 {
-                  text: 'Dashboard',
+                  text: '仪表板',
                   link: '/dashboard',
                   icon: { type: 'icon', value: 'appstore' }
+                }
+              ]
+            },
+            {
+              text: '角色导航',
+              group: true,
+              children: [
+                {
+                  text: '角色管理',
+                  icon: { type: 'icon', value: 'appstore' },
+                  children: [
+                    {
+                      text: '角色列表',
+                      link: '/role/list'
+                    }
+                  ]
                 }
               ]
             }

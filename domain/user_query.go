@@ -14,6 +14,7 @@ import (
 	"github.com/devcui/ncepu-cs-project/domain/predicate"
 	"github.com/devcui/ncepu-cs-project/domain/resource"
 	"github.com/devcui/ncepu-cs-project/domain/role"
+	"github.com/devcui/ncepu-cs-project/domain/student"
 	"github.com/devcui/ncepu-cs-project/domain/user"
 )
 
@@ -26,6 +27,7 @@ type UserQuery struct {
 	predicates   []predicate.User
 	withRole     *RoleQuery
 	withResource *ResourceQuery
+	withStudent  *StudentQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -99,6 +101,28 @@ func (uq *UserQuery) QueryResource() *ResourceQuery {
 			sqlgraph.From(user.Table, user.FieldID, selector),
 			sqlgraph.To(resource.Table, resource.FieldID),
 			sqlgraph.Edge(sqlgraph.M2M, false, user.ResourceTable, user.ResourcePrimaryKey...),
+		)
+		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryStudent chains the current query on the "student" edge.
+func (uq *UserQuery) QueryStudent() *StudentQuery {
+	query := (&StudentClient{config: uq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := uq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := uq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, selector),
+			sqlgraph.To(student.Table, student.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, user.StudentTable, user.StudentColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
 		return fromU, nil
@@ -300,6 +324,7 @@ func (uq *UserQuery) Clone() *UserQuery {
 		predicates:   append([]predicate.User{}, uq.predicates...),
 		withRole:     uq.withRole.Clone(),
 		withResource: uq.withResource.Clone(),
+		withStudent:  uq.withStudent.Clone(),
 		// clone intermediate query.
 		sql:  uq.sql.Clone(),
 		path: uq.path,
@@ -325,6 +350,17 @@ func (uq *UserQuery) WithResource(opts ...func(*ResourceQuery)) *UserQuery {
 		opt(query)
 	}
 	uq.withResource = query
+	return uq
+}
+
+// WithStudent tells the query-builder to eager-load the nodes that are connected to
+// the "student" edge. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithStudent(opts ...func(*StudentQuery)) *UserQuery {
+	query := (&StudentClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	uq.withStudent = query
 	return uq
 }
 
@@ -406,9 +442,10 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 	var (
 		nodes       = []*User{}
 		_spec       = uq.querySpec()
-		loadedTypes = [2]bool{
+		loadedTypes = [3]bool{
 			uq.withRole != nil,
 			uq.withResource != nil,
+			uq.withStudent != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
@@ -440,6 +477,12 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 		if err := uq.loadResource(ctx, query, nodes,
 			func(n *User) { n.Edges.Resource = []*Resource{} },
 			func(n *User, e *Resource) { n.Edges.Resource = append(n.Edges.Resource, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := uq.withStudent; query != nil {
+		if err := uq.loadStudent(ctx, query, nodes, nil,
+			func(n *User, e *Student) { n.Edges.Student = e }); err != nil {
 			return nil, err
 		}
 	}
@@ -565,6 +608,34 @@ func (uq *UserQuery) loadResource(ctx context.Context, query *ResourceQuery, nod
 		for kn := range nodes {
 			assign(kn, n)
 		}
+	}
+	return nil
+}
+func (uq *UserQuery) loadStudent(ctx context.Context, query *StudentQuery, nodes []*User, init func(*User), assign func(*User, *Student)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*User)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+	}
+	query.withFKs = true
+	query.Where(predicate.Student(func(s *sql.Selector) {
+		s.Where(sql.InValues(user.StudentColumn, fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.user_student
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "user_student" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "user_student" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
 	}
 	return nil
 }

@@ -222,10 +222,7 @@ func (au *AuthorizationUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Columns: authorization.ResourcePrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: resource.FieldID,
-				},
+				IDSpec: sqlgraph.NewFieldSpec(resource.FieldID, field.TypeInt),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
@@ -238,10 +235,7 @@ func (au *AuthorizationUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Columns: authorization.ResourcePrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: resource.FieldID,
-				},
+				IDSpec: sqlgraph.NewFieldSpec(resource.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -257,10 +251,7 @@ func (au *AuthorizationUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Columns: authorization.ResourcePrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: resource.FieldID,
-				},
+				IDSpec: sqlgraph.NewFieldSpec(resource.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -511,10 +502,7 @@ func (auo *AuthorizationUpdateOne) sqlSave(ctx context.Context) (_node *Authoriz
 			Columns: authorization.ResourcePrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: resource.FieldID,
-				},
+				IDSpec: sqlgraph.NewFieldSpec(resource.FieldID, field.TypeInt),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
@@ -527,10 +515,7 @@ func (auo *AuthorizationUpdateOne) sqlSave(ctx context.Context) (_node *Authoriz
 			Columns: authorization.ResourcePrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: resource.FieldID,
-				},
+				IDSpec: sqlgraph.NewFieldSpec(resource.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -546,10 +531,7 @@ func (auo *AuthorizationUpdateOne) sqlSave(ctx context.Context) (_node *Authoriz
 			Columns: authorization.ResourcePrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: resource.FieldID,
-				},
+				IDSpec: sqlgraph.NewFieldSpec(resource.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

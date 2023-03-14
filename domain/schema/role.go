@@ -12,7 +12,7 @@ type Role struct {
 
 func (Role) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("role_name").NotEmpty(),
+		field.String("role_name").NotEmpty().Unique(),
 		field.String("role_value").NotEmpty(),
 	}
 }

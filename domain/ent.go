@@ -14,6 +14,7 @@ import (
 	"github.com/devcui/ncepu-cs-project/domain/authorization"
 	"github.com/devcui/ncepu-cs-project/domain/resource"
 	"github.com/devcui/ncepu-cs-project/domain/role"
+	"github.com/devcui/ncepu-cs-project/domain/student"
 	"github.com/devcui/ncepu-cs-project/domain/user"
 )
 
@@ -71,6 +72,7 @@ func columnChecker(table string) func(string) error {
 		authorization.Table: authorization.ValidColumn,
 		resource.Table:      resource.ValidColumn,
 		role.Table:          role.ValidColumn,
+		student.Table:       student.ValidColumn,
 		user.Table:          user.ValidColumn,
 	}
 	check, ok := checks[table]
@@ -511,7 +513,7 @@ func withHooks[V Value, M any, PM interface {
 		return exec(ctx)
 	}
 	var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
-		mutationT, ok := m.(PM)
+		mutationT, ok := any(m).(PM)
 		if !ok {
 			return nil, fmt.Errorf("unexpected mutation type %T", m)
 		}

@@ -18,6 +18,8 @@ type Tx struct {
 	Resource *ResourceClient
 	// Role is the client for interacting with the Role builders.
 	Role *RoleClient
+	// Student is the client for interacting with the Student builders.
+	Student *StudentClient
 	// User is the client for interacting with the User builders.
 	User *UserClient
 
@@ -154,6 +156,7 @@ func (tx *Tx) init() {
 	tx.Authorization = NewAuthorizationClient(tx.config)
 	tx.Resource = NewResourceClient(tx.config)
 	tx.Role = NewRoleClient(tx.config)
+	tx.Student = NewStudentClient(tx.config)
 	tx.User = NewUserClient(tx.config)
 }
 

@@ -18,7 +18,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent, data: { title: '仪表盘' } },
       { path: 'exception', loadChildren: () => import('./exception/exception.module').then(m => m.ExceptionModule) }
-    ]
+    ,  { path: 'role', loadChildren: () => import('./role/role.module').then((m) => m.RoleModule) }]
   },
   {
     path: 'passport',
