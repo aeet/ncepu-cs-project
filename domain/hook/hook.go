@@ -21,6 +21,138 @@ func (f AuthorizationFunc) Mutate(ctx context.Context, m domain.Mutation) (domai
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *domain.AuthorizationMutation", m)
 }
 
+// The CampusFunc type is an adapter to allow the use of ordinary
+// function as Campus mutator.
+type CampusFunc func(context.Context, *domain.CampusMutation) (domain.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f CampusFunc) Mutate(ctx context.Context, m domain.Mutation) (domain.Value, error) {
+	if mv, ok := m.(*domain.CampusMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *domain.CampusMutation", m)
+}
+
+// The CertificateFunc type is an adapter to allow the use of ordinary
+// function as Certificate mutator.
+type CertificateFunc func(context.Context, *domain.CertificateMutation) (domain.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f CertificateFunc) Mutate(ctx context.Context, m domain.Mutation) (domain.Value, error) {
+	if mv, ok := m.(*domain.CertificateMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *domain.CertificateMutation", m)
+}
+
+// The ClassFunc type is an adapter to allow the use of ordinary
+// function as Class mutator.
+type ClassFunc func(context.Context, *domain.ClassMutation) (domain.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f ClassFunc) Mutate(ctx context.Context, m domain.Mutation) (domain.Value, error) {
+	if mv, ok := m.(*domain.ClassMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *domain.ClassMutation", m)
+}
+
+// The ClassLeaderFunc type is an adapter to allow the use of ordinary
+// function as ClassLeader mutator.
+type ClassLeaderFunc func(context.Context, *domain.ClassLeaderMutation) (domain.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f ClassLeaderFunc) Mutate(ctx context.Context, m domain.Mutation) (domain.Value, error) {
+	if mv, ok := m.(*domain.ClassLeaderMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *domain.ClassLeaderMutation", m)
+}
+
+// The DepartmentFunc type is an adapter to allow the use of ordinary
+// function as Department mutator.
+type DepartmentFunc func(context.Context, *domain.DepartmentMutation) (domain.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f DepartmentFunc) Mutate(ctx context.Context, m domain.Mutation) (domain.Value, error) {
+	if mv, ok := m.(*domain.DepartmentMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *domain.DepartmentMutation", m)
+}
+
+// The EducationLevelFunc type is an adapter to allow the use of ordinary
+// function as EducationLevel mutator.
+type EducationLevelFunc func(context.Context, *domain.EducationLevelMutation) (domain.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f EducationLevelFunc) Mutate(ctx context.Context, m domain.Mutation) (domain.Value, error) {
+	if mv, ok := m.(*domain.EducationLevelMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *domain.EducationLevelMutation", m)
+}
+
+// The EnrollmentStatusFunc type is an adapter to allow the use of ordinary
+// function as EnrollmentStatus mutator.
+type EnrollmentStatusFunc func(context.Context, *domain.EnrollmentStatusMutation) (domain.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f EnrollmentStatusFunc) Mutate(ctx context.Context, m domain.Mutation) (domain.Value, error) {
+	if mv, ok := m.(*domain.EnrollmentStatusMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *domain.EnrollmentStatusMutation", m)
+}
+
+// The FamilyInfoFunc type is an adapter to allow the use of ordinary
+// function as FamilyInfo mutator.
+type FamilyInfoFunc func(context.Context, *domain.FamilyInfoMutation) (domain.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f FamilyInfoFunc) Mutate(ctx context.Context, m domain.Mutation) (domain.Value, error) {
+	if mv, ok := m.(*domain.FamilyInfoMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *domain.FamilyInfoMutation", m)
+}
+
+// The MajorFunc type is an adapter to allow the use of ordinary
+// function as Major mutator.
+type MajorFunc func(context.Context, *domain.MajorMutation) (domain.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f MajorFunc) Mutate(ctx context.Context, m domain.Mutation) (domain.Value, error) {
+	if mv, ok := m.(*domain.MajorMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *domain.MajorMutation", m)
+}
+
+// The MajorDirectionFunc type is an adapter to allow the use of ordinary
+// function as MajorDirection mutator.
+type MajorDirectionFunc func(context.Context, *domain.MajorDirectionMutation) (domain.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f MajorDirectionFunc) Mutate(ctx context.Context, m domain.Mutation) (domain.Value, error) {
+	if mv, ok := m.(*domain.MajorDirectionMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *domain.MajorDirectionMutation", m)
+}
+
+// The PracticalExperienceFunc type is an adapter to allow the use of ordinary
+// function as PracticalExperience mutator.
+type PracticalExperienceFunc func(context.Context, *domain.PracticalExperienceMutation) (domain.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f PracticalExperienceFunc) Mutate(ctx context.Context, m domain.Mutation) (domain.Value, error) {
+	if mv, ok := m.(*domain.PracticalExperienceMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *domain.PracticalExperienceMutation", m)
+}
+
 // The ResourceFunc type is an adapter to allow the use of ordinary
 // function as Resource mutator.
 type ResourceFunc func(context.Context, *domain.ResourceMutation) (domain.Value, error)
@@ -55,6 +187,18 @@ func (f StudentFunc) Mutate(ctx context.Context, m domain.Mutation) (domain.Valu
 		return f(ctx, mv)
 	}
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *domain.StudentMutation", m)
+}
+
+// The TutorFunc type is an adapter to allow the use of ordinary
+// function as Tutor mutator.
+type TutorFunc func(context.Context, *domain.TutorMutation) (domain.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f TutorFunc) Mutate(ctx context.Context, m domain.Mutation) (domain.Value, error) {
+	if mv, ok := m.(*domain.TutorMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *domain.TutorMutation", m)
 }
 
 // The UserFunc type is an adapter to allow the use of ordinary

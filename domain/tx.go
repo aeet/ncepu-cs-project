@@ -14,12 +14,36 @@ type Tx struct {
 	config
 	// Authorization is the client for interacting with the Authorization builders.
 	Authorization *AuthorizationClient
+	// Campus is the client for interacting with the Campus builders.
+	Campus *CampusClient
+	// Certificate is the client for interacting with the Certificate builders.
+	Certificate *CertificateClient
+	// Class is the client for interacting with the Class builders.
+	Class *ClassClient
+	// ClassLeader is the client for interacting with the ClassLeader builders.
+	ClassLeader *ClassLeaderClient
+	// Department is the client for interacting with the Department builders.
+	Department *DepartmentClient
+	// EducationLevel is the client for interacting with the EducationLevel builders.
+	EducationLevel *EducationLevelClient
+	// EnrollmentStatus is the client for interacting with the EnrollmentStatus builders.
+	EnrollmentStatus *EnrollmentStatusClient
+	// FamilyInfo is the client for interacting with the FamilyInfo builders.
+	FamilyInfo *FamilyInfoClient
+	// Major is the client for interacting with the Major builders.
+	Major *MajorClient
+	// MajorDirection is the client for interacting with the MajorDirection builders.
+	MajorDirection *MajorDirectionClient
+	// PracticalExperience is the client for interacting with the PracticalExperience builders.
+	PracticalExperience *PracticalExperienceClient
 	// Resource is the client for interacting with the Resource builders.
 	Resource *ResourceClient
 	// Role is the client for interacting with the Role builders.
 	Role *RoleClient
 	// Student is the client for interacting with the Student builders.
 	Student *StudentClient
+	// Tutor is the client for interacting with the Tutor builders.
+	Tutor *TutorClient
 	// User is the client for interacting with the User builders.
 	User *UserClient
 
@@ -154,9 +178,21 @@ func (tx *Tx) Client() *Client {
 
 func (tx *Tx) init() {
 	tx.Authorization = NewAuthorizationClient(tx.config)
+	tx.Campus = NewCampusClient(tx.config)
+	tx.Certificate = NewCertificateClient(tx.config)
+	tx.Class = NewClassClient(tx.config)
+	tx.ClassLeader = NewClassLeaderClient(tx.config)
+	tx.Department = NewDepartmentClient(tx.config)
+	tx.EducationLevel = NewEducationLevelClient(tx.config)
+	tx.EnrollmentStatus = NewEnrollmentStatusClient(tx.config)
+	tx.FamilyInfo = NewFamilyInfoClient(tx.config)
+	tx.Major = NewMajorClient(tx.config)
+	tx.MajorDirection = NewMajorDirectionClient(tx.config)
+	tx.PracticalExperience = NewPracticalExperienceClient(tx.config)
 	tx.Resource = NewResourceClient(tx.config)
 	tx.Role = NewRoleClient(tx.config)
 	tx.Student = NewStudentClient(tx.config)
+	tx.Tutor = NewTutorClient(tx.config)
 	tx.User = NewUserClient(tx.config)
 }
 

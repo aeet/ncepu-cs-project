@@ -4,12 +4,21 @@ package domain
 
 import (
 	"context"
-	"errors"
 	"fmt"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/devcui/ncepu-cs-project/domain/certificate"
+	"github.com/devcui/ncepu-cs-project/domain/class"
+	"github.com/devcui/ncepu-cs-project/domain/classleader"
+	"github.com/devcui/ncepu-cs-project/domain/department"
+	"github.com/devcui/ncepu-cs-project/domain/educationlevel"
+	"github.com/devcui/ncepu-cs-project/domain/enrollmentstatus"
+	"github.com/devcui/ncepu-cs-project/domain/familyinfo"
+	"github.com/devcui/ncepu-cs-project/domain/major"
+	"github.com/devcui/ncepu-cs-project/domain/practicalexperience"
 	"github.com/devcui/ncepu-cs-project/domain/student"
+	"github.com/devcui/ncepu-cs-project/domain/tutor"
 	"github.com/devcui/ncepu-cs-project/domain/user"
 )
 
@@ -26,9 +35,187 @@ func (sc *StudentCreate) SetUserID(id int) *StudentCreate {
 	return sc
 }
 
+// SetNillableUserID sets the "user" edge to the User entity by ID if the given value is not nil.
+func (sc *StudentCreate) SetNillableUserID(id *int) *StudentCreate {
+	if id != nil {
+		sc = sc.SetUserID(*id)
+	}
+	return sc
+}
+
 // SetUser sets the "user" edge to the User entity.
 func (sc *StudentCreate) SetUser(u *User) *StudentCreate {
 	return sc.SetUserID(u.ID)
+}
+
+// SetDepartmentID sets the "department" edge to the Department entity by ID.
+func (sc *StudentCreate) SetDepartmentID(id int) *StudentCreate {
+	sc.mutation.SetDepartmentID(id)
+	return sc
+}
+
+// SetNillableDepartmentID sets the "department" edge to the Department entity by ID if the given value is not nil.
+func (sc *StudentCreate) SetNillableDepartmentID(id *int) *StudentCreate {
+	if id != nil {
+		sc = sc.SetDepartmentID(*id)
+	}
+	return sc
+}
+
+// SetDepartment sets the "department" edge to the Department entity.
+func (sc *StudentCreate) SetDepartment(d *Department) *StudentCreate {
+	return sc.SetDepartmentID(d.ID)
+}
+
+// SetMajorID sets the "major" edge to the Major entity by ID.
+func (sc *StudentCreate) SetMajorID(id int) *StudentCreate {
+	sc.mutation.SetMajorID(id)
+	return sc
+}
+
+// SetNillableMajorID sets the "major" edge to the Major entity by ID if the given value is not nil.
+func (sc *StudentCreate) SetNillableMajorID(id *int) *StudentCreate {
+	if id != nil {
+		sc = sc.SetMajorID(*id)
+	}
+	return sc
+}
+
+// SetMajor sets the "major" edge to the Major entity.
+func (sc *StudentCreate) SetMajor(m *Major) *StudentCreate {
+	return sc.SetMajorID(m.ID)
+}
+
+// SetClassID sets the "class" edge to the Class entity by ID.
+func (sc *StudentCreate) SetClassID(id int) *StudentCreate {
+	sc.mutation.SetClassID(id)
+	return sc
+}
+
+// SetNillableClassID sets the "class" edge to the Class entity by ID if the given value is not nil.
+func (sc *StudentCreate) SetNillableClassID(id *int) *StudentCreate {
+	if id != nil {
+		sc = sc.SetClassID(*id)
+	}
+	return sc
+}
+
+// SetClass sets the "class" edge to the Class entity.
+func (sc *StudentCreate) SetClass(c *Class) *StudentCreate {
+	return sc.SetClassID(c.ID)
+}
+
+// SetClassLeaderID sets the "class_leader" edge to the ClassLeader entity by ID.
+func (sc *StudentCreate) SetClassLeaderID(id int) *StudentCreate {
+	sc.mutation.SetClassLeaderID(id)
+	return sc
+}
+
+// SetNillableClassLeaderID sets the "class_leader" edge to the ClassLeader entity by ID if the given value is not nil.
+func (sc *StudentCreate) SetNillableClassLeaderID(id *int) *StudentCreate {
+	if id != nil {
+		sc = sc.SetClassLeaderID(*id)
+	}
+	return sc
+}
+
+// SetClassLeader sets the "class_leader" edge to the ClassLeader entity.
+func (sc *StudentCreate) SetClassLeader(c *ClassLeader) *StudentCreate {
+	return sc.SetClassLeaderID(c.ID)
+}
+
+// SetTutorID sets the "tutor" edge to the Tutor entity by ID.
+func (sc *StudentCreate) SetTutorID(id int) *StudentCreate {
+	sc.mutation.SetTutorID(id)
+	return sc
+}
+
+// SetNillableTutorID sets the "tutor" edge to the Tutor entity by ID if the given value is not nil.
+func (sc *StudentCreate) SetNillableTutorID(id *int) *StudentCreate {
+	if id != nil {
+		sc = sc.SetTutorID(*id)
+	}
+	return sc
+}
+
+// SetTutor sets the "tutor" edge to the Tutor entity.
+func (sc *StudentCreate) SetTutor(t *Tutor) *StudentCreate {
+	return sc.SetTutorID(t.ID)
+}
+
+// AddCertificateIDs adds the "certificate" edge to the Certificate entity by IDs.
+func (sc *StudentCreate) AddCertificateIDs(ids ...int) *StudentCreate {
+	sc.mutation.AddCertificateIDs(ids...)
+	return sc
+}
+
+// AddCertificate adds the "certificate" edges to the Certificate entity.
+func (sc *StudentCreate) AddCertificate(c ...*Certificate) *StudentCreate {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return sc.AddCertificateIDs(ids...)
+}
+
+// AddEducationLevelIDs adds the "education_level" edge to the EducationLevel entity by IDs.
+func (sc *StudentCreate) AddEducationLevelIDs(ids ...int) *StudentCreate {
+	sc.mutation.AddEducationLevelIDs(ids...)
+	return sc
+}
+
+// AddEducationLevel adds the "education_level" edges to the EducationLevel entity.
+func (sc *StudentCreate) AddEducationLevel(e ...*EducationLevel) *StudentCreate {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return sc.AddEducationLevelIDs(ids...)
+}
+
+// AddEnrollmentStatuIDs adds the "enrollment_status" edge to the EnrollmentStatus entity by IDs.
+func (sc *StudentCreate) AddEnrollmentStatuIDs(ids ...int) *StudentCreate {
+	sc.mutation.AddEnrollmentStatuIDs(ids...)
+	return sc
+}
+
+// AddEnrollmentStatus adds the "enrollment_status" edges to the EnrollmentStatus entity.
+func (sc *StudentCreate) AddEnrollmentStatus(e ...*EnrollmentStatus) *StudentCreate {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return sc.AddEnrollmentStatuIDs(ids...)
+}
+
+// AddFamilyInfoIDs adds the "family_info" edge to the FamilyInfo entity by IDs.
+func (sc *StudentCreate) AddFamilyInfoIDs(ids ...int) *StudentCreate {
+	sc.mutation.AddFamilyInfoIDs(ids...)
+	return sc
+}
+
+// AddFamilyInfo adds the "family_info" edges to the FamilyInfo entity.
+func (sc *StudentCreate) AddFamilyInfo(f ...*FamilyInfo) *StudentCreate {
+	ids := make([]int, len(f))
+	for i := range f {
+		ids[i] = f[i].ID
+	}
+	return sc.AddFamilyInfoIDs(ids...)
+}
+
+// AddPracticalExperienceIDs adds the "practical_experience" edge to the PracticalExperience entity by IDs.
+func (sc *StudentCreate) AddPracticalExperienceIDs(ids ...int) *StudentCreate {
+	sc.mutation.AddPracticalExperienceIDs(ids...)
+	return sc
+}
+
+// AddPracticalExperience adds the "practical_experience" edges to the PracticalExperience entity.
+func (sc *StudentCreate) AddPracticalExperience(p ...*PracticalExperience) *StudentCreate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return sc.AddPracticalExperienceIDs(ids...)
 }
 
 // Mutation returns the StudentMutation object of the builder.
@@ -65,9 +252,6 @@ func (sc *StudentCreate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (sc *StudentCreate) check() error {
-	if _, ok := sc.mutation.UserID(); !ok {
-		return &ValidationError{Name: "user", err: errors.New(`domain: missing required edge "Student.user"`)}
-	}
 	return nil
 }
 
@@ -97,7 +281,7 @@ func (sc *StudentCreate) createSpec() (*Student, *sqlgraph.CreateSpec) {
 	if nodes := sc.mutation.UserIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2O,
-			Inverse: true,
+			Inverse: false,
 			Table:   student.UserTable,
 			Columns: []string{student.UserColumn},
 			Bidi:    false,
@@ -108,7 +292,171 @@ func (sc *StudentCreate) createSpec() (*Student, *sqlgraph.CreateSpec) {
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.user_student = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := sc.mutation.DepartmentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   student.DepartmentTable,
+			Columns: []string{student.DepartmentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(department.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.student_department = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := sc.mutation.MajorIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   student.MajorTable,
+			Columns: []string{student.MajorColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(major.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.student_major = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := sc.mutation.ClassIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   student.ClassTable,
+			Columns: []string{student.ClassColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(class.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.student_class = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := sc.mutation.ClassLeaderIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: true,
+			Table:   student.ClassLeaderTable,
+			Columns: []string{student.ClassLeaderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(classleader.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.class_leader_student = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := sc.mutation.TutorIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: true,
+			Table:   student.TutorTable,
+			Columns: []string{student.TutorColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tutor.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.tutor_student = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := sc.mutation.CertificateIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.CertificateTable,
+			Columns: []string{student.CertificateColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(certificate.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := sc.mutation.EducationLevelIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.EducationLevelTable,
+			Columns: []string{student.EducationLevelColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(educationlevel.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := sc.mutation.EnrollmentStatusIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.EnrollmentStatusTable,
+			Columns: []string{student.EnrollmentStatusColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(enrollmentstatus.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := sc.mutation.FamilyInfoIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.FamilyInfoTable,
+			Columns: []string{student.FamilyInfoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(familyinfo.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := sc.mutation.PracticalExperienceIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.PracticalExperienceTable,
+			Columns: []string{student.PracticalExperienceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(practicalexperience.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

@@ -437,7 +437,7 @@ func HasStudent() predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, false, StudentTable, StudentColumn),
+			sqlgraph.Edge(sqlgraph.O2O, true, StudentTable, StudentColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
@@ -449,7 +449,7 @@ func HasStudentWith(preds ...predicate.Student) predicate.User {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.To(StudentInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, false, StudentTable, StudentColumn),
+			sqlgraph.Edge(sqlgraph.O2O, true, StudentTable, StudentColumn),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {

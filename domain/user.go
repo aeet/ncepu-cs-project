@@ -28,7 +28,8 @@ type User struct {
 	Email string `json:"email,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the UserQuery when eager-loading is set.
-	Edges UserEdges `json:"edges"`
+	Edges        UserEdges `json:"edges"`
+	student_user *int
 }
 
 // UserEdges holds the relations/edges for other nodes in the graph.
@@ -86,6 +87,8 @@ func (*User) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullInt64)
 		case user.FieldAccount, user.FieldPasswd, user.FieldUsername, user.FieldEmail:
 			values[i] = new(sql.NullString)
+		case user.ForeignKeys[0]: // student_user
+			values[i] = new(sql.NullInt64)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type User", columns[i])
 		}
@@ -136,6 +139,13 @@ func (u *User) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field email", values[i])
 			} else if value.Valid {
 				u.Email = value.String
+			}
+		case user.ForeignKeys[0]:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for edge-field student_user", value)
+			} else if value.Valid {
+				u.student_user = new(int)
+				*u.student_user = int(value.Int64)
 			}
 		}
 	}

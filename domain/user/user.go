@@ -36,12 +36,12 @@ const (
 	// It exists in this package in order to avoid circular dependency with the "resource" package.
 	ResourceInverseTable = "resources"
 	// StudentTable is the table that holds the student relation/edge.
-	StudentTable = "students"
+	StudentTable = "users"
 	// StudentInverseTable is the table name for the Student entity.
 	// It exists in this package in order to avoid circular dependency with the "student" package.
 	StudentInverseTable = "students"
 	// StudentColumn is the table column denoting the student relation/edge.
-	StudentColumn = "user_student"
+	StudentColumn = "student_user"
 )
 
 // Columns holds all SQL columns for user fields.
@@ -52,6 +52,12 @@ var Columns = []string{
 	FieldUsername,
 	FieldAvatar,
 	FieldEmail,
+}
+
+// ForeignKeys holds the SQL foreign-keys that are owned by the "users"
+// table and are not defined as standalone fields in the schema.
+var ForeignKeys = []string{
+	"student_user",
 }
 
 var (
@@ -67,6 +73,11 @@ var (
 func ValidColumn(column string) bool {
 	for i := range Columns {
 		if column == Columns[i] {
+			return true
+		}
+	}
+	for i := range ForeignKeys {
+		if column == ForeignKeys[i] {
 			return true
 		}
 	}

@@ -9,15 +9,105 @@ const (
 	FieldID = "id"
 	// EdgeUser holds the string denoting the user edge name in mutations.
 	EdgeUser = "user"
+	// EdgeDepartment holds the string denoting the department edge name in mutations.
+	EdgeDepartment = "department"
+	// EdgeMajor holds the string denoting the major edge name in mutations.
+	EdgeMajor = "major"
+	// EdgeClass holds the string denoting the class edge name in mutations.
+	EdgeClass = "class"
+	// EdgeClassLeader holds the string denoting the class_leader edge name in mutations.
+	EdgeClassLeader = "class_leader"
+	// EdgeTutor holds the string denoting the tutor edge name in mutations.
+	EdgeTutor = "tutor"
+	// EdgeCertificate holds the string denoting the certificate edge name in mutations.
+	EdgeCertificate = "certificate"
+	// EdgeEducationLevel holds the string denoting the education_level edge name in mutations.
+	EdgeEducationLevel = "education_level"
+	// EdgeEnrollmentStatus holds the string denoting the enrollment_status edge name in mutations.
+	EdgeEnrollmentStatus = "enrollment_status"
+	// EdgeFamilyInfo holds the string denoting the family_info edge name in mutations.
+	EdgeFamilyInfo = "family_info"
+	// EdgePracticalExperience holds the string denoting the practical_experience edge name in mutations.
+	EdgePracticalExperience = "practical_experience"
 	// Table holds the table name of the student in the database.
 	Table = "students"
 	// UserTable is the table that holds the user relation/edge.
-	UserTable = "students"
+	UserTable = "users"
 	// UserInverseTable is the table name for the User entity.
 	// It exists in this package in order to avoid circular dependency with the "user" package.
 	UserInverseTable = "users"
 	// UserColumn is the table column denoting the user relation/edge.
-	UserColumn = "user_student"
+	UserColumn = "student_user"
+	// DepartmentTable is the table that holds the department relation/edge.
+	DepartmentTable = "students"
+	// DepartmentInverseTable is the table name for the Department entity.
+	// It exists in this package in order to avoid circular dependency with the "department" package.
+	DepartmentInverseTable = "departments"
+	// DepartmentColumn is the table column denoting the department relation/edge.
+	DepartmentColumn = "student_department"
+	// MajorTable is the table that holds the major relation/edge.
+	MajorTable = "students"
+	// MajorInverseTable is the table name for the Major entity.
+	// It exists in this package in order to avoid circular dependency with the "major" package.
+	MajorInverseTable = "majors"
+	// MajorColumn is the table column denoting the major relation/edge.
+	MajorColumn = "student_major"
+	// ClassTable is the table that holds the class relation/edge.
+	ClassTable = "students"
+	// ClassInverseTable is the table name for the Class entity.
+	// It exists in this package in order to avoid circular dependency with the "class" package.
+	ClassInverseTable = "classes"
+	// ClassColumn is the table column denoting the class relation/edge.
+	ClassColumn = "student_class"
+	// ClassLeaderTable is the table that holds the class_leader relation/edge.
+	ClassLeaderTable = "students"
+	// ClassLeaderInverseTable is the table name for the ClassLeader entity.
+	// It exists in this package in order to avoid circular dependency with the "classleader" package.
+	ClassLeaderInverseTable = "class_leaders"
+	// ClassLeaderColumn is the table column denoting the class_leader relation/edge.
+	ClassLeaderColumn = "class_leader_student"
+	// TutorTable is the table that holds the tutor relation/edge.
+	TutorTable = "students"
+	// TutorInverseTable is the table name for the Tutor entity.
+	// It exists in this package in order to avoid circular dependency with the "tutor" package.
+	TutorInverseTable = "tutors"
+	// TutorColumn is the table column denoting the tutor relation/edge.
+	TutorColumn = "tutor_student"
+	// CertificateTable is the table that holds the certificate relation/edge.
+	CertificateTable = "certificates"
+	// CertificateInverseTable is the table name for the Certificate entity.
+	// It exists in this package in order to avoid circular dependency with the "certificate" package.
+	CertificateInverseTable = "certificates"
+	// CertificateColumn is the table column denoting the certificate relation/edge.
+	CertificateColumn = "certificate_student"
+	// EducationLevelTable is the table that holds the education_level relation/edge.
+	EducationLevelTable = "education_levels"
+	// EducationLevelInverseTable is the table name for the EducationLevel entity.
+	// It exists in this package in order to avoid circular dependency with the "educationlevel" package.
+	EducationLevelInverseTable = "education_levels"
+	// EducationLevelColumn is the table column denoting the education_level relation/edge.
+	EducationLevelColumn = "education_level_student"
+	// EnrollmentStatusTable is the table that holds the enrollment_status relation/edge.
+	EnrollmentStatusTable = "enrollment_status"
+	// EnrollmentStatusInverseTable is the table name for the EnrollmentStatus entity.
+	// It exists in this package in order to avoid circular dependency with the "enrollmentstatus" package.
+	EnrollmentStatusInverseTable = "enrollment_status"
+	// EnrollmentStatusColumn is the table column denoting the enrollment_status relation/edge.
+	EnrollmentStatusColumn = "enrollment_status_student"
+	// FamilyInfoTable is the table that holds the family_info relation/edge.
+	FamilyInfoTable = "family_infos"
+	// FamilyInfoInverseTable is the table name for the FamilyInfo entity.
+	// It exists in this package in order to avoid circular dependency with the "familyinfo" package.
+	FamilyInfoInverseTable = "family_infos"
+	// FamilyInfoColumn is the table column denoting the family_info relation/edge.
+	FamilyInfoColumn = "family_info_student"
+	// PracticalExperienceTable is the table that holds the practical_experience relation/edge.
+	PracticalExperienceTable = "practical_experiences"
+	// PracticalExperienceInverseTable is the table name for the PracticalExperience entity.
+	// It exists in this package in order to avoid circular dependency with the "practicalexperience" package.
+	PracticalExperienceInverseTable = "practical_experiences"
+	// PracticalExperienceColumn is the table column denoting the practical_experience relation/edge.
+	PracticalExperienceColumn = "practical_experience_student"
 )
 
 // Columns holds all SQL columns for student fields.
@@ -28,7 +118,11 @@ var Columns = []string{
 // ForeignKeys holds the SQL foreign-keys that are owned by the "students"
 // table and are not defined as standalone fields in the schema.
 var ForeignKeys = []string{
-	"user_student",
+	"class_leader_student",
+	"student_department",
+	"student_major",
+	"student_class",
+	"tutor_student",
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).

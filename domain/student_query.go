@@ -4,26 +4,47 @@ package domain
 
 import (
 	"context"
+	"database/sql/driver"
 	"fmt"
 	"math"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/devcui/ncepu-cs-project/domain/certificate"
+	"github.com/devcui/ncepu-cs-project/domain/class"
+	"github.com/devcui/ncepu-cs-project/domain/classleader"
+	"github.com/devcui/ncepu-cs-project/domain/department"
+	"github.com/devcui/ncepu-cs-project/domain/educationlevel"
+	"github.com/devcui/ncepu-cs-project/domain/enrollmentstatus"
+	"github.com/devcui/ncepu-cs-project/domain/familyinfo"
+	"github.com/devcui/ncepu-cs-project/domain/major"
+	"github.com/devcui/ncepu-cs-project/domain/practicalexperience"
 	"github.com/devcui/ncepu-cs-project/domain/predicate"
 	"github.com/devcui/ncepu-cs-project/domain/student"
+	"github.com/devcui/ncepu-cs-project/domain/tutor"
 	"github.com/devcui/ncepu-cs-project/domain/user"
 )
 
 // StudentQuery is the builder for querying Student entities.
 type StudentQuery struct {
 	config
-	ctx        *QueryContext
-	order      []OrderFunc
-	inters     []Interceptor
-	predicates []predicate.Student
-	withUser   *UserQuery
-	withFKs    bool
+	ctx                     *QueryContext
+	order                   []OrderFunc
+	inters                  []Interceptor
+	predicates              []predicate.Student
+	withUser                *UserQuery
+	withDepartment          *DepartmentQuery
+	withMajor               *MajorQuery
+	withClass               *ClassQuery
+	withClassLeader         *ClassLeaderQuery
+	withTutor               *TutorQuery
+	withCertificate         *CertificateQuery
+	withEducationLevel      *EducationLevelQuery
+	withEnrollmentStatus    *EnrollmentStatusQuery
+	withFamilyInfo          *FamilyInfoQuery
+	withPracticalExperience *PracticalExperienceQuery
+	withFKs                 bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -74,7 +95,227 @@ func (sq *StudentQuery) QueryUser() *UserQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(student.Table, student.FieldID, selector),
 			sqlgraph.To(user.Table, user.FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, true, student.UserTable, student.UserColumn),
+			sqlgraph.Edge(sqlgraph.O2O, false, student.UserTable, student.UserColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(sq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryDepartment chains the current query on the "department" edge.
+func (sq *StudentQuery) QueryDepartment() *DepartmentQuery {
+	query := (&DepartmentClient{config: sq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := sq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := sq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(student.Table, student.FieldID, selector),
+			sqlgraph.To(department.Table, department.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, student.DepartmentTable, student.DepartmentColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(sq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryMajor chains the current query on the "major" edge.
+func (sq *StudentQuery) QueryMajor() *MajorQuery {
+	query := (&MajorClient{config: sq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := sq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := sq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(student.Table, student.FieldID, selector),
+			sqlgraph.To(major.Table, major.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, student.MajorTable, student.MajorColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(sq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryClass chains the current query on the "class" edge.
+func (sq *StudentQuery) QueryClass() *ClassQuery {
+	query := (&ClassClient{config: sq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := sq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := sq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(student.Table, student.FieldID, selector),
+			sqlgraph.To(class.Table, class.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, student.ClassTable, student.ClassColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(sq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryClassLeader chains the current query on the "class_leader" edge.
+func (sq *StudentQuery) QueryClassLeader() *ClassLeaderQuery {
+	query := (&ClassLeaderClient{config: sq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := sq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := sq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(student.Table, student.FieldID, selector),
+			sqlgraph.To(classleader.Table, classleader.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, true, student.ClassLeaderTable, student.ClassLeaderColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(sq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryTutor chains the current query on the "tutor" edge.
+func (sq *StudentQuery) QueryTutor() *TutorQuery {
+	query := (&TutorClient{config: sq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := sq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := sq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(student.Table, student.FieldID, selector),
+			sqlgraph.To(tutor.Table, tutor.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, true, student.TutorTable, student.TutorColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(sq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryCertificate chains the current query on the "certificate" edge.
+func (sq *StudentQuery) QueryCertificate() *CertificateQuery {
+	query := (&CertificateClient{config: sq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := sq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := sq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(student.Table, student.FieldID, selector),
+			sqlgraph.To(certificate.Table, certificate.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, true, student.CertificateTable, student.CertificateColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(sq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryEducationLevel chains the current query on the "education_level" edge.
+func (sq *StudentQuery) QueryEducationLevel() *EducationLevelQuery {
+	query := (&EducationLevelClient{config: sq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := sq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := sq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(student.Table, student.FieldID, selector),
+			sqlgraph.To(educationlevel.Table, educationlevel.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, true, student.EducationLevelTable, student.EducationLevelColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(sq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryEnrollmentStatus chains the current query on the "enrollment_status" edge.
+func (sq *StudentQuery) QueryEnrollmentStatus() *EnrollmentStatusQuery {
+	query := (&EnrollmentStatusClient{config: sq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := sq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := sq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(student.Table, student.FieldID, selector),
+			sqlgraph.To(enrollmentstatus.Table, enrollmentstatus.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, true, student.EnrollmentStatusTable, student.EnrollmentStatusColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(sq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryFamilyInfo chains the current query on the "family_info" edge.
+func (sq *StudentQuery) QueryFamilyInfo() *FamilyInfoQuery {
+	query := (&FamilyInfoClient{config: sq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := sq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := sq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(student.Table, student.FieldID, selector),
+			sqlgraph.To(familyinfo.Table, familyinfo.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, true, student.FamilyInfoTable, student.FamilyInfoColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(sq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryPracticalExperience chains the current query on the "practical_experience" edge.
+func (sq *StudentQuery) QueryPracticalExperience() *PracticalExperienceQuery {
+	query := (&PracticalExperienceClient{config: sq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := sq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := sq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(student.Table, student.FieldID, selector),
+			sqlgraph.To(practicalexperience.Table, practicalexperience.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, true, student.PracticalExperienceTable, student.PracticalExperienceColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(sq.driver.Dialect(), step)
 		return fromU, nil
@@ -269,12 +510,22 @@ func (sq *StudentQuery) Clone() *StudentQuery {
 		return nil
 	}
 	return &StudentQuery{
-		config:     sq.config,
-		ctx:        sq.ctx.Clone(),
-		order:      append([]OrderFunc{}, sq.order...),
-		inters:     append([]Interceptor{}, sq.inters...),
-		predicates: append([]predicate.Student{}, sq.predicates...),
-		withUser:   sq.withUser.Clone(),
+		config:                  sq.config,
+		ctx:                     sq.ctx.Clone(),
+		order:                   append([]OrderFunc{}, sq.order...),
+		inters:                  append([]Interceptor{}, sq.inters...),
+		predicates:              append([]predicate.Student{}, sq.predicates...),
+		withUser:                sq.withUser.Clone(),
+		withDepartment:          sq.withDepartment.Clone(),
+		withMajor:               sq.withMajor.Clone(),
+		withClass:               sq.withClass.Clone(),
+		withClassLeader:         sq.withClassLeader.Clone(),
+		withTutor:               sq.withTutor.Clone(),
+		withCertificate:         sq.withCertificate.Clone(),
+		withEducationLevel:      sq.withEducationLevel.Clone(),
+		withEnrollmentStatus:    sq.withEnrollmentStatus.Clone(),
+		withFamilyInfo:          sq.withFamilyInfo.Clone(),
+		withPracticalExperience: sq.withPracticalExperience.Clone(),
 		// clone intermediate query.
 		sql:  sq.sql.Clone(),
 		path: sq.path,
@@ -289,6 +540,116 @@ func (sq *StudentQuery) WithUser(opts ...func(*UserQuery)) *StudentQuery {
 		opt(query)
 	}
 	sq.withUser = query
+	return sq
+}
+
+// WithDepartment tells the query-builder to eager-load the nodes that are connected to
+// the "department" edge. The optional arguments are used to configure the query builder of the edge.
+func (sq *StudentQuery) WithDepartment(opts ...func(*DepartmentQuery)) *StudentQuery {
+	query := (&DepartmentClient{config: sq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	sq.withDepartment = query
+	return sq
+}
+
+// WithMajor tells the query-builder to eager-load the nodes that are connected to
+// the "major" edge. The optional arguments are used to configure the query builder of the edge.
+func (sq *StudentQuery) WithMajor(opts ...func(*MajorQuery)) *StudentQuery {
+	query := (&MajorClient{config: sq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	sq.withMajor = query
+	return sq
+}
+
+// WithClass tells the query-builder to eager-load the nodes that are connected to
+// the "class" edge. The optional arguments are used to configure the query builder of the edge.
+func (sq *StudentQuery) WithClass(opts ...func(*ClassQuery)) *StudentQuery {
+	query := (&ClassClient{config: sq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	sq.withClass = query
+	return sq
+}
+
+// WithClassLeader tells the query-builder to eager-load the nodes that are connected to
+// the "class_leader" edge. The optional arguments are used to configure the query builder of the edge.
+func (sq *StudentQuery) WithClassLeader(opts ...func(*ClassLeaderQuery)) *StudentQuery {
+	query := (&ClassLeaderClient{config: sq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	sq.withClassLeader = query
+	return sq
+}
+
+// WithTutor tells the query-builder to eager-load the nodes that are connected to
+// the "tutor" edge. The optional arguments are used to configure the query builder of the edge.
+func (sq *StudentQuery) WithTutor(opts ...func(*TutorQuery)) *StudentQuery {
+	query := (&TutorClient{config: sq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	sq.withTutor = query
+	return sq
+}
+
+// WithCertificate tells the query-builder to eager-load the nodes that are connected to
+// the "certificate" edge. The optional arguments are used to configure the query builder of the edge.
+func (sq *StudentQuery) WithCertificate(opts ...func(*CertificateQuery)) *StudentQuery {
+	query := (&CertificateClient{config: sq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	sq.withCertificate = query
+	return sq
+}
+
+// WithEducationLevel tells the query-builder to eager-load the nodes that are connected to
+// the "education_level" edge. The optional arguments are used to configure the query builder of the edge.
+func (sq *StudentQuery) WithEducationLevel(opts ...func(*EducationLevelQuery)) *StudentQuery {
+	query := (&EducationLevelClient{config: sq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	sq.withEducationLevel = query
+	return sq
+}
+
+// WithEnrollmentStatus tells the query-builder to eager-load the nodes that are connected to
+// the "enrollment_status" edge. The optional arguments are used to configure the query builder of the edge.
+func (sq *StudentQuery) WithEnrollmentStatus(opts ...func(*EnrollmentStatusQuery)) *StudentQuery {
+	query := (&EnrollmentStatusClient{config: sq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	sq.withEnrollmentStatus = query
+	return sq
+}
+
+// WithFamilyInfo tells the query-builder to eager-load the nodes that are connected to
+// the "family_info" edge. The optional arguments are used to configure the query builder of the edge.
+func (sq *StudentQuery) WithFamilyInfo(opts ...func(*FamilyInfoQuery)) *StudentQuery {
+	query := (&FamilyInfoClient{config: sq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	sq.withFamilyInfo = query
+	return sq
+}
+
+// WithPracticalExperience tells the query-builder to eager-load the nodes that are connected to
+// the "practical_experience" edge. The optional arguments are used to configure the query builder of the edge.
+func (sq *StudentQuery) WithPracticalExperience(opts ...func(*PracticalExperienceQuery)) *StudentQuery {
+	query := (&PracticalExperienceClient{config: sq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	sq.withPracticalExperience = query
 	return sq
 }
 
@@ -349,11 +710,21 @@ func (sq *StudentQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Stud
 		nodes       = []*Student{}
 		withFKs     = sq.withFKs
 		_spec       = sq.querySpec()
-		loadedTypes = [1]bool{
+		loadedTypes = [11]bool{
 			sq.withUser != nil,
+			sq.withDepartment != nil,
+			sq.withMajor != nil,
+			sq.withClass != nil,
+			sq.withClassLeader != nil,
+			sq.withTutor != nil,
+			sq.withCertificate != nil,
+			sq.withEducationLevel != nil,
+			sq.withEnrollmentStatus != nil,
+			sq.withFamilyInfo != nil,
+			sq.withPracticalExperience != nil,
 		}
 	)
-	if sq.withUser != nil {
+	if sq.withDepartment != nil || sq.withMajor != nil || sq.withClass != nil || sq.withClassLeader != nil || sq.withTutor != nil {
 		withFKs = true
 	}
 	if withFKs {
@@ -383,17 +754,112 @@ func (sq *StudentQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Stud
 			return nil, err
 		}
 	}
+	if query := sq.withDepartment; query != nil {
+		if err := sq.loadDepartment(ctx, query, nodes, nil,
+			func(n *Student, e *Department) { n.Edges.Department = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := sq.withMajor; query != nil {
+		if err := sq.loadMajor(ctx, query, nodes, nil,
+			func(n *Student, e *Major) { n.Edges.Major = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := sq.withClass; query != nil {
+		if err := sq.loadClass(ctx, query, nodes, nil,
+			func(n *Student, e *Class) { n.Edges.Class = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := sq.withClassLeader; query != nil {
+		if err := sq.loadClassLeader(ctx, query, nodes, nil,
+			func(n *Student, e *ClassLeader) { n.Edges.ClassLeader = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := sq.withTutor; query != nil {
+		if err := sq.loadTutor(ctx, query, nodes, nil,
+			func(n *Student, e *Tutor) { n.Edges.Tutor = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := sq.withCertificate; query != nil {
+		if err := sq.loadCertificate(ctx, query, nodes,
+			func(n *Student) { n.Edges.Certificate = []*Certificate{} },
+			func(n *Student, e *Certificate) { n.Edges.Certificate = append(n.Edges.Certificate, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := sq.withEducationLevel; query != nil {
+		if err := sq.loadEducationLevel(ctx, query, nodes,
+			func(n *Student) { n.Edges.EducationLevel = []*EducationLevel{} },
+			func(n *Student, e *EducationLevel) { n.Edges.EducationLevel = append(n.Edges.EducationLevel, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := sq.withEnrollmentStatus; query != nil {
+		if err := sq.loadEnrollmentStatus(ctx, query, nodes,
+			func(n *Student) { n.Edges.EnrollmentStatus = []*EnrollmentStatus{} },
+			func(n *Student, e *EnrollmentStatus) { n.Edges.EnrollmentStatus = append(n.Edges.EnrollmentStatus, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := sq.withFamilyInfo; query != nil {
+		if err := sq.loadFamilyInfo(ctx, query, nodes,
+			func(n *Student) { n.Edges.FamilyInfo = []*FamilyInfo{} },
+			func(n *Student, e *FamilyInfo) { n.Edges.FamilyInfo = append(n.Edges.FamilyInfo, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := sq.withPracticalExperience; query != nil {
+		if err := sq.loadPracticalExperience(ctx, query, nodes,
+			func(n *Student) { n.Edges.PracticalExperience = []*PracticalExperience{} },
+			func(n *Student, e *PracticalExperience) {
+				n.Edges.PracticalExperience = append(n.Edges.PracticalExperience, e)
+			}); err != nil {
+			return nil, err
+		}
+	}
 	return nodes, nil
 }
 
 func (sq *StudentQuery) loadUser(ctx context.Context, query *UserQuery, nodes []*Student, init func(*Student), assign func(*Student, *User)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*Student)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+	}
+	query.withFKs = true
+	query.Where(predicate.User(func(s *sql.Selector) {
+		s.Where(sql.InValues(student.UserColumn, fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.student_user
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "student_user" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "student_user" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (sq *StudentQuery) loadDepartment(ctx context.Context, query *DepartmentQuery, nodes []*Student, init func(*Student), assign func(*Student, *Department)) error {
 	ids := make([]int, 0, len(nodes))
 	nodeids := make(map[int][]*Student)
 	for i := range nodes {
-		if nodes[i].user_student == nil {
+		if nodes[i].student_department == nil {
 			continue
 		}
-		fk := *nodes[i].user_student
+		fk := *nodes[i].student_department
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -402,7 +868,7 @@ func (sq *StudentQuery) loadUser(ctx context.Context, query *UserQuery, nodes []
 	if len(ids) == 0 {
 		return nil
 	}
-	query.Where(user.IDIn(ids...))
+	query.Where(department.IDIn(ids...))
 	neighbors, err := query.All(ctx)
 	if err != nil {
 		return err
@@ -410,11 +876,294 @@ func (sq *StudentQuery) loadUser(ctx context.Context, query *UserQuery, nodes []
 	for _, n := range neighbors {
 		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "user_student" returned %v`, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "student_department" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)
 		}
+	}
+	return nil
+}
+func (sq *StudentQuery) loadMajor(ctx context.Context, query *MajorQuery, nodes []*Student, init func(*Student), assign func(*Student, *Major)) error {
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*Student)
+	for i := range nodes {
+		if nodes[i].student_major == nil {
+			continue
+		}
+		fk := *nodes[i].student_major
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(major.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "student_major" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
+func (sq *StudentQuery) loadClass(ctx context.Context, query *ClassQuery, nodes []*Student, init func(*Student), assign func(*Student, *Class)) error {
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*Student)
+	for i := range nodes {
+		if nodes[i].student_class == nil {
+			continue
+		}
+		fk := *nodes[i].student_class
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(class.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "student_class" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
+func (sq *StudentQuery) loadClassLeader(ctx context.Context, query *ClassLeaderQuery, nodes []*Student, init func(*Student), assign func(*Student, *ClassLeader)) error {
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*Student)
+	for i := range nodes {
+		if nodes[i].class_leader_student == nil {
+			continue
+		}
+		fk := *nodes[i].class_leader_student
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(classleader.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "class_leader_student" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
+func (sq *StudentQuery) loadTutor(ctx context.Context, query *TutorQuery, nodes []*Student, init func(*Student), assign func(*Student, *Tutor)) error {
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*Student)
+	for i := range nodes {
+		if nodes[i].tutor_student == nil {
+			continue
+		}
+		fk := *nodes[i].tutor_student
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(tutor.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "tutor_student" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
+func (sq *StudentQuery) loadCertificate(ctx context.Context, query *CertificateQuery, nodes []*Student, init func(*Student), assign func(*Student, *Certificate)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*Student)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.Certificate(func(s *sql.Selector) {
+		s.Where(sql.InValues(student.CertificateColumn, fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.certificate_student
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "certificate_student" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "certificate_student" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (sq *StudentQuery) loadEducationLevel(ctx context.Context, query *EducationLevelQuery, nodes []*Student, init func(*Student), assign func(*Student, *EducationLevel)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*Student)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.EducationLevel(func(s *sql.Selector) {
+		s.Where(sql.InValues(student.EducationLevelColumn, fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.education_level_student
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "education_level_student" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "education_level_student" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (sq *StudentQuery) loadEnrollmentStatus(ctx context.Context, query *EnrollmentStatusQuery, nodes []*Student, init func(*Student), assign func(*Student, *EnrollmentStatus)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*Student)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.EnrollmentStatus(func(s *sql.Selector) {
+		s.Where(sql.InValues(student.EnrollmentStatusColumn, fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.enrollment_status_student
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "enrollment_status_student" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "enrollment_status_student" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (sq *StudentQuery) loadFamilyInfo(ctx context.Context, query *FamilyInfoQuery, nodes []*Student, init func(*Student), assign func(*Student, *FamilyInfo)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*Student)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.FamilyInfo(func(s *sql.Selector) {
+		s.Where(sql.InValues(student.FamilyInfoColumn, fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.family_info_student
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "family_info_student" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "family_info_student" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (sq *StudentQuery) loadPracticalExperience(ctx context.Context, query *PracticalExperienceQuery, nodes []*Student, init func(*Student), assign func(*Student, *PracticalExperience)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*Student)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.PracticalExperience(func(s *sql.Selector) {
+		s.Where(sql.InValues(student.PracticalExperienceColumn, fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.practical_experience_student
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "practical_experience_student" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "practical_experience_student" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
 	}
 	return nil
 }

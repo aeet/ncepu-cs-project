@@ -15,9 +15,21 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/devcui/ncepu-cs-project/domain/authorization"
+	"github.com/devcui/ncepu-cs-project/domain/campus"
+	"github.com/devcui/ncepu-cs-project/domain/certificate"
+	"github.com/devcui/ncepu-cs-project/domain/class"
+	"github.com/devcui/ncepu-cs-project/domain/classleader"
+	"github.com/devcui/ncepu-cs-project/domain/department"
+	"github.com/devcui/ncepu-cs-project/domain/educationlevel"
+	"github.com/devcui/ncepu-cs-project/domain/enrollmentstatus"
+	"github.com/devcui/ncepu-cs-project/domain/familyinfo"
+	"github.com/devcui/ncepu-cs-project/domain/major"
+	"github.com/devcui/ncepu-cs-project/domain/majordirection"
+	"github.com/devcui/ncepu-cs-project/domain/practicalexperience"
 	"github.com/devcui/ncepu-cs-project/domain/resource"
 	"github.com/devcui/ncepu-cs-project/domain/role"
 	"github.com/devcui/ncepu-cs-project/domain/student"
+	"github.com/devcui/ncepu-cs-project/domain/tutor"
 	"github.com/devcui/ncepu-cs-project/domain/user"
 )
 
@@ -28,12 +40,36 @@ type Client struct {
 	Schema *migrate.Schema
 	// Authorization is the client for interacting with the Authorization builders.
 	Authorization *AuthorizationClient
+	// Campus is the client for interacting with the Campus builders.
+	Campus *CampusClient
+	// Certificate is the client for interacting with the Certificate builders.
+	Certificate *CertificateClient
+	// Class is the client for interacting with the Class builders.
+	Class *ClassClient
+	// ClassLeader is the client for interacting with the ClassLeader builders.
+	ClassLeader *ClassLeaderClient
+	// Department is the client for interacting with the Department builders.
+	Department *DepartmentClient
+	// EducationLevel is the client for interacting with the EducationLevel builders.
+	EducationLevel *EducationLevelClient
+	// EnrollmentStatus is the client for interacting with the EnrollmentStatus builders.
+	EnrollmentStatus *EnrollmentStatusClient
+	// FamilyInfo is the client for interacting with the FamilyInfo builders.
+	FamilyInfo *FamilyInfoClient
+	// Major is the client for interacting with the Major builders.
+	Major *MajorClient
+	// MajorDirection is the client for interacting with the MajorDirection builders.
+	MajorDirection *MajorDirectionClient
+	// PracticalExperience is the client for interacting with the PracticalExperience builders.
+	PracticalExperience *PracticalExperienceClient
 	// Resource is the client for interacting with the Resource builders.
 	Resource *ResourceClient
 	// Role is the client for interacting with the Role builders.
 	Role *RoleClient
 	// Student is the client for interacting with the Student builders.
 	Student *StudentClient
+	// Tutor is the client for interacting with the Tutor builders.
+	Tutor *TutorClient
 	// User is the client for interacting with the User builders.
 	User *UserClient
 }
@@ -50,9 +86,21 @@ func NewClient(opts ...Option) *Client {
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
 	c.Authorization = NewAuthorizationClient(c.config)
+	c.Campus = NewCampusClient(c.config)
+	c.Certificate = NewCertificateClient(c.config)
+	c.Class = NewClassClient(c.config)
+	c.ClassLeader = NewClassLeaderClient(c.config)
+	c.Department = NewDepartmentClient(c.config)
+	c.EducationLevel = NewEducationLevelClient(c.config)
+	c.EnrollmentStatus = NewEnrollmentStatusClient(c.config)
+	c.FamilyInfo = NewFamilyInfoClient(c.config)
+	c.Major = NewMajorClient(c.config)
+	c.MajorDirection = NewMajorDirectionClient(c.config)
+	c.PracticalExperience = NewPracticalExperienceClient(c.config)
 	c.Resource = NewResourceClient(c.config)
 	c.Role = NewRoleClient(c.config)
 	c.Student = NewStudentClient(c.config)
+	c.Tutor = NewTutorClient(c.config)
 	c.User = NewUserClient(c.config)
 }
 
@@ -134,13 +182,25 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	cfg := c.config
 	cfg.driver = tx
 	return &Tx{
-		ctx:           ctx,
-		config:        cfg,
-		Authorization: NewAuthorizationClient(cfg),
-		Resource:      NewResourceClient(cfg),
-		Role:          NewRoleClient(cfg),
-		Student:       NewStudentClient(cfg),
-		User:          NewUserClient(cfg),
+		ctx:                 ctx,
+		config:              cfg,
+		Authorization:       NewAuthorizationClient(cfg),
+		Campus:              NewCampusClient(cfg),
+		Certificate:         NewCertificateClient(cfg),
+		Class:               NewClassClient(cfg),
+		ClassLeader:         NewClassLeaderClient(cfg),
+		Department:          NewDepartmentClient(cfg),
+		EducationLevel:      NewEducationLevelClient(cfg),
+		EnrollmentStatus:    NewEnrollmentStatusClient(cfg),
+		FamilyInfo:          NewFamilyInfoClient(cfg),
+		Major:               NewMajorClient(cfg),
+		MajorDirection:      NewMajorDirectionClient(cfg),
+		PracticalExperience: NewPracticalExperienceClient(cfg),
+		Resource:            NewResourceClient(cfg),
+		Role:                NewRoleClient(cfg),
+		Student:             NewStudentClient(cfg),
+		Tutor:               NewTutorClient(cfg),
+		User:                NewUserClient(cfg),
 	}, nil
 }
 
@@ -158,13 +218,25 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg := c.config
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
-		ctx:           ctx,
-		config:        cfg,
-		Authorization: NewAuthorizationClient(cfg),
-		Resource:      NewResourceClient(cfg),
-		Role:          NewRoleClient(cfg),
-		Student:       NewStudentClient(cfg),
-		User:          NewUserClient(cfg),
+		ctx:                 ctx,
+		config:              cfg,
+		Authorization:       NewAuthorizationClient(cfg),
+		Campus:              NewCampusClient(cfg),
+		Certificate:         NewCertificateClient(cfg),
+		Class:               NewClassClient(cfg),
+		ClassLeader:         NewClassLeaderClient(cfg),
+		Department:          NewDepartmentClient(cfg),
+		EducationLevel:      NewEducationLevelClient(cfg),
+		EnrollmentStatus:    NewEnrollmentStatusClient(cfg),
+		FamilyInfo:          NewFamilyInfoClient(cfg),
+		Major:               NewMajorClient(cfg),
+		MajorDirection:      NewMajorDirectionClient(cfg),
+		PracticalExperience: NewPracticalExperienceClient(cfg),
+		Resource:            NewResourceClient(cfg),
+		Role:                NewRoleClient(cfg),
+		Student:             NewStudentClient(cfg),
+		Tutor:               NewTutorClient(cfg),
+		User:                NewUserClient(cfg),
 	}, nil
 }
 
@@ -193,21 +265,25 @@ func (c *Client) Close() error {
 // Use adds the mutation hooks to all the entity clients.
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
-	c.Authorization.Use(hooks...)
-	c.Resource.Use(hooks...)
-	c.Role.Use(hooks...)
-	c.Student.Use(hooks...)
-	c.User.Use(hooks...)
+	for _, n := range []interface{ Use(...Hook) }{
+		c.Authorization, c.Campus, c.Certificate, c.Class, c.ClassLeader, c.Department,
+		c.EducationLevel, c.EnrollmentStatus, c.FamilyInfo, c.Major, c.MajorDirection,
+		c.PracticalExperience, c.Resource, c.Role, c.Student, c.Tutor, c.User,
+	} {
+		n.Use(hooks...)
+	}
 }
 
 // Intercept adds the query interceptors to all the entity clients.
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
-	c.Authorization.Intercept(interceptors...)
-	c.Resource.Intercept(interceptors...)
-	c.Role.Intercept(interceptors...)
-	c.Student.Intercept(interceptors...)
-	c.User.Intercept(interceptors...)
+	for _, n := range []interface{ Intercept(...Interceptor) }{
+		c.Authorization, c.Campus, c.Certificate, c.Class, c.ClassLeader, c.Department,
+		c.EducationLevel, c.EnrollmentStatus, c.FamilyInfo, c.Major, c.MajorDirection,
+		c.PracticalExperience, c.Resource, c.Role, c.Student, c.Tutor, c.User,
+	} {
+		n.Intercept(interceptors...)
+	}
 }
 
 // Mutate implements the ent.Mutator interface.
@@ -215,12 +291,36 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 	switch m := m.(type) {
 	case *AuthorizationMutation:
 		return c.Authorization.mutate(ctx, m)
+	case *CampusMutation:
+		return c.Campus.mutate(ctx, m)
+	case *CertificateMutation:
+		return c.Certificate.mutate(ctx, m)
+	case *ClassMutation:
+		return c.Class.mutate(ctx, m)
+	case *ClassLeaderMutation:
+		return c.ClassLeader.mutate(ctx, m)
+	case *DepartmentMutation:
+		return c.Department.mutate(ctx, m)
+	case *EducationLevelMutation:
+		return c.EducationLevel.mutate(ctx, m)
+	case *EnrollmentStatusMutation:
+		return c.EnrollmentStatus.mutate(ctx, m)
+	case *FamilyInfoMutation:
+		return c.FamilyInfo.mutate(ctx, m)
+	case *MajorMutation:
+		return c.Major.mutate(ctx, m)
+	case *MajorDirectionMutation:
+		return c.MajorDirection.mutate(ctx, m)
+	case *PracticalExperienceMutation:
+		return c.PracticalExperience.mutate(ctx, m)
 	case *ResourceMutation:
 		return c.Resource.mutate(ctx, m)
 	case *RoleMutation:
 		return c.Role.mutate(ctx, m)
 	case *StudentMutation:
 		return c.Student.mutate(ctx, m)
+	case *TutorMutation:
+		return c.Tutor.mutate(ctx, m)
 	case *UserMutation:
 		return c.User.mutate(ctx, m)
 	default:
@@ -359,6 +459,1656 @@ func (c *AuthorizationClient) mutate(ctx context.Context, m *AuthorizationMutati
 		return (&AuthorizationDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("domain: unknown Authorization mutation op: %q", m.Op())
+	}
+}
+
+// CampusClient is a client for the Campus schema.
+type CampusClient struct {
+	config
+}
+
+// NewCampusClient returns a client for the Campus from the given config.
+func NewCampusClient(c config) *CampusClient {
+	return &CampusClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `campus.Hooks(f(g(h())))`.
+func (c *CampusClient) Use(hooks ...Hook) {
+	c.hooks.Campus = append(c.hooks.Campus, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `campus.Intercept(f(g(h())))`.
+func (c *CampusClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Campus = append(c.inters.Campus, interceptors...)
+}
+
+// Create returns a builder for creating a Campus entity.
+func (c *CampusClient) Create() *CampusCreate {
+	mutation := newCampusMutation(c.config, OpCreate)
+	return &CampusCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Campus entities.
+func (c *CampusClient) CreateBulk(builders ...*CampusCreate) *CampusCreateBulk {
+	return &CampusCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Campus.
+func (c *CampusClient) Update() *CampusUpdate {
+	mutation := newCampusMutation(c.config, OpUpdate)
+	return &CampusUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *CampusClient) UpdateOne(ca *Campus) *CampusUpdateOne {
+	mutation := newCampusMutation(c.config, OpUpdateOne, withCampus(ca))
+	return &CampusUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *CampusClient) UpdateOneID(id int) *CampusUpdateOne {
+	mutation := newCampusMutation(c.config, OpUpdateOne, withCampusID(id))
+	return &CampusUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Campus.
+func (c *CampusClient) Delete() *CampusDelete {
+	mutation := newCampusMutation(c.config, OpDelete)
+	return &CampusDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *CampusClient) DeleteOne(ca *Campus) *CampusDeleteOne {
+	return c.DeleteOneID(ca.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *CampusClient) DeleteOneID(id int) *CampusDeleteOne {
+	builder := c.Delete().Where(campus.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &CampusDeleteOne{builder}
+}
+
+// Query returns a query builder for Campus.
+func (c *CampusClient) Query() *CampusQuery {
+	return &CampusQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeCampus},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Campus entity by its id.
+func (c *CampusClient) Get(ctx context.Context, id int) (*Campus, error) {
+	return c.Query().Where(campus.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *CampusClient) GetX(ctx context.Context, id int) *Campus {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryClass queries the class edge of a Campus.
+func (c *CampusClient) QueryClass(ca *Campus) *ClassQuery {
+	query := (&ClassClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := ca.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(campus.Table, campus.FieldID, id),
+			sqlgraph.To(class.Table, class.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, campus.ClassTable, campus.ClassColumn),
+		)
+		fromV = sqlgraph.Neighbors(ca.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *CampusClient) Hooks() []Hook {
+	return c.hooks.Campus
+}
+
+// Interceptors returns the client interceptors.
+func (c *CampusClient) Interceptors() []Interceptor {
+	return c.inters.Campus
+}
+
+func (c *CampusClient) mutate(ctx context.Context, m *CampusMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&CampusCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&CampusUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&CampusUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&CampusDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("domain: unknown Campus mutation op: %q", m.Op())
+	}
+}
+
+// CertificateClient is a client for the Certificate schema.
+type CertificateClient struct {
+	config
+}
+
+// NewCertificateClient returns a client for the Certificate from the given config.
+func NewCertificateClient(c config) *CertificateClient {
+	return &CertificateClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `certificate.Hooks(f(g(h())))`.
+func (c *CertificateClient) Use(hooks ...Hook) {
+	c.hooks.Certificate = append(c.hooks.Certificate, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `certificate.Intercept(f(g(h())))`.
+func (c *CertificateClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Certificate = append(c.inters.Certificate, interceptors...)
+}
+
+// Create returns a builder for creating a Certificate entity.
+func (c *CertificateClient) Create() *CertificateCreate {
+	mutation := newCertificateMutation(c.config, OpCreate)
+	return &CertificateCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Certificate entities.
+func (c *CertificateClient) CreateBulk(builders ...*CertificateCreate) *CertificateCreateBulk {
+	return &CertificateCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Certificate.
+func (c *CertificateClient) Update() *CertificateUpdate {
+	mutation := newCertificateMutation(c.config, OpUpdate)
+	return &CertificateUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *CertificateClient) UpdateOne(ce *Certificate) *CertificateUpdateOne {
+	mutation := newCertificateMutation(c.config, OpUpdateOne, withCertificate(ce))
+	return &CertificateUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *CertificateClient) UpdateOneID(id int) *CertificateUpdateOne {
+	mutation := newCertificateMutation(c.config, OpUpdateOne, withCertificateID(id))
+	return &CertificateUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Certificate.
+func (c *CertificateClient) Delete() *CertificateDelete {
+	mutation := newCertificateMutation(c.config, OpDelete)
+	return &CertificateDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *CertificateClient) DeleteOne(ce *Certificate) *CertificateDeleteOne {
+	return c.DeleteOneID(ce.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *CertificateClient) DeleteOneID(id int) *CertificateDeleteOne {
+	builder := c.Delete().Where(certificate.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &CertificateDeleteOne{builder}
+}
+
+// Query returns a query builder for Certificate.
+func (c *CertificateClient) Query() *CertificateQuery {
+	return &CertificateQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeCertificate},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Certificate entity by its id.
+func (c *CertificateClient) Get(ctx context.Context, id int) (*Certificate, error) {
+	return c.Query().Where(certificate.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *CertificateClient) GetX(ctx context.Context, id int) *Certificate {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryStudent queries the student edge of a Certificate.
+func (c *CertificateClient) QueryStudent(ce *Certificate) *StudentQuery {
+	query := (&StudentClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := ce.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(certificate.Table, certificate.FieldID, id),
+			sqlgraph.To(student.Table, student.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, certificate.StudentTable, certificate.StudentColumn),
+		)
+		fromV = sqlgraph.Neighbors(ce.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *CertificateClient) Hooks() []Hook {
+	return c.hooks.Certificate
+}
+
+// Interceptors returns the client interceptors.
+func (c *CertificateClient) Interceptors() []Interceptor {
+	return c.inters.Certificate
+}
+
+func (c *CertificateClient) mutate(ctx context.Context, m *CertificateMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&CertificateCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&CertificateUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&CertificateUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&CertificateDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("domain: unknown Certificate mutation op: %q", m.Op())
+	}
+}
+
+// ClassClient is a client for the Class schema.
+type ClassClient struct {
+	config
+}
+
+// NewClassClient returns a client for the Class from the given config.
+func NewClassClient(c config) *ClassClient {
+	return &ClassClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `class.Hooks(f(g(h())))`.
+func (c *ClassClient) Use(hooks ...Hook) {
+	c.hooks.Class = append(c.hooks.Class, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `class.Intercept(f(g(h())))`.
+func (c *ClassClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Class = append(c.inters.Class, interceptors...)
+}
+
+// Create returns a builder for creating a Class entity.
+func (c *ClassClient) Create() *ClassCreate {
+	mutation := newClassMutation(c.config, OpCreate)
+	return &ClassCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Class entities.
+func (c *ClassClient) CreateBulk(builders ...*ClassCreate) *ClassCreateBulk {
+	return &ClassCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Class.
+func (c *ClassClient) Update() *ClassUpdate {
+	mutation := newClassMutation(c.config, OpUpdate)
+	return &ClassUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *ClassClient) UpdateOne(cl *Class) *ClassUpdateOne {
+	mutation := newClassMutation(c.config, OpUpdateOne, withClass(cl))
+	return &ClassUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *ClassClient) UpdateOneID(id int) *ClassUpdateOne {
+	mutation := newClassMutation(c.config, OpUpdateOne, withClassID(id))
+	return &ClassUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Class.
+func (c *ClassClient) Delete() *ClassDelete {
+	mutation := newClassMutation(c.config, OpDelete)
+	return &ClassDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *ClassClient) DeleteOne(cl *Class) *ClassDeleteOne {
+	return c.DeleteOneID(cl.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *ClassClient) DeleteOneID(id int) *ClassDeleteOne {
+	builder := c.Delete().Where(class.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &ClassDeleteOne{builder}
+}
+
+// Query returns a query builder for Class.
+func (c *ClassClient) Query() *ClassQuery {
+	return &ClassQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeClass},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Class entity by its id.
+func (c *ClassClient) Get(ctx context.Context, id int) (*Class, error) {
+	return c.Query().Where(class.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *ClassClient) GetX(ctx context.Context, id int) *Class {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryMajor queries the major edge of a Class.
+func (c *ClassClient) QueryMajor(cl *Class) *MajorQuery {
+	query := (&MajorClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := cl.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(class.Table, class.FieldID, id),
+			sqlgraph.To(major.Table, major.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, class.MajorTable, class.MajorColumn),
+		)
+		fromV = sqlgraph.Neighbors(cl.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryDepartment queries the department edge of a Class.
+func (c *ClassClient) QueryDepartment(cl *Class) *DepartmentQuery {
+	query := (&DepartmentClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := cl.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(class.Table, class.FieldID, id),
+			sqlgraph.To(department.Table, department.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, class.DepartmentTable, class.DepartmentColumn),
+		)
+		fromV = sqlgraph.Neighbors(cl.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryCampus queries the campus edge of a Class.
+func (c *ClassClient) QueryCampus(cl *Class) *CampusQuery {
+	query := (&CampusClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := cl.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(class.Table, class.FieldID, id),
+			sqlgraph.To(campus.Table, campus.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, true, class.CampusTable, class.CampusColumn),
+		)
+		fromV = sqlgraph.Neighbors(cl.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryStudent queries the student edge of a Class.
+func (c *ClassClient) QueryStudent(cl *Class) *StudentQuery {
+	query := (&StudentClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := cl.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(class.Table, class.FieldID, id),
+			sqlgraph.To(student.Table, student.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, true, class.StudentTable, class.StudentColumn),
+		)
+		fromV = sqlgraph.Neighbors(cl.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryClassLeader queries the class_leader edge of a Class.
+func (c *ClassClient) QueryClassLeader(cl *Class) *ClassLeaderQuery {
+	query := (&ClassLeaderClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := cl.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(class.Table, class.FieldID, id),
+			sqlgraph.To(classleader.Table, classleader.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, true, class.ClassLeaderTable, class.ClassLeaderColumn),
+		)
+		fromV = sqlgraph.Neighbors(cl.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryTutor queries the tutor edge of a Class.
+func (c *ClassClient) QueryTutor(cl *Class) *TutorQuery {
+	query := (&TutorClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := cl.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(class.Table, class.FieldID, id),
+			sqlgraph.To(tutor.Table, tutor.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, true, class.TutorTable, class.TutorColumn),
+		)
+		fromV = sqlgraph.Neighbors(cl.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryMajorDirection queries the major_direction edge of a Class.
+func (c *ClassClient) QueryMajorDirection(cl *Class) *MajorDirectionQuery {
+	query := (&MajorDirectionClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := cl.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(class.Table, class.FieldID, id),
+			sqlgraph.To(majordirection.Table, majordirection.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, true, class.MajorDirectionTable, class.MajorDirectionColumn),
+		)
+		fromV = sqlgraph.Neighbors(cl.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *ClassClient) Hooks() []Hook {
+	return c.hooks.Class
+}
+
+// Interceptors returns the client interceptors.
+func (c *ClassClient) Interceptors() []Interceptor {
+	return c.inters.Class
+}
+
+func (c *ClassClient) mutate(ctx context.Context, m *ClassMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&ClassCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&ClassUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&ClassUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&ClassDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("domain: unknown Class mutation op: %q", m.Op())
+	}
+}
+
+// ClassLeaderClient is a client for the ClassLeader schema.
+type ClassLeaderClient struct {
+	config
+}
+
+// NewClassLeaderClient returns a client for the ClassLeader from the given config.
+func NewClassLeaderClient(c config) *ClassLeaderClient {
+	return &ClassLeaderClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `classleader.Hooks(f(g(h())))`.
+func (c *ClassLeaderClient) Use(hooks ...Hook) {
+	c.hooks.ClassLeader = append(c.hooks.ClassLeader, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `classleader.Intercept(f(g(h())))`.
+func (c *ClassLeaderClient) Intercept(interceptors ...Interceptor) {
+	c.inters.ClassLeader = append(c.inters.ClassLeader, interceptors...)
+}
+
+// Create returns a builder for creating a ClassLeader entity.
+func (c *ClassLeaderClient) Create() *ClassLeaderCreate {
+	mutation := newClassLeaderMutation(c.config, OpCreate)
+	return &ClassLeaderCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of ClassLeader entities.
+func (c *ClassLeaderClient) CreateBulk(builders ...*ClassLeaderCreate) *ClassLeaderCreateBulk {
+	return &ClassLeaderCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for ClassLeader.
+func (c *ClassLeaderClient) Update() *ClassLeaderUpdate {
+	mutation := newClassLeaderMutation(c.config, OpUpdate)
+	return &ClassLeaderUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *ClassLeaderClient) UpdateOne(cl *ClassLeader) *ClassLeaderUpdateOne {
+	mutation := newClassLeaderMutation(c.config, OpUpdateOne, withClassLeader(cl))
+	return &ClassLeaderUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *ClassLeaderClient) UpdateOneID(id int) *ClassLeaderUpdateOne {
+	mutation := newClassLeaderMutation(c.config, OpUpdateOne, withClassLeaderID(id))
+	return &ClassLeaderUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for ClassLeader.
+func (c *ClassLeaderClient) Delete() *ClassLeaderDelete {
+	mutation := newClassLeaderMutation(c.config, OpDelete)
+	return &ClassLeaderDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *ClassLeaderClient) DeleteOne(cl *ClassLeader) *ClassLeaderDeleteOne {
+	return c.DeleteOneID(cl.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *ClassLeaderClient) DeleteOneID(id int) *ClassLeaderDeleteOne {
+	builder := c.Delete().Where(classleader.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &ClassLeaderDeleteOne{builder}
+}
+
+// Query returns a query builder for ClassLeader.
+func (c *ClassLeaderClient) Query() *ClassLeaderQuery {
+	return &ClassLeaderQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeClassLeader},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a ClassLeader entity by its id.
+func (c *ClassLeaderClient) Get(ctx context.Context, id int) (*ClassLeader, error) {
+	return c.Query().Where(classleader.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *ClassLeaderClient) GetX(ctx context.Context, id int) *ClassLeader {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryClass queries the class edge of a ClassLeader.
+func (c *ClassLeaderClient) QueryClass(cl *ClassLeader) *ClassQuery {
+	query := (&ClassClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := cl.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(classleader.Table, classleader.FieldID, id),
+			sqlgraph.To(class.Table, class.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, classleader.ClassTable, classleader.ClassColumn),
+		)
+		fromV = sqlgraph.Neighbors(cl.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryStudent queries the student edge of a ClassLeader.
+func (c *ClassLeaderClient) QueryStudent(cl *ClassLeader) *StudentQuery {
+	query := (&StudentClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := cl.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(classleader.Table, classleader.FieldID, id),
+			sqlgraph.To(student.Table, student.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, classleader.StudentTable, classleader.StudentColumn),
+		)
+		fromV = sqlgraph.Neighbors(cl.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *ClassLeaderClient) Hooks() []Hook {
+	return c.hooks.ClassLeader
+}
+
+// Interceptors returns the client interceptors.
+func (c *ClassLeaderClient) Interceptors() []Interceptor {
+	return c.inters.ClassLeader
+}
+
+func (c *ClassLeaderClient) mutate(ctx context.Context, m *ClassLeaderMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&ClassLeaderCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&ClassLeaderUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&ClassLeaderUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&ClassLeaderDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("domain: unknown ClassLeader mutation op: %q", m.Op())
+	}
+}
+
+// DepartmentClient is a client for the Department schema.
+type DepartmentClient struct {
+	config
+}
+
+// NewDepartmentClient returns a client for the Department from the given config.
+func NewDepartmentClient(c config) *DepartmentClient {
+	return &DepartmentClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `department.Hooks(f(g(h())))`.
+func (c *DepartmentClient) Use(hooks ...Hook) {
+	c.hooks.Department = append(c.hooks.Department, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `department.Intercept(f(g(h())))`.
+func (c *DepartmentClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Department = append(c.inters.Department, interceptors...)
+}
+
+// Create returns a builder for creating a Department entity.
+func (c *DepartmentClient) Create() *DepartmentCreate {
+	mutation := newDepartmentMutation(c.config, OpCreate)
+	return &DepartmentCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Department entities.
+func (c *DepartmentClient) CreateBulk(builders ...*DepartmentCreate) *DepartmentCreateBulk {
+	return &DepartmentCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Department.
+func (c *DepartmentClient) Update() *DepartmentUpdate {
+	mutation := newDepartmentMutation(c.config, OpUpdate)
+	return &DepartmentUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *DepartmentClient) UpdateOne(d *Department) *DepartmentUpdateOne {
+	mutation := newDepartmentMutation(c.config, OpUpdateOne, withDepartment(d))
+	return &DepartmentUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *DepartmentClient) UpdateOneID(id int) *DepartmentUpdateOne {
+	mutation := newDepartmentMutation(c.config, OpUpdateOne, withDepartmentID(id))
+	return &DepartmentUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Department.
+func (c *DepartmentClient) Delete() *DepartmentDelete {
+	mutation := newDepartmentMutation(c.config, OpDelete)
+	return &DepartmentDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *DepartmentClient) DeleteOne(d *Department) *DepartmentDeleteOne {
+	return c.DeleteOneID(d.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *DepartmentClient) DeleteOneID(id int) *DepartmentDeleteOne {
+	builder := c.Delete().Where(department.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &DepartmentDeleteOne{builder}
+}
+
+// Query returns a query builder for Department.
+func (c *DepartmentClient) Query() *DepartmentQuery {
+	return &DepartmentQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeDepartment},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Department entity by its id.
+func (c *DepartmentClient) Get(ctx context.Context, id int) (*Department, error) {
+	return c.Query().Where(department.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *DepartmentClient) GetX(ctx context.Context, id int) *Department {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryMajor queries the major edge of a Department.
+func (c *DepartmentClient) QueryMajor(d *Department) *MajorQuery {
+	query := (&MajorClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := d.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(department.Table, department.FieldID, id),
+			sqlgraph.To(major.Table, major.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, true, department.MajorTable, department.MajorColumn),
+		)
+		fromV = sqlgraph.Neighbors(d.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryClass queries the class edge of a Department.
+func (c *DepartmentClient) QueryClass(d *Department) *ClassQuery {
+	query := (&ClassClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := d.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(department.Table, department.FieldID, id),
+			sqlgraph.To(class.Table, class.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, true, department.ClassTable, department.ClassColumn),
+		)
+		fromV = sqlgraph.Neighbors(d.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryStudent queries the student edge of a Department.
+func (c *DepartmentClient) QueryStudent(d *Department) *StudentQuery {
+	query := (&StudentClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := d.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(department.Table, department.FieldID, id),
+			sqlgraph.To(student.Table, student.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, true, department.StudentTable, department.StudentColumn),
+		)
+		fromV = sqlgraph.Neighbors(d.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *DepartmentClient) Hooks() []Hook {
+	return c.hooks.Department
+}
+
+// Interceptors returns the client interceptors.
+func (c *DepartmentClient) Interceptors() []Interceptor {
+	return c.inters.Department
+}
+
+func (c *DepartmentClient) mutate(ctx context.Context, m *DepartmentMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&DepartmentCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&DepartmentUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&DepartmentUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&DepartmentDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("domain: unknown Department mutation op: %q", m.Op())
+	}
+}
+
+// EducationLevelClient is a client for the EducationLevel schema.
+type EducationLevelClient struct {
+	config
+}
+
+// NewEducationLevelClient returns a client for the EducationLevel from the given config.
+func NewEducationLevelClient(c config) *EducationLevelClient {
+	return &EducationLevelClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `educationlevel.Hooks(f(g(h())))`.
+func (c *EducationLevelClient) Use(hooks ...Hook) {
+	c.hooks.EducationLevel = append(c.hooks.EducationLevel, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `educationlevel.Intercept(f(g(h())))`.
+func (c *EducationLevelClient) Intercept(interceptors ...Interceptor) {
+	c.inters.EducationLevel = append(c.inters.EducationLevel, interceptors...)
+}
+
+// Create returns a builder for creating a EducationLevel entity.
+func (c *EducationLevelClient) Create() *EducationLevelCreate {
+	mutation := newEducationLevelMutation(c.config, OpCreate)
+	return &EducationLevelCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of EducationLevel entities.
+func (c *EducationLevelClient) CreateBulk(builders ...*EducationLevelCreate) *EducationLevelCreateBulk {
+	return &EducationLevelCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for EducationLevel.
+func (c *EducationLevelClient) Update() *EducationLevelUpdate {
+	mutation := newEducationLevelMutation(c.config, OpUpdate)
+	return &EducationLevelUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *EducationLevelClient) UpdateOne(el *EducationLevel) *EducationLevelUpdateOne {
+	mutation := newEducationLevelMutation(c.config, OpUpdateOne, withEducationLevel(el))
+	return &EducationLevelUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *EducationLevelClient) UpdateOneID(id int) *EducationLevelUpdateOne {
+	mutation := newEducationLevelMutation(c.config, OpUpdateOne, withEducationLevelID(id))
+	return &EducationLevelUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for EducationLevel.
+func (c *EducationLevelClient) Delete() *EducationLevelDelete {
+	mutation := newEducationLevelMutation(c.config, OpDelete)
+	return &EducationLevelDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *EducationLevelClient) DeleteOne(el *EducationLevel) *EducationLevelDeleteOne {
+	return c.DeleteOneID(el.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *EducationLevelClient) DeleteOneID(id int) *EducationLevelDeleteOne {
+	builder := c.Delete().Where(educationlevel.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &EducationLevelDeleteOne{builder}
+}
+
+// Query returns a query builder for EducationLevel.
+func (c *EducationLevelClient) Query() *EducationLevelQuery {
+	return &EducationLevelQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeEducationLevel},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a EducationLevel entity by its id.
+func (c *EducationLevelClient) Get(ctx context.Context, id int) (*EducationLevel, error) {
+	return c.Query().Where(educationlevel.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *EducationLevelClient) GetX(ctx context.Context, id int) *EducationLevel {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryStudent queries the student edge of a EducationLevel.
+func (c *EducationLevelClient) QueryStudent(el *EducationLevel) *StudentQuery {
+	query := (&StudentClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := el.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(educationlevel.Table, educationlevel.FieldID, id),
+			sqlgraph.To(student.Table, student.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, educationlevel.StudentTable, educationlevel.StudentColumn),
+		)
+		fromV = sqlgraph.Neighbors(el.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *EducationLevelClient) Hooks() []Hook {
+	return c.hooks.EducationLevel
+}
+
+// Interceptors returns the client interceptors.
+func (c *EducationLevelClient) Interceptors() []Interceptor {
+	return c.inters.EducationLevel
+}
+
+func (c *EducationLevelClient) mutate(ctx context.Context, m *EducationLevelMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&EducationLevelCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&EducationLevelUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&EducationLevelUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&EducationLevelDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("domain: unknown EducationLevel mutation op: %q", m.Op())
+	}
+}
+
+// EnrollmentStatusClient is a client for the EnrollmentStatus schema.
+type EnrollmentStatusClient struct {
+	config
+}
+
+// NewEnrollmentStatusClient returns a client for the EnrollmentStatus from the given config.
+func NewEnrollmentStatusClient(c config) *EnrollmentStatusClient {
+	return &EnrollmentStatusClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `enrollmentstatus.Hooks(f(g(h())))`.
+func (c *EnrollmentStatusClient) Use(hooks ...Hook) {
+	c.hooks.EnrollmentStatus = append(c.hooks.EnrollmentStatus, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `enrollmentstatus.Intercept(f(g(h())))`.
+func (c *EnrollmentStatusClient) Intercept(interceptors ...Interceptor) {
+	c.inters.EnrollmentStatus = append(c.inters.EnrollmentStatus, interceptors...)
+}
+
+// Create returns a builder for creating a EnrollmentStatus entity.
+func (c *EnrollmentStatusClient) Create() *EnrollmentStatusCreate {
+	mutation := newEnrollmentStatusMutation(c.config, OpCreate)
+	return &EnrollmentStatusCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of EnrollmentStatus entities.
+func (c *EnrollmentStatusClient) CreateBulk(builders ...*EnrollmentStatusCreate) *EnrollmentStatusCreateBulk {
+	return &EnrollmentStatusCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for EnrollmentStatus.
+func (c *EnrollmentStatusClient) Update() *EnrollmentStatusUpdate {
+	mutation := newEnrollmentStatusMutation(c.config, OpUpdate)
+	return &EnrollmentStatusUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *EnrollmentStatusClient) UpdateOne(es *EnrollmentStatus) *EnrollmentStatusUpdateOne {
+	mutation := newEnrollmentStatusMutation(c.config, OpUpdateOne, withEnrollmentStatus(es))
+	return &EnrollmentStatusUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *EnrollmentStatusClient) UpdateOneID(id int) *EnrollmentStatusUpdateOne {
+	mutation := newEnrollmentStatusMutation(c.config, OpUpdateOne, withEnrollmentStatusID(id))
+	return &EnrollmentStatusUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for EnrollmentStatus.
+func (c *EnrollmentStatusClient) Delete() *EnrollmentStatusDelete {
+	mutation := newEnrollmentStatusMutation(c.config, OpDelete)
+	return &EnrollmentStatusDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *EnrollmentStatusClient) DeleteOne(es *EnrollmentStatus) *EnrollmentStatusDeleteOne {
+	return c.DeleteOneID(es.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *EnrollmentStatusClient) DeleteOneID(id int) *EnrollmentStatusDeleteOne {
+	builder := c.Delete().Where(enrollmentstatus.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &EnrollmentStatusDeleteOne{builder}
+}
+
+// Query returns a query builder for EnrollmentStatus.
+func (c *EnrollmentStatusClient) Query() *EnrollmentStatusQuery {
+	return &EnrollmentStatusQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeEnrollmentStatus},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a EnrollmentStatus entity by its id.
+func (c *EnrollmentStatusClient) Get(ctx context.Context, id int) (*EnrollmentStatus, error) {
+	return c.Query().Where(enrollmentstatus.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *EnrollmentStatusClient) GetX(ctx context.Context, id int) *EnrollmentStatus {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryStudent queries the student edge of a EnrollmentStatus.
+func (c *EnrollmentStatusClient) QueryStudent(es *EnrollmentStatus) *StudentQuery {
+	query := (&StudentClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := es.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(enrollmentstatus.Table, enrollmentstatus.FieldID, id),
+			sqlgraph.To(student.Table, student.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, enrollmentstatus.StudentTable, enrollmentstatus.StudentColumn),
+		)
+		fromV = sqlgraph.Neighbors(es.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *EnrollmentStatusClient) Hooks() []Hook {
+	return c.hooks.EnrollmentStatus
+}
+
+// Interceptors returns the client interceptors.
+func (c *EnrollmentStatusClient) Interceptors() []Interceptor {
+	return c.inters.EnrollmentStatus
+}
+
+func (c *EnrollmentStatusClient) mutate(ctx context.Context, m *EnrollmentStatusMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&EnrollmentStatusCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&EnrollmentStatusUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&EnrollmentStatusUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&EnrollmentStatusDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("domain: unknown EnrollmentStatus mutation op: %q", m.Op())
+	}
+}
+
+// FamilyInfoClient is a client for the FamilyInfo schema.
+type FamilyInfoClient struct {
+	config
+}
+
+// NewFamilyInfoClient returns a client for the FamilyInfo from the given config.
+func NewFamilyInfoClient(c config) *FamilyInfoClient {
+	return &FamilyInfoClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `familyinfo.Hooks(f(g(h())))`.
+func (c *FamilyInfoClient) Use(hooks ...Hook) {
+	c.hooks.FamilyInfo = append(c.hooks.FamilyInfo, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `familyinfo.Intercept(f(g(h())))`.
+func (c *FamilyInfoClient) Intercept(interceptors ...Interceptor) {
+	c.inters.FamilyInfo = append(c.inters.FamilyInfo, interceptors...)
+}
+
+// Create returns a builder for creating a FamilyInfo entity.
+func (c *FamilyInfoClient) Create() *FamilyInfoCreate {
+	mutation := newFamilyInfoMutation(c.config, OpCreate)
+	return &FamilyInfoCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of FamilyInfo entities.
+func (c *FamilyInfoClient) CreateBulk(builders ...*FamilyInfoCreate) *FamilyInfoCreateBulk {
+	return &FamilyInfoCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for FamilyInfo.
+func (c *FamilyInfoClient) Update() *FamilyInfoUpdate {
+	mutation := newFamilyInfoMutation(c.config, OpUpdate)
+	return &FamilyInfoUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *FamilyInfoClient) UpdateOne(fi *FamilyInfo) *FamilyInfoUpdateOne {
+	mutation := newFamilyInfoMutation(c.config, OpUpdateOne, withFamilyInfo(fi))
+	return &FamilyInfoUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *FamilyInfoClient) UpdateOneID(id int) *FamilyInfoUpdateOne {
+	mutation := newFamilyInfoMutation(c.config, OpUpdateOne, withFamilyInfoID(id))
+	return &FamilyInfoUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for FamilyInfo.
+func (c *FamilyInfoClient) Delete() *FamilyInfoDelete {
+	mutation := newFamilyInfoMutation(c.config, OpDelete)
+	return &FamilyInfoDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *FamilyInfoClient) DeleteOne(fi *FamilyInfo) *FamilyInfoDeleteOne {
+	return c.DeleteOneID(fi.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *FamilyInfoClient) DeleteOneID(id int) *FamilyInfoDeleteOne {
+	builder := c.Delete().Where(familyinfo.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &FamilyInfoDeleteOne{builder}
+}
+
+// Query returns a query builder for FamilyInfo.
+func (c *FamilyInfoClient) Query() *FamilyInfoQuery {
+	return &FamilyInfoQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeFamilyInfo},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a FamilyInfo entity by its id.
+func (c *FamilyInfoClient) Get(ctx context.Context, id int) (*FamilyInfo, error) {
+	return c.Query().Where(familyinfo.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *FamilyInfoClient) GetX(ctx context.Context, id int) *FamilyInfo {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryStudent queries the student edge of a FamilyInfo.
+func (c *FamilyInfoClient) QueryStudent(fi *FamilyInfo) *StudentQuery {
+	query := (&StudentClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := fi.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(familyinfo.Table, familyinfo.FieldID, id),
+			sqlgraph.To(student.Table, student.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, familyinfo.StudentTable, familyinfo.StudentColumn),
+		)
+		fromV = sqlgraph.Neighbors(fi.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *FamilyInfoClient) Hooks() []Hook {
+	return c.hooks.FamilyInfo
+}
+
+// Interceptors returns the client interceptors.
+func (c *FamilyInfoClient) Interceptors() []Interceptor {
+	return c.inters.FamilyInfo
+}
+
+func (c *FamilyInfoClient) mutate(ctx context.Context, m *FamilyInfoMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&FamilyInfoCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&FamilyInfoUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&FamilyInfoUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&FamilyInfoDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("domain: unknown FamilyInfo mutation op: %q", m.Op())
+	}
+}
+
+// MajorClient is a client for the Major schema.
+type MajorClient struct {
+	config
+}
+
+// NewMajorClient returns a client for the Major from the given config.
+func NewMajorClient(c config) *MajorClient {
+	return &MajorClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `major.Hooks(f(g(h())))`.
+func (c *MajorClient) Use(hooks ...Hook) {
+	c.hooks.Major = append(c.hooks.Major, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `major.Intercept(f(g(h())))`.
+func (c *MajorClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Major = append(c.inters.Major, interceptors...)
+}
+
+// Create returns a builder for creating a Major entity.
+func (c *MajorClient) Create() *MajorCreate {
+	mutation := newMajorMutation(c.config, OpCreate)
+	return &MajorCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Major entities.
+func (c *MajorClient) CreateBulk(builders ...*MajorCreate) *MajorCreateBulk {
+	return &MajorCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Major.
+func (c *MajorClient) Update() *MajorUpdate {
+	mutation := newMajorMutation(c.config, OpUpdate)
+	return &MajorUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *MajorClient) UpdateOne(m *Major) *MajorUpdateOne {
+	mutation := newMajorMutation(c.config, OpUpdateOne, withMajor(m))
+	return &MajorUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *MajorClient) UpdateOneID(id int) *MajorUpdateOne {
+	mutation := newMajorMutation(c.config, OpUpdateOne, withMajorID(id))
+	return &MajorUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Major.
+func (c *MajorClient) Delete() *MajorDelete {
+	mutation := newMajorMutation(c.config, OpDelete)
+	return &MajorDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *MajorClient) DeleteOne(m *Major) *MajorDeleteOne {
+	return c.DeleteOneID(m.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *MajorClient) DeleteOneID(id int) *MajorDeleteOne {
+	builder := c.Delete().Where(major.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &MajorDeleteOne{builder}
+}
+
+// Query returns a query builder for Major.
+func (c *MajorClient) Query() *MajorQuery {
+	return &MajorQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeMajor},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Major entity by its id.
+func (c *MajorClient) Get(ctx context.Context, id int) (*Major, error) {
+	return c.Query().Where(major.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *MajorClient) GetX(ctx context.Context, id int) *Major {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryDepartment queries the department edge of a Major.
+func (c *MajorClient) QueryDepartment(m *Major) *DepartmentQuery {
+	query := (&DepartmentClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(major.Table, major.FieldID, id),
+			sqlgraph.To(department.Table, department.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, major.DepartmentTable, major.DepartmentColumn),
+		)
+		fromV = sqlgraph.Neighbors(m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryStudent queries the student edge of a Major.
+func (c *MajorClient) QueryStudent(m *Major) *StudentQuery {
+	query := (&StudentClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(major.Table, major.FieldID, id),
+			sqlgraph.To(student.Table, student.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, true, major.StudentTable, major.StudentColumn),
+		)
+		fromV = sqlgraph.Neighbors(m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryClass queries the class edge of a Major.
+func (c *MajorClient) QueryClass(m *Major) *ClassQuery {
+	query := (&ClassClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(major.Table, major.FieldID, id),
+			sqlgraph.To(class.Table, class.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, true, major.ClassTable, major.ClassColumn),
+		)
+		fromV = sqlgraph.Neighbors(m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *MajorClient) Hooks() []Hook {
+	return c.hooks.Major
+}
+
+// Interceptors returns the client interceptors.
+func (c *MajorClient) Interceptors() []Interceptor {
+	return c.inters.Major
+}
+
+func (c *MajorClient) mutate(ctx context.Context, m *MajorMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&MajorCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&MajorUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&MajorUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&MajorDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("domain: unknown Major mutation op: %q", m.Op())
+	}
+}
+
+// MajorDirectionClient is a client for the MajorDirection schema.
+type MajorDirectionClient struct {
+	config
+}
+
+// NewMajorDirectionClient returns a client for the MajorDirection from the given config.
+func NewMajorDirectionClient(c config) *MajorDirectionClient {
+	return &MajorDirectionClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `majordirection.Hooks(f(g(h())))`.
+func (c *MajorDirectionClient) Use(hooks ...Hook) {
+	c.hooks.MajorDirection = append(c.hooks.MajorDirection, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `majordirection.Intercept(f(g(h())))`.
+func (c *MajorDirectionClient) Intercept(interceptors ...Interceptor) {
+	c.inters.MajorDirection = append(c.inters.MajorDirection, interceptors...)
+}
+
+// Create returns a builder for creating a MajorDirection entity.
+func (c *MajorDirectionClient) Create() *MajorDirectionCreate {
+	mutation := newMajorDirectionMutation(c.config, OpCreate)
+	return &MajorDirectionCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of MajorDirection entities.
+func (c *MajorDirectionClient) CreateBulk(builders ...*MajorDirectionCreate) *MajorDirectionCreateBulk {
+	return &MajorDirectionCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for MajorDirection.
+func (c *MajorDirectionClient) Update() *MajorDirectionUpdate {
+	mutation := newMajorDirectionMutation(c.config, OpUpdate)
+	return &MajorDirectionUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *MajorDirectionClient) UpdateOne(md *MajorDirection) *MajorDirectionUpdateOne {
+	mutation := newMajorDirectionMutation(c.config, OpUpdateOne, withMajorDirection(md))
+	return &MajorDirectionUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *MajorDirectionClient) UpdateOneID(id int) *MajorDirectionUpdateOne {
+	mutation := newMajorDirectionMutation(c.config, OpUpdateOne, withMajorDirectionID(id))
+	return &MajorDirectionUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for MajorDirection.
+func (c *MajorDirectionClient) Delete() *MajorDirectionDelete {
+	mutation := newMajorDirectionMutation(c.config, OpDelete)
+	return &MajorDirectionDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *MajorDirectionClient) DeleteOne(md *MajorDirection) *MajorDirectionDeleteOne {
+	return c.DeleteOneID(md.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *MajorDirectionClient) DeleteOneID(id int) *MajorDirectionDeleteOne {
+	builder := c.Delete().Where(majordirection.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &MajorDirectionDeleteOne{builder}
+}
+
+// Query returns a query builder for MajorDirection.
+func (c *MajorDirectionClient) Query() *MajorDirectionQuery {
+	return &MajorDirectionQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeMajorDirection},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a MajorDirection entity by its id.
+func (c *MajorDirectionClient) Get(ctx context.Context, id int) (*MajorDirection, error) {
+	return c.Query().Where(majordirection.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *MajorDirectionClient) GetX(ctx context.Context, id int) *MajorDirection {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryClass queries the class edge of a MajorDirection.
+func (c *MajorDirectionClient) QueryClass(md *MajorDirection) *ClassQuery {
+	query := (&ClassClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := md.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(majordirection.Table, majordirection.FieldID, id),
+			sqlgraph.To(class.Table, class.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, majordirection.ClassTable, majordirection.ClassColumn),
+		)
+		fromV = sqlgraph.Neighbors(md.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *MajorDirectionClient) Hooks() []Hook {
+	return c.hooks.MajorDirection
+}
+
+// Interceptors returns the client interceptors.
+func (c *MajorDirectionClient) Interceptors() []Interceptor {
+	return c.inters.MajorDirection
+}
+
+func (c *MajorDirectionClient) mutate(ctx context.Context, m *MajorDirectionMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&MajorDirectionCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&MajorDirectionUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&MajorDirectionUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&MajorDirectionDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("domain: unknown MajorDirection mutation op: %q", m.Op())
+	}
+}
+
+// PracticalExperienceClient is a client for the PracticalExperience schema.
+type PracticalExperienceClient struct {
+	config
+}
+
+// NewPracticalExperienceClient returns a client for the PracticalExperience from the given config.
+func NewPracticalExperienceClient(c config) *PracticalExperienceClient {
+	return &PracticalExperienceClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `practicalexperience.Hooks(f(g(h())))`.
+func (c *PracticalExperienceClient) Use(hooks ...Hook) {
+	c.hooks.PracticalExperience = append(c.hooks.PracticalExperience, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `practicalexperience.Intercept(f(g(h())))`.
+func (c *PracticalExperienceClient) Intercept(interceptors ...Interceptor) {
+	c.inters.PracticalExperience = append(c.inters.PracticalExperience, interceptors...)
+}
+
+// Create returns a builder for creating a PracticalExperience entity.
+func (c *PracticalExperienceClient) Create() *PracticalExperienceCreate {
+	mutation := newPracticalExperienceMutation(c.config, OpCreate)
+	return &PracticalExperienceCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of PracticalExperience entities.
+func (c *PracticalExperienceClient) CreateBulk(builders ...*PracticalExperienceCreate) *PracticalExperienceCreateBulk {
+	return &PracticalExperienceCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for PracticalExperience.
+func (c *PracticalExperienceClient) Update() *PracticalExperienceUpdate {
+	mutation := newPracticalExperienceMutation(c.config, OpUpdate)
+	return &PracticalExperienceUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *PracticalExperienceClient) UpdateOne(pe *PracticalExperience) *PracticalExperienceUpdateOne {
+	mutation := newPracticalExperienceMutation(c.config, OpUpdateOne, withPracticalExperience(pe))
+	return &PracticalExperienceUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *PracticalExperienceClient) UpdateOneID(id int) *PracticalExperienceUpdateOne {
+	mutation := newPracticalExperienceMutation(c.config, OpUpdateOne, withPracticalExperienceID(id))
+	return &PracticalExperienceUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for PracticalExperience.
+func (c *PracticalExperienceClient) Delete() *PracticalExperienceDelete {
+	mutation := newPracticalExperienceMutation(c.config, OpDelete)
+	return &PracticalExperienceDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *PracticalExperienceClient) DeleteOne(pe *PracticalExperience) *PracticalExperienceDeleteOne {
+	return c.DeleteOneID(pe.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *PracticalExperienceClient) DeleteOneID(id int) *PracticalExperienceDeleteOne {
+	builder := c.Delete().Where(practicalexperience.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &PracticalExperienceDeleteOne{builder}
+}
+
+// Query returns a query builder for PracticalExperience.
+func (c *PracticalExperienceClient) Query() *PracticalExperienceQuery {
+	return &PracticalExperienceQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypePracticalExperience},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a PracticalExperience entity by its id.
+func (c *PracticalExperienceClient) Get(ctx context.Context, id int) (*PracticalExperience, error) {
+	return c.Query().Where(practicalexperience.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *PracticalExperienceClient) GetX(ctx context.Context, id int) *PracticalExperience {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryStudent queries the student edge of a PracticalExperience.
+func (c *PracticalExperienceClient) QueryStudent(pe *PracticalExperience) *StudentQuery {
+	query := (&StudentClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := pe.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(practicalexperience.Table, practicalexperience.FieldID, id),
+			sqlgraph.To(student.Table, student.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, practicalexperience.StudentTable, practicalexperience.StudentColumn),
+		)
+		fromV = sqlgraph.Neighbors(pe.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *PracticalExperienceClient) Hooks() []Hook {
+	return c.hooks.PracticalExperience
+}
+
+// Interceptors returns the client interceptors.
+func (c *PracticalExperienceClient) Interceptors() []Interceptor {
+	return c.inters.PracticalExperience
+}
+
+func (c *PracticalExperienceClient) mutate(ctx context.Context, m *PracticalExperienceMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&PracticalExperienceCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&PracticalExperienceUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&PracticalExperienceUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&PracticalExperienceDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("domain: unknown PracticalExperience mutation op: %q", m.Op())
 	}
 }
 
@@ -779,7 +2529,167 @@ func (c *StudentClient) QueryUser(s *Student) *UserQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(student.Table, student.FieldID, id),
 			sqlgraph.To(user.Table, user.FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, true, student.UserTable, student.UserColumn),
+			sqlgraph.Edge(sqlgraph.O2O, false, student.UserTable, student.UserColumn),
+		)
+		fromV = sqlgraph.Neighbors(s.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryDepartment queries the department edge of a Student.
+func (c *StudentClient) QueryDepartment(s *Student) *DepartmentQuery {
+	query := (&DepartmentClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := s.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(student.Table, student.FieldID, id),
+			sqlgraph.To(department.Table, department.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, student.DepartmentTable, student.DepartmentColumn),
+		)
+		fromV = sqlgraph.Neighbors(s.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryMajor queries the major edge of a Student.
+func (c *StudentClient) QueryMajor(s *Student) *MajorQuery {
+	query := (&MajorClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := s.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(student.Table, student.FieldID, id),
+			sqlgraph.To(major.Table, major.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, student.MajorTable, student.MajorColumn),
+		)
+		fromV = sqlgraph.Neighbors(s.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryClass queries the class edge of a Student.
+func (c *StudentClient) QueryClass(s *Student) *ClassQuery {
+	query := (&ClassClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := s.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(student.Table, student.FieldID, id),
+			sqlgraph.To(class.Table, class.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, student.ClassTable, student.ClassColumn),
+		)
+		fromV = sqlgraph.Neighbors(s.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryClassLeader queries the class_leader edge of a Student.
+func (c *StudentClient) QueryClassLeader(s *Student) *ClassLeaderQuery {
+	query := (&ClassLeaderClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := s.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(student.Table, student.FieldID, id),
+			sqlgraph.To(classleader.Table, classleader.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, true, student.ClassLeaderTable, student.ClassLeaderColumn),
+		)
+		fromV = sqlgraph.Neighbors(s.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryTutor queries the tutor edge of a Student.
+func (c *StudentClient) QueryTutor(s *Student) *TutorQuery {
+	query := (&TutorClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := s.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(student.Table, student.FieldID, id),
+			sqlgraph.To(tutor.Table, tutor.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, true, student.TutorTable, student.TutorColumn),
+		)
+		fromV = sqlgraph.Neighbors(s.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryCertificate queries the certificate edge of a Student.
+func (c *StudentClient) QueryCertificate(s *Student) *CertificateQuery {
+	query := (&CertificateClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := s.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(student.Table, student.FieldID, id),
+			sqlgraph.To(certificate.Table, certificate.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, true, student.CertificateTable, student.CertificateColumn),
+		)
+		fromV = sqlgraph.Neighbors(s.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryEducationLevel queries the education_level edge of a Student.
+func (c *StudentClient) QueryEducationLevel(s *Student) *EducationLevelQuery {
+	query := (&EducationLevelClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := s.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(student.Table, student.FieldID, id),
+			sqlgraph.To(educationlevel.Table, educationlevel.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, true, student.EducationLevelTable, student.EducationLevelColumn),
+		)
+		fromV = sqlgraph.Neighbors(s.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryEnrollmentStatus queries the enrollment_status edge of a Student.
+func (c *StudentClient) QueryEnrollmentStatus(s *Student) *EnrollmentStatusQuery {
+	query := (&EnrollmentStatusClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := s.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(student.Table, student.FieldID, id),
+			sqlgraph.To(enrollmentstatus.Table, enrollmentstatus.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, true, student.EnrollmentStatusTable, student.EnrollmentStatusColumn),
+		)
+		fromV = sqlgraph.Neighbors(s.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryFamilyInfo queries the family_info edge of a Student.
+func (c *StudentClient) QueryFamilyInfo(s *Student) *FamilyInfoQuery {
+	query := (&FamilyInfoClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := s.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(student.Table, student.FieldID, id),
+			sqlgraph.To(familyinfo.Table, familyinfo.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, true, student.FamilyInfoTable, student.FamilyInfoColumn),
+		)
+		fromV = sqlgraph.Neighbors(s.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryPracticalExperience queries the practical_experience edge of a Student.
+func (c *StudentClient) QueryPracticalExperience(s *Student) *PracticalExperienceQuery {
+	query := (&PracticalExperienceClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := s.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(student.Table, student.FieldID, id),
+			sqlgraph.To(practicalexperience.Table, practicalexperience.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, true, student.PracticalExperienceTable, student.PracticalExperienceColumn),
 		)
 		fromV = sqlgraph.Neighbors(s.driver.Dialect(), step)
 		return fromV, nil
@@ -809,6 +2719,156 @@ func (c *StudentClient) mutate(ctx context.Context, m *StudentMutation) (Value, 
 		return (&StudentDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("domain: unknown Student mutation op: %q", m.Op())
+	}
+}
+
+// TutorClient is a client for the Tutor schema.
+type TutorClient struct {
+	config
+}
+
+// NewTutorClient returns a client for the Tutor from the given config.
+func NewTutorClient(c config) *TutorClient {
+	return &TutorClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `tutor.Hooks(f(g(h())))`.
+func (c *TutorClient) Use(hooks ...Hook) {
+	c.hooks.Tutor = append(c.hooks.Tutor, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `tutor.Intercept(f(g(h())))`.
+func (c *TutorClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Tutor = append(c.inters.Tutor, interceptors...)
+}
+
+// Create returns a builder for creating a Tutor entity.
+func (c *TutorClient) Create() *TutorCreate {
+	mutation := newTutorMutation(c.config, OpCreate)
+	return &TutorCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Tutor entities.
+func (c *TutorClient) CreateBulk(builders ...*TutorCreate) *TutorCreateBulk {
+	return &TutorCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Tutor.
+func (c *TutorClient) Update() *TutorUpdate {
+	mutation := newTutorMutation(c.config, OpUpdate)
+	return &TutorUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *TutorClient) UpdateOne(t *Tutor) *TutorUpdateOne {
+	mutation := newTutorMutation(c.config, OpUpdateOne, withTutor(t))
+	return &TutorUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *TutorClient) UpdateOneID(id int) *TutorUpdateOne {
+	mutation := newTutorMutation(c.config, OpUpdateOne, withTutorID(id))
+	return &TutorUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Tutor.
+func (c *TutorClient) Delete() *TutorDelete {
+	mutation := newTutorMutation(c.config, OpDelete)
+	return &TutorDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *TutorClient) DeleteOne(t *Tutor) *TutorDeleteOne {
+	return c.DeleteOneID(t.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *TutorClient) DeleteOneID(id int) *TutorDeleteOne {
+	builder := c.Delete().Where(tutor.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &TutorDeleteOne{builder}
+}
+
+// Query returns a query builder for Tutor.
+func (c *TutorClient) Query() *TutorQuery {
+	return &TutorQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeTutor},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Tutor entity by its id.
+func (c *TutorClient) Get(ctx context.Context, id int) (*Tutor, error) {
+	return c.Query().Where(tutor.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *TutorClient) GetX(ctx context.Context, id int) *Tutor {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryClass queries the class edge of a Tutor.
+func (c *TutorClient) QueryClass(t *Tutor) *ClassQuery {
+	query := (&ClassClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := t.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tutor.Table, tutor.FieldID, id),
+			sqlgraph.To(class.Table, class.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, tutor.ClassTable, tutor.ClassColumn),
+		)
+		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryStudent queries the student edge of a Tutor.
+func (c *TutorClient) QueryStudent(t *Tutor) *StudentQuery {
+	query := (&StudentClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := t.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tutor.Table, tutor.FieldID, id),
+			sqlgraph.To(student.Table, student.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, tutor.StudentTable, tutor.StudentColumn),
+		)
+		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *TutorClient) Hooks() []Hook {
+	return c.hooks.Tutor
+}
+
+// Interceptors returns the client interceptors.
+func (c *TutorClient) Interceptors() []Interceptor {
+	return c.inters.Tutor
+}
+
+func (c *TutorClient) mutate(ctx context.Context, m *TutorMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&TutorCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&TutorUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&TutorUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&TutorDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("domain: unknown Tutor mutation op: %q", m.Op())
 	}
 }
 
@@ -945,7 +3005,7 @@ func (c *UserClient) QueryStudent(u *User) *StudentQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(user.Table, user.FieldID, id),
 			sqlgraph.To(student.Table, student.FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, false, user.StudentTable, user.StudentColumn),
+			sqlgraph.Edge(sqlgraph.O2O, true, user.StudentTable, user.StudentColumn),
 		)
 		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
 		return fromV, nil
@@ -981,9 +3041,13 @@ func (c *UserClient) mutate(ctx context.Context, m *UserMutation) (Value, error)
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		Authorization, Resource, Role, Student, User []ent.Hook
+		Authorization, Campus, Certificate, Class, ClassLeader, Department,
+		EducationLevel, EnrollmentStatus, FamilyInfo, Major, MajorDirection,
+		PracticalExperience, Resource, Role, Student, Tutor, User []ent.Hook
 	}
 	inters struct {
-		Authorization, Resource, Role, Student, User []ent.Interceptor
+		Authorization, Campus, Certificate, Class, ClassLeader, Department,
+		EducationLevel, EnrollmentStatus, FamilyInfo, Major, MajorDirection,
+		PracticalExperience, Resource, Role, Student, Tutor, User []ent.Interceptor
 	}
 )

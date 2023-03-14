@@ -10,8 +10,18 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/devcui/ncepu-cs-project/domain/certificate"
+	"github.com/devcui/ncepu-cs-project/domain/class"
+	"github.com/devcui/ncepu-cs-project/domain/classleader"
+	"github.com/devcui/ncepu-cs-project/domain/department"
+	"github.com/devcui/ncepu-cs-project/domain/educationlevel"
+	"github.com/devcui/ncepu-cs-project/domain/enrollmentstatus"
+	"github.com/devcui/ncepu-cs-project/domain/familyinfo"
+	"github.com/devcui/ncepu-cs-project/domain/major"
+	"github.com/devcui/ncepu-cs-project/domain/practicalexperience"
 	"github.com/devcui/ncepu-cs-project/domain/predicate"
 	"github.com/devcui/ncepu-cs-project/domain/student"
+	"github.com/devcui/ncepu-cs-project/domain/tutor"
 	"github.com/devcui/ncepu-cs-project/domain/user"
 )
 
@@ -34,9 +44,187 @@ func (su *StudentUpdate) SetUserID(id int) *StudentUpdate {
 	return su
 }
 
+// SetNillableUserID sets the "user" edge to the User entity by ID if the given value is not nil.
+func (su *StudentUpdate) SetNillableUserID(id *int) *StudentUpdate {
+	if id != nil {
+		su = su.SetUserID(*id)
+	}
+	return su
+}
+
 // SetUser sets the "user" edge to the User entity.
 func (su *StudentUpdate) SetUser(u *User) *StudentUpdate {
 	return su.SetUserID(u.ID)
+}
+
+// SetDepartmentID sets the "department" edge to the Department entity by ID.
+func (su *StudentUpdate) SetDepartmentID(id int) *StudentUpdate {
+	su.mutation.SetDepartmentID(id)
+	return su
+}
+
+// SetNillableDepartmentID sets the "department" edge to the Department entity by ID if the given value is not nil.
+func (su *StudentUpdate) SetNillableDepartmentID(id *int) *StudentUpdate {
+	if id != nil {
+		su = su.SetDepartmentID(*id)
+	}
+	return su
+}
+
+// SetDepartment sets the "department" edge to the Department entity.
+func (su *StudentUpdate) SetDepartment(d *Department) *StudentUpdate {
+	return su.SetDepartmentID(d.ID)
+}
+
+// SetMajorID sets the "major" edge to the Major entity by ID.
+func (su *StudentUpdate) SetMajorID(id int) *StudentUpdate {
+	su.mutation.SetMajorID(id)
+	return su
+}
+
+// SetNillableMajorID sets the "major" edge to the Major entity by ID if the given value is not nil.
+func (su *StudentUpdate) SetNillableMajorID(id *int) *StudentUpdate {
+	if id != nil {
+		su = su.SetMajorID(*id)
+	}
+	return su
+}
+
+// SetMajor sets the "major" edge to the Major entity.
+func (su *StudentUpdate) SetMajor(m *Major) *StudentUpdate {
+	return su.SetMajorID(m.ID)
+}
+
+// SetClassID sets the "class" edge to the Class entity by ID.
+func (su *StudentUpdate) SetClassID(id int) *StudentUpdate {
+	su.mutation.SetClassID(id)
+	return su
+}
+
+// SetNillableClassID sets the "class" edge to the Class entity by ID if the given value is not nil.
+func (su *StudentUpdate) SetNillableClassID(id *int) *StudentUpdate {
+	if id != nil {
+		su = su.SetClassID(*id)
+	}
+	return su
+}
+
+// SetClass sets the "class" edge to the Class entity.
+func (su *StudentUpdate) SetClass(c *Class) *StudentUpdate {
+	return su.SetClassID(c.ID)
+}
+
+// SetClassLeaderID sets the "class_leader" edge to the ClassLeader entity by ID.
+func (su *StudentUpdate) SetClassLeaderID(id int) *StudentUpdate {
+	su.mutation.SetClassLeaderID(id)
+	return su
+}
+
+// SetNillableClassLeaderID sets the "class_leader" edge to the ClassLeader entity by ID if the given value is not nil.
+func (su *StudentUpdate) SetNillableClassLeaderID(id *int) *StudentUpdate {
+	if id != nil {
+		su = su.SetClassLeaderID(*id)
+	}
+	return su
+}
+
+// SetClassLeader sets the "class_leader" edge to the ClassLeader entity.
+func (su *StudentUpdate) SetClassLeader(c *ClassLeader) *StudentUpdate {
+	return su.SetClassLeaderID(c.ID)
+}
+
+// SetTutorID sets the "tutor" edge to the Tutor entity by ID.
+func (su *StudentUpdate) SetTutorID(id int) *StudentUpdate {
+	su.mutation.SetTutorID(id)
+	return su
+}
+
+// SetNillableTutorID sets the "tutor" edge to the Tutor entity by ID if the given value is not nil.
+func (su *StudentUpdate) SetNillableTutorID(id *int) *StudentUpdate {
+	if id != nil {
+		su = su.SetTutorID(*id)
+	}
+	return su
+}
+
+// SetTutor sets the "tutor" edge to the Tutor entity.
+func (su *StudentUpdate) SetTutor(t *Tutor) *StudentUpdate {
+	return su.SetTutorID(t.ID)
+}
+
+// AddCertificateIDs adds the "certificate" edge to the Certificate entity by IDs.
+func (su *StudentUpdate) AddCertificateIDs(ids ...int) *StudentUpdate {
+	su.mutation.AddCertificateIDs(ids...)
+	return su
+}
+
+// AddCertificate adds the "certificate" edges to the Certificate entity.
+func (su *StudentUpdate) AddCertificate(c ...*Certificate) *StudentUpdate {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return su.AddCertificateIDs(ids...)
+}
+
+// AddEducationLevelIDs adds the "education_level" edge to the EducationLevel entity by IDs.
+func (su *StudentUpdate) AddEducationLevelIDs(ids ...int) *StudentUpdate {
+	su.mutation.AddEducationLevelIDs(ids...)
+	return su
+}
+
+// AddEducationLevel adds the "education_level" edges to the EducationLevel entity.
+func (su *StudentUpdate) AddEducationLevel(e ...*EducationLevel) *StudentUpdate {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return su.AddEducationLevelIDs(ids...)
+}
+
+// AddEnrollmentStatuIDs adds the "enrollment_status" edge to the EnrollmentStatus entity by IDs.
+func (su *StudentUpdate) AddEnrollmentStatuIDs(ids ...int) *StudentUpdate {
+	su.mutation.AddEnrollmentStatuIDs(ids...)
+	return su
+}
+
+// AddEnrollmentStatus adds the "enrollment_status" edges to the EnrollmentStatus entity.
+func (su *StudentUpdate) AddEnrollmentStatus(e ...*EnrollmentStatus) *StudentUpdate {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return su.AddEnrollmentStatuIDs(ids...)
+}
+
+// AddFamilyInfoIDs adds the "family_info" edge to the FamilyInfo entity by IDs.
+func (su *StudentUpdate) AddFamilyInfoIDs(ids ...int) *StudentUpdate {
+	su.mutation.AddFamilyInfoIDs(ids...)
+	return su
+}
+
+// AddFamilyInfo adds the "family_info" edges to the FamilyInfo entity.
+func (su *StudentUpdate) AddFamilyInfo(f ...*FamilyInfo) *StudentUpdate {
+	ids := make([]int, len(f))
+	for i := range f {
+		ids[i] = f[i].ID
+	}
+	return su.AddFamilyInfoIDs(ids...)
+}
+
+// AddPracticalExperienceIDs adds the "practical_experience" edge to the PracticalExperience entity by IDs.
+func (su *StudentUpdate) AddPracticalExperienceIDs(ids ...int) *StudentUpdate {
+	su.mutation.AddPracticalExperienceIDs(ids...)
+	return su
+}
+
+// AddPracticalExperience adds the "practical_experience" edges to the PracticalExperience entity.
+func (su *StudentUpdate) AddPracticalExperience(p ...*PracticalExperience) *StudentUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return su.AddPracticalExperienceIDs(ids...)
 }
 
 // Mutation returns the StudentMutation object of the builder.
@@ -48,6 +236,141 @@ func (su *StudentUpdate) Mutation() *StudentMutation {
 func (su *StudentUpdate) ClearUser() *StudentUpdate {
 	su.mutation.ClearUser()
 	return su
+}
+
+// ClearDepartment clears the "department" edge to the Department entity.
+func (su *StudentUpdate) ClearDepartment() *StudentUpdate {
+	su.mutation.ClearDepartment()
+	return su
+}
+
+// ClearMajor clears the "major" edge to the Major entity.
+func (su *StudentUpdate) ClearMajor() *StudentUpdate {
+	su.mutation.ClearMajor()
+	return su
+}
+
+// ClearClass clears the "class" edge to the Class entity.
+func (su *StudentUpdate) ClearClass() *StudentUpdate {
+	su.mutation.ClearClass()
+	return su
+}
+
+// ClearClassLeader clears the "class_leader" edge to the ClassLeader entity.
+func (su *StudentUpdate) ClearClassLeader() *StudentUpdate {
+	su.mutation.ClearClassLeader()
+	return su
+}
+
+// ClearTutor clears the "tutor" edge to the Tutor entity.
+func (su *StudentUpdate) ClearTutor() *StudentUpdate {
+	su.mutation.ClearTutor()
+	return su
+}
+
+// ClearCertificate clears all "certificate" edges to the Certificate entity.
+func (su *StudentUpdate) ClearCertificate() *StudentUpdate {
+	su.mutation.ClearCertificate()
+	return su
+}
+
+// RemoveCertificateIDs removes the "certificate" edge to Certificate entities by IDs.
+func (su *StudentUpdate) RemoveCertificateIDs(ids ...int) *StudentUpdate {
+	su.mutation.RemoveCertificateIDs(ids...)
+	return su
+}
+
+// RemoveCertificate removes "certificate" edges to Certificate entities.
+func (su *StudentUpdate) RemoveCertificate(c ...*Certificate) *StudentUpdate {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return su.RemoveCertificateIDs(ids...)
+}
+
+// ClearEducationLevel clears all "education_level" edges to the EducationLevel entity.
+func (su *StudentUpdate) ClearEducationLevel() *StudentUpdate {
+	su.mutation.ClearEducationLevel()
+	return su
+}
+
+// RemoveEducationLevelIDs removes the "education_level" edge to EducationLevel entities by IDs.
+func (su *StudentUpdate) RemoveEducationLevelIDs(ids ...int) *StudentUpdate {
+	su.mutation.RemoveEducationLevelIDs(ids...)
+	return su
+}
+
+// RemoveEducationLevel removes "education_level" edges to EducationLevel entities.
+func (su *StudentUpdate) RemoveEducationLevel(e ...*EducationLevel) *StudentUpdate {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return su.RemoveEducationLevelIDs(ids...)
+}
+
+// ClearEnrollmentStatus clears all "enrollment_status" edges to the EnrollmentStatus entity.
+func (su *StudentUpdate) ClearEnrollmentStatus() *StudentUpdate {
+	su.mutation.ClearEnrollmentStatus()
+	return su
+}
+
+// RemoveEnrollmentStatuIDs removes the "enrollment_status" edge to EnrollmentStatus entities by IDs.
+func (su *StudentUpdate) RemoveEnrollmentStatuIDs(ids ...int) *StudentUpdate {
+	su.mutation.RemoveEnrollmentStatuIDs(ids...)
+	return su
+}
+
+// RemoveEnrollmentStatus removes "enrollment_status" edges to EnrollmentStatus entities.
+func (su *StudentUpdate) RemoveEnrollmentStatus(e ...*EnrollmentStatus) *StudentUpdate {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return su.RemoveEnrollmentStatuIDs(ids...)
+}
+
+// ClearFamilyInfo clears all "family_info" edges to the FamilyInfo entity.
+func (su *StudentUpdate) ClearFamilyInfo() *StudentUpdate {
+	su.mutation.ClearFamilyInfo()
+	return su
+}
+
+// RemoveFamilyInfoIDs removes the "family_info" edge to FamilyInfo entities by IDs.
+func (su *StudentUpdate) RemoveFamilyInfoIDs(ids ...int) *StudentUpdate {
+	su.mutation.RemoveFamilyInfoIDs(ids...)
+	return su
+}
+
+// RemoveFamilyInfo removes "family_info" edges to FamilyInfo entities.
+func (su *StudentUpdate) RemoveFamilyInfo(f ...*FamilyInfo) *StudentUpdate {
+	ids := make([]int, len(f))
+	for i := range f {
+		ids[i] = f[i].ID
+	}
+	return su.RemoveFamilyInfoIDs(ids...)
+}
+
+// ClearPracticalExperience clears all "practical_experience" edges to the PracticalExperience entity.
+func (su *StudentUpdate) ClearPracticalExperience() *StudentUpdate {
+	su.mutation.ClearPracticalExperience()
+	return su
+}
+
+// RemovePracticalExperienceIDs removes the "practical_experience" edge to PracticalExperience entities by IDs.
+func (su *StudentUpdate) RemovePracticalExperienceIDs(ids ...int) *StudentUpdate {
+	su.mutation.RemovePracticalExperienceIDs(ids...)
+	return su
+}
+
+// RemovePracticalExperience removes "practical_experience" edges to PracticalExperience entities.
+func (su *StudentUpdate) RemovePracticalExperience(p ...*PracticalExperience) *StudentUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return su.RemovePracticalExperienceIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -77,18 +400,7 @@ func (su *StudentUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// check runs all checks and user-defined validators on the builder.
-func (su *StudentUpdate) check() error {
-	if _, ok := su.mutation.UserID(); su.mutation.UserCleared() && !ok {
-		return errors.New(`domain: clearing a required unique edge "Student.user"`)
-	}
-	return nil
-}
-
 func (su *StudentUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	if err := su.check(); err != nil {
-		return n, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(student.Table, student.Columns, sqlgraph.NewFieldSpec(student.FieldID, field.TypeInt))
 	if ps := su.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
@@ -100,7 +412,7 @@ func (su *StudentUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if su.mutation.UserCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2O,
-			Inverse: true,
+			Inverse: false,
 			Table:   student.UserTable,
 			Columns: []string{student.UserColumn},
 			Bidi:    false,
@@ -113,12 +425,382 @@ func (su *StudentUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if nodes := su.mutation.UserIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2O,
-			Inverse: true,
+			Inverse: false,
 			Table:   student.UserTable,
 			Columns: []string{student.UserColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if su.mutation.DepartmentCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   student.DepartmentTable,
+			Columns: []string{student.DepartmentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(department.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := su.mutation.DepartmentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   student.DepartmentTable,
+			Columns: []string{student.DepartmentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(department.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if su.mutation.MajorCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   student.MajorTable,
+			Columns: []string{student.MajorColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(major.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := su.mutation.MajorIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   student.MajorTable,
+			Columns: []string{student.MajorColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(major.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if su.mutation.ClassCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   student.ClassTable,
+			Columns: []string{student.ClassColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(class.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := su.mutation.ClassIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   student.ClassTable,
+			Columns: []string{student.ClassColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(class.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if su.mutation.ClassLeaderCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: true,
+			Table:   student.ClassLeaderTable,
+			Columns: []string{student.ClassLeaderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(classleader.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := su.mutation.ClassLeaderIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: true,
+			Table:   student.ClassLeaderTable,
+			Columns: []string{student.ClassLeaderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(classleader.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if su.mutation.TutorCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: true,
+			Table:   student.TutorTable,
+			Columns: []string{student.TutorColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tutor.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := su.mutation.TutorIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: true,
+			Table:   student.TutorTable,
+			Columns: []string{student.TutorColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tutor.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if su.mutation.CertificateCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.CertificateTable,
+			Columns: []string{student.CertificateColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(certificate.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := su.mutation.RemovedCertificateIDs(); len(nodes) > 0 && !su.mutation.CertificateCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.CertificateTable,
+			Columns: []string{student.CertificateColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(certificate.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := su.mutation.CertificateIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.CertificateTable,
+			Columns: []string{student.CertificateColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(certificate.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if su.mutation.EducationLevelCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.EducationLevelTable,
+			Columns: []string{student.EducationLevelColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(educationlevel.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := su.mutation.RemovedEducationLevelIDs(); len(nodes) > 0 && !su.mutation.EducationLevelCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.EducationLevelTable,
+			Columns: []string{student.EducationLevelColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(educationlevel.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := su.mutation.EducationLevelIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.EducationLevelTable,
+			Columns: []string{student.EducationLevelColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(educationlevel.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if su.mutation.EnrollmentStatusCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.EnrollmentStatusTable,
+			Columns: []string{student.EnrollmentStatusColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(enrollmentstatus.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := su.mutation.RemovedEnrollmentStatusIDs(); len(nodes) > 0 && !su.mutation.EnrollmentStatusCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.EnrollmentStatusTable,
+			Columns: []string{student.EnrollmentStatusColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(enrollmentstatus.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := su.mutation.EnrollmentStatusIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.EnrollmentStatusTable,
+			Columns: []string{student.EnrollmentStatusColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(enrollmentstatus.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if su.mutation.FamilyInfoCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.FamilyInfoTable,
+			Columns: []string{student.FamilyInfoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(familyinfo.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := su.mutation.RemovedFamilyInfoIDs(); len(nodes) > 0 && !su.mutation.FamilyInfoCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.FamilyInfoTable,
+			Columns: []string{student.FamilyInfoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(familyinfo.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := su.mutation.FamilyInfoIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.FamilyInfoTable,
+			Columns: []string{student.FamilyInfoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(familyinfo.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if su.mutation.PracticalExperienceCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.PracticalExperienceTable,
+			Columns: []string{student.PracticalExperienceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(practicalexperience.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := su.mutation.RemovedPracticalExperienceIDs(); len(nodes) > 0 && !su.mutation.PracticalExperienceCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.PracticalExperienceTable,
+			Columns: []string{student.PracticalExperienceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(practicalexperience.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := su.mutation.PracticalExperienceIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.PracticalExperienceTable,
+			Columns: []string{student.PracticalExperienceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(practicalexperience.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -152,9 +834,187 @@ func (suo *StudentUpdateOne) SetUserID(id int) *StudentUpdateOne {
 	return suo
 }
 
+// SetNillableUserID sets the "user" edge to the User entity by ID if the given value is not nil.
+func (suo *StudentUpdateOne) SetNillableUserID(id *int) *StudentUpdateOne {
+	if id != nil {
+		suo = suo.SetUserID(*id)
+	}
+	return suo
+}
+
 // SetUser sets the "user" edge to the User entity.
 func (suo *StudentUpdateOne) SetUser(u *User) *StudentUpdateOne {
 	return suo.SetUserID(u.ID)
+}
+
+// SetDepartmentID sets the "department" edge to the Department entity by ID.
+func (suo *StudentUpdateOne) SetDepartmentID(id int) *StudentUpdateOne {
+	suo.mutation.SetDepartmentID(id)
+	return suo
+}
+
+// SetNillableDepartmentID sets the "department" edge to the Department entity by ID if the given value is not nil.
+func (suo *StudentUpdateOne) SetNillableDepartmentID(id *int) *StudentUpdateOne {
+	if id != nil {
+		suo = suo.SetDepartmentID(*id)
+	}
+	return suo
+}
+
+// SetDepartment sets the "department" edge to the Department entity.
+func (suo *StudentUpdateOne) SetDepartment(d *Department) *StudentUpdateOne {
+	return suo.SetDepartmentID(d.ID)
+}
+
+// SetMajorID sets the "major" edge to the Major entity by ID.
+func (suo *StudentUpdateOne) SetMajorID(id int) *StudentUpdateOne {
+	suo.mutation.SetMajorID(id)
+	return suo
+}
+
+// SetNillableMajorID sets the "major" edge to the Major entity by ID if the given value is not nil.
+func (suo *StudentUpdateOne) SetNillableMajorID(id *int) *StudentUpdateOne {
+	if id != nil {
+		suo = suo.SetMajorID(*id)
+	}
+	return suo
+}
+
+// SetMajor sets the "major" edge to the Major entity.
+func (suo *StudentUpdateOne) SetMajor(m *Major) *StudentUpdateOne {
+	return suo.SetMajorID(m.ID)
+}
+
+// SetClassID sets the "class" edge to the Class entity by ID.
+func (suo *StudentUpdateOne) SetClassID(id int) *StudentUpdateOne {
+	suo.mutation.SetClassID(id)
+	return suo
+}
+
+// SetNillableClassID sets the "class" edge to the Class entity by ID if the given value is not nil.
+func (suo *StudentUpdateOne) SetNillableClassID(id *int) *StudentUpdateOne {
+	if id != nil {
+		suo = suo.SetClassID(*id)
+	}
+	return suo
+}
+
+// SetClass sets the "class" edge to the Class entity.
+func (suo *StudentUpdateOne) SetClass(c *Class) *StudentUpdateOne {
+	return suo.SetClassID(c.ID)
+}
+
+// SetClassLeaderID sets the "class_leader" edge to the ClassLeader entity by ID.
+func (suo *StudentUpdateOne) SetClassLeaderID(id int) *StudentUpdateOne {
+	suo.mutation.SetClassLeaderID(id)
+	return suo
+}
+
+// SetNillableClassLeaderID sets the "class_leader" edge to the ClassLeader entity by ID if the given value is not nil.
+func (suo *StudentUpdateOne) SetNillableClassLeaderID(id *int) *StudentUpdateOne {
+	if id != nil {
+		suo = suo.SetClassLeaderID(*id)
+	}
+	return suo
+}
+
+// SetClassLeader sets the "class_leader" edge to the ClassLeader entity.
+func (suo *StudentUpdateOne) SetClassLeader(c *ClassLeader) *StudentUpdateOne {
+	return suo.SetClassLeaderID(c.ID)
+}
+
+// SetTutorID sets the "tutor" edge to the Tutor entity by ID.
+func (suo *StudentUpdateOne) SetTutorID(id int) *StudentUpdateOne {
+	suo.mutation.SetTutorID(id)
+	return suo
+}
+
+// SetNillableTutorID sets the "tutor" edge to the Tutor entity by ID if the given value is not nil.
+func (suo *StudentUpdateOne) SetNillableTutorID(id *int) *StudentUpdateOne {
+	if id != nil {
+		suo = suo.SetTutorID(*id)
+	}
+	return suo
+}
+
+// SetTutor sets the "tutor" edge to the Tutor entity.
+func (suo *StudentUpdateOne) SetTutor(t *Tutor) *StudentUpdateOne {
+	return suo.SetTutorID(t.ID)
+}
+
+// AddCertificateIDs adds the "certificate" edge to the Certificate entity by IDs.
+func (suo *StudentUpdateOne) AddCertificateIDs(ids ...int) *StudentUpdateOne {
+	suo.mutation.AddCertificateIDs(ids...)
+	return suo
+}
+
+// AddCertificate adds the "certificate" edges to the Certificate entity.
+func (suo *StudentUpdateOne) AddCertificate(c ...*Certificate) *StudentUpdateOne {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return suo.AddCertificateIDs(ids...)
+}
+
+// AddEducationLevelIDs adds the "education_level" edge to the EducationLevel entity by IDs.
+func (suo *StudentUpdateOne) AddEducationLevelIDs(ids ...int) *StudentUpdateOne {
+	suo.mutation.AddEducationLevelIDs(ids...)
+	return suo
+}
+
+// AddEducationLevel adds the "education_level" edges to the EducationLevel entity.
+func (suo *StudentUpdateOne) AddEducationLevel(e ...*EducationLevel) *StudentUpdateOne {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return suo.AddEducationLevelIDs(ids...)
+}
+
+// AddEnrollmentStatuIDs adds the "enrollment_status" edge to the EnrollmentStatus entity by IDs.
+func (suo *StudentUpdateOne) AddEnrollmentStatuIDs(ids ...int) *StudentUpdateOne {
+	suo.mutation.AddEnrollmentStatuIDs(ids...)
+	return suo
+}
+
+// AddEnrollmentStatus adds the "enrollment_status" edges to the EnrollmentStatus entity.
+func (suo *StudentUpdateOne) AddEnrollmentStatus(e ...*EnrollmentStatus) *StudentUpdateOne {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return suo.AddEnrollmentStatuIDs(ids...)
+}
+
+// AddFamilyInfoIDs adds the "family_info" edge to the FamilyInfo entity by IDs.
+func (suo *StudentUpdateOne) AddFamilyInfoIDs(ids ...int) *StudentUpdateOne {
+	suo.mutation.AddFamilyInfoIDs(ids...)
+	return suo
+}
+
+// AddFamilyInfo adds the "family_info" edges to the FamilyInfo entity.
+func (suo *StudentUpdateOne) AddFamilyInfo(f ...*FamilyInfo) *StudentUpdateOne {
+	ids := make([]int, len(f))
+	for i := range f {
+		ids[i] = f[i].ID
+	}
+	return suo.AddFamilyInfoIDs(ids...)
+}
+
+// AddPracticalExperienceIDs adds the "practical_experience" edge to the PracticalExperience entity by IDs.
+func (suo *StudentUpdateOne) AddPracticalExperienceIDs(ids ...int) *StudentUpdateOne {
+	suo.mutation.AddPracticalExperienceIDs(ids...)
+	return suo
+}
+
+// AddPracticalExperience adds the "practical_experience" edges to the PracticalExperience entity.
+func (suo *StudentUpdateOne) AddPracticalExperience(p ...*PracticalExperience) *StudentUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return suo.AddPracticalExperienceIDs(ids...)
 }
 
 // Mutation returns the StudentMutation object of the builder.
@@ -166,6 +1026,141 @@ func (suo *StudentUpdateOne) Mutation() *StudentMutation {
 func (suo *StudentUpdateOne) ClearUser() *StudentUpdateOne {
 	suo.mutation.ClearUser()
 	return suo
+}
+
+// ClearDepartment clears the "department" edge to the Department entity.
+func (suo *StudentUpdateOne) ClearDepartment() *StudentUpdateOne {
+	suo.mutation.ClearDepartment()
+	return suo
+}
+
+// ClearMajor clears the "major" edge to the Major entity.
+func (suo *StudentUpdateOne) ClearMajor() *StudentUpdateOne {
+	suo.mutation.ClearMajor()
+	return suo
+}
+
+// ClearClass clears the "class" edge to the Class entity.
+func (suo *StudentUpdateOne) ClearClass() *StudentUpdateOne {
+	suo.mutation.ClearClass()
+	return suo
+}
+
+// ClearClassLeader clears the "class_leader" edge to the ClassLeader entity.
+func (suo *StudentUpdateOne) ClearClassLeader() *StudentUpdateOne {
+	suo.mutation.ClearClassLeader()
+	return suo
+}
+
+// ClearTutor clears the "tutor" edge to the Tutor entity.
+func (suo *StudentUpdateOne) ClearTutor() *StudentUpdateOne {
+	suo.mutation.ClearTutor()
+	return suo
+}
+
+// ClearCertificate clears all "certificate" edges to the Certificate entity.
+func (suo *StudentUpdateOne) ClearCertificate() *StudentUpdateOne {
+	suo.mutation.ClearCertificate()
+	return suo
+}
+
+// RemoveCertificateIDs removes the "certificate" edge to Certificate entities by IDs.
+func (suo *StudentUpdateOne) RemoveCertificateIDs(ids ...int) *StudentUpdateOne {
+	suo.mutation.RemoveCertificateIDs(ids...)
+	return suo
+}
+
+// RemoveCertificate removes "certificate" edges to Certificate entities.
+func (suo *StudentUpdateOne) RemoveCertificate(c ...*Certificate) *StudentUpdateOne {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return suo.RemoveCertificateIDs(ids...)
+}
+
+// ClearEducationLevel clears all "education_level" edges to the EducationLevel entity.
+func (suo *StudentUpdateOne) ClearEducationLevel() *StudentUpdateOne {
+	suo.mutation.ClearEducationLevel()
+	return suo
+}
+
+// RemoveEducationLevelIDs removes the "education_level" edge to EducationLevel entities by IDs.
+func (suo *StudentUpdateOne) RemoveEducationLevelIDs(ids ...int) *StudentUpdateOne {
+	suo.mutation.RemoveEducationLevelIDs(ids...)
+	return suo
+}
+
+// RemoveEducationLevel removes "education_level" edges to EducationLevel entities.
+func (suo *StudentUpdateOne) RemoveEducationLevel(e ...*EducationLevel) *StudentUpdateOne {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return suo.RemoveEducationLevelIDs(ids...)
+}
+
+// ClearEnrollmentStatus clears all "enrollment_status" edges to the EnrollmentStatus entity.
+func (suo *StudentUpdateOne) ClearEnrollmentStatus() *StudentUpdateOne {
+	suo.mutation.ClearEnrollmentStatus()
+	return suo
+}
+
+// RemoveEnrollmentStatuIDs removes the "enrollment_status" edge to EnrollmentStatus entities by IDs.
+func (suo *StudentUpdateOne) RemoveEnrollmentStatuIDs(ids ...int) *StudentUpdateOne {
+	suo.mutation.RemoveEnrollmentStatuIDs(ids...)
+	return suo
+}
+
+// RemoveEnrollmentStatus removes "enrollment_status" edges to EnrollmentStatus entities.
+func (suo *StudentUpdateOne) RemoveEnrollmentStatus(e ...*EnrollmentStatus) *StudentUpdateOne {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return suo.RemoveEnrollmentStatuIDs(ids...)
+}
+
+// ClearFamilyInfo clears all "family_info" edges to the FamilyInfo entity.
+func (suo *StudentUpdateOne) ClearFamilyInfo() *StudentUpdateOne {
+	suo.mutation.ClearFamilyInfo()
+	return suo
+}
+
+// RemoveFamilyInfoIDs removes the "family_info" edge to FamilyInfo entities by IDs.
+func (suo *StudentUpdateOne) RemoveFamilyInfoIDs(ids ...int) *StudentUpdateOne {
+	suo.mutation.RemoveFamilyInfoIDs(ids...)
+	return suo
+}
+
+// RemoveFamilyInfo removes "family_info" edges to FamilyInfo entities.
+func (suo *StudentUpdateOne) RemoveFamilyInfo(f ...*FamilyInfo) *StudentUpdateOne {
+	ids := make([]int, len(f))
+	for i := range f {
+		ids[i] = f[i].ID
+	}
+	return suo.RemoveFamilyInfoIDs(ids...)
+}
+
+// ClearPracticalExperience clears all "practical_experience" edges to the PracticalExperience entity.
+func (suo *StudentUpdateOne) ClearPracticalExperience() *StudentUpdateOne {
+	suo.mutation.ClearPracticalExperience()
+	return suo
+}
+
+// RemovePracticalExperienceIDs removes the "practical_experience" edge to PracticalExperience entities by IDs.
+func (suo *StudentUpdateOne) RemovePracticalExperienceIDs(ids ...int) *StudentUpdateOne {
+	suo.mutation.RemovePracticalExperienceIDs(ids...)
+	return suo
+}
+
+// RemovePracticalExperience removes "practical_experience" edges to PracticalExperience entities.
+func (suo *StudentUpdateOne) RemovePracticalExperience(p ...*PracticalExperience) *StudentUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return suo.RemovePracticalExperienceIDs(ids...)
 }
 
 // Where appends a list predicates to the StudentUpdate builder.
@@ -208,18 +1203,7 @@ func (suo *StudentUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-// check runs all checks and user-defined validators on the builder.
-func (suo *StudentUpdateOne) check() error {
-	if _, ok := suo.mutation.UserID(); suo.mutation.UserCleared() && !ok {
-		return errors.New(`domain: clearing a required unique edge "Student.user"`)
-	}
-	return nil
-}
-
 func (suo *StudentUpdateOne) sqlSave(ctx context.Context) (_node *Student, err error) {
-	if err := suo.check(); err != nil {
-		return _node, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(student.Table, student.Columns, sqlgraph.NewFieldSpec(student.FieldID, field.TypeInt))
 	id, ok := suo.mutation.ID()
 	if !ok {
@@ -248,7 +1232,7 @@ func (suo *StudentUpdateOne) sqlSave(ctx context.Context) (_node *Student, err e
 	if suo.mutation.UserCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2O,
-			Inverse: true,
+			Inverse: false,
 			Table:   student.UserTable,
 			Columns: []string{student.UserColumn},
 			Bidi:    false,
@@ -261,12 +1245,382 @@ func (suo *StudentUpdateOne) sqlSave(ctx context.Context) (_node *Student, err e
 	if nodes := suo.mutation.UserIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2O,
-			Inverse: true,
+			Inverse: false,
 			Table:   student.UserTable,
 			Columns: []string{student.UserColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if suo.mutation.DepartmentCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   student.DepartmentTable,
+			Columns: []string{student.DepartmentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(department.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suo.mutation.DepartmentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   student.DepartmentTable,
+			Columns: []string{student.DepartmentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(department.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if suo.mutation.MajorCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   student.MajorTable,
+			Columns: []string{student.MajorColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(major.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suo.mutation.MajorIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   student.MajorTable,
+			Columns: []string{student.MajorColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(major.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if suo.mutation.ClassCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   student.ClassTable,
+			Columns: []string{student.ClassColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(class.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suo.mutation.ClassIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   student.ClassTable,
+			Columns: []string{student.ClassColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(class.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if suo.mutation.ClassLeaderCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: true,
+			Table:   student.ClassLeaderTable,
+			Columns: []string{student.ClassLeaderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(classleader.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suo.mutation.ClassLeaderIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: true,
+			Table:   student.ClassLeaderTable,
+			Columns: []string{student.ClassLeaderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(classleader.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if suo.mutation.TutorCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: true,
+			Table:   student.TutorTable,
+			Columns: []string{student.TutorColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tutor.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suo.mutation.TutorIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: true,
+			Table:   student.TutorTable,
+			Columns: []string{student.TutorColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tutor.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if suo.mutation.CertificateCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.CertificateTable,
+			Columns: []string{student.CertificateColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(certificate.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suo.mutation.RemovedCertificateIDs(); len(nodes) > 0 && !suo.mutation.CertificateCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.CertificateTable,
+			Columns: []string{student.CertificateColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(certificate.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suo.mutation.CertificateIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.CertificateTable,
+			Columns: []string{student.CertificateColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(certificate.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if suo.mutation.EducationLevelCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.EducationLevelTable,
+			Columns: []string{student.EducationLevelColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(educationlevel.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suo.mutation.RemovedEducationLevelIDs(); len(nodes) > 0 && !suo.mutation.EducationLevelCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.EducationLevelTable,
+			Columns: []string{student.EducationLevelColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(educationlevel.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suo.mutation.EducationLevelIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.EducationLevelTable,
+			Columns: []string{student.EducationLevelColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(educationlevel.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if suo.mutation.EnrollmentStatusCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.EnrollmentStatusTable,
+			Columns: []string{student.EnrollmentStatusColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(enrollmentstatus.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suo.mutation.RemovedEnrollmentStatusIDs(); len(nodes) > 0 && !suo.mutation.EnrollmentStatusCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.EnrollmentStatusTable,
+			Columns: []string{student.EnrollmentStatusColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(enrollmentstatus.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suo.mutation.EnrollmentStatusIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.EnrollmentStatusTable,
+			Columns: []string{student.EnrollmentStatusColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(enrollmentstatus.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if suo.mutation.FamilyInfoCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.FamilyInfoTable,
+			Columns: []string{student.FamilyInfoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(familyinfo.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suo.mutation.RemovedFamilyInfoIDs(); len(nodes) > 0 && !suo.mutation.FamilyInfoCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.FamilyInfoTable,
+			Columns: []string{student.FamilyInfoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(familyinfo.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suo.mutation.FamilyInfoIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.FamilyInfoTable,
+			Columns: []string{student.FamilyInfoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(familyinfo.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if suo.mutation.PracticalExperienceCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.PracticalExperienceTable,
+			Columns: []string{student.PracticalExperienceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(practicalexperience.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suo.mutation.RemovedPracticalExperienceIDs(); len(nodes) > 0 && !suo.mutation.PracticalExperienceCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.PracticalExperienceTable,
+			Columns: []string{student.PracticalExperienceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(practicalexperience.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suo.mutation.PracticalExperienceIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: true,
+			Table:   student.PracticalExperienceTable,
+			Columns: []string{student.PracticalExperienceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(practicalexperience.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

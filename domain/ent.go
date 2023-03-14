@@ -12,9 +12,21 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/devcui/ncepu-cs-project/domain/authorization"
+	"github.com/devcui/ncepu-cs-project/domain/campus"
+	"github.com/devcui/ncepu-cs-project/domain/certificate"
+	"github.com/devcui/ncepu-cs-project/domain/class"
+	"github.com/devcui/ncepu-cs-project/domain/classleader"
+	"github.com/devcui/ncepu-cs-project/domain/department"
+	"github.com/devcui/ncepu-cs-project/domain/educationlevel"
+	"github.com/devcui/ncepu-cs-project/domain/enrollmentstatus"
+	"github.com/devcui/ncepu-cs-project/domain/familyinfo"
+	"github.com/devcui/ncepu-cs-project/domain/major"
+	"github.com/devcui/ncepu-cs-project/domain/majordirection"
+	"github.com/devcui/ncepu-cs-project/domain/practicalexperience"
 	"github.com/devcui/ncepu-cs-project/domain/resource"
 	"github.com/devcui/ncepu-cs-project/domain/role"
 	"github.com/devcui/ncepu-cs-project/domain/student"
+	"github.com/devcui/ncepu-cs-project/domain/tutor"
 	"github.com/devcui/ncepu-cs-project/domain/user"
 )
 
@@ -69,11 +81,23 @@ type OrderFunc func(*sql.Selector)
 // columnChecker returns a function indicates if the column exists in the given column.
 func columnChecker(table string) func(string) error {
 	checks := map[string]func(string) bool{
-		authorization.Table: authorization.ValidColumn,
-		resource.Table:      resource.ValidColumn,
-		role.Table:          role.ValidColumn,
-		student.Table:       student.ValidColumn,
-		user.Table:          user.ValidColumn,
+		authorization.Table:       authorization.ValidColumn,
+		campus.Table:              campus.ValidColumn,
+		certificate.Table:         certificate.ValidColumn,
+		class.Table:               class.ValidColumn,
+		classleader.Table:         classleader.ValidColumn,
+		department.Table:          department.ValidColumn,
+		educationlevel.Table:      educationlevel.ValidColumn,
+		enrollmentstatus.Table:    enrollmentstatus.ValidColumn,
+		familyinfo.Table:          familyinfo.ValidColumn,
+		major.Table:               major.ValidColumn,
+		majordirection.Table:      majordirection.ValidColumn,
+		practicalexperience.Table: practicalexperience.ValidColumn,
+		resource.Table:            resource.ValidColumn,
+		role.Table:                role.ValidColumn,
+		student.Table:             student.ValidColumn,
+		tutor.Table:               tutor.ValidColumn,
+		user.Table:                user.ValidColumn,
 	}
 	check, ok := checks[table]
 	if !ok {

@@ -24,6 +24,6 @@ func (User) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("role", Role.Type),
 		edge.To("resource", Resource.Type),
-		edge.To("student", Student.Type).Unique(),
+		edge.From("student", Student.Type).Ref("user").Unique(),
 	}
 }

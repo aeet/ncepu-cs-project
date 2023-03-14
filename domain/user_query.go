@@ -28,6 +28,7 @@ type UserQuery struct {
 	withRole     *RoleQuery
 	withResource *ResourceQuery
 	withStudent  *StudentQuery
+	withFKs      bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -122,7 +123,7 @@ func (uq *UserQuery) QueryStudent() *StudentQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(user.Table, user.FieldID, selector),
 			sqlgraph.To(student.Table, student.FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, false, user.StudentTable, user.StudentColumn),
+			sqlgraph.Edge(sqlgraph.O2O, true, user.StudentTable, user.StudentColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
 		return fromU, nil
@@ -441,6 +442,7 @@ func (uq *UserQuery) prepareQuery(ctx context.Context) error {
 func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, error) {
 	var (
 		nodes       = []*User{}
+		withFKs     = uq.withFKs
 		_spec       = uq.querySpec()
 		loadedTypes = [3]bool{
 			uq.withRole != nil,
@@ -448,6 +450,12 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 			uq.withStudent != nil,
 		}
 	)
+	if uq.withStudent != nil {
+		withFKs = true
+	}
+	if withFKs {
+		_spec.Node.Columns = append(_spec.Node.Columns, user.ForeignKeys...)
+	}
 	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*User).scanValues(nil, columns)
 	}
@@ -612,30 +620,34 @@ func (uq *UserQuery) loadResource(ctx context.Context, query *ResourceQuery, nod
 	return nil
 }
 func (uq *UserQuery) loadStudent(ctx context.Context, query *StudentQuery, nodes []*User, init func(*User), assign func(*User, *Student)) error {
-	fks := make([]driver.Value, 0, len(nodes))
-	nodeids := make(map[int]*User)
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*User)
 	for i := range nodes {
-		fks = append(fks, nodes[i].ID)
-		nodeids[nodes[i].ID] = nodes[i]
+		if nodes[i].student_user == nil {
+			continue
+		}
+		fk := *nodes[i].student_user
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
 	}
-	query.withFKs = true
-	query.Where(predicate.Student(func(s *sql.Selector) {
-		s.Where(sql.InValues(user.StudentColumn, fks...))
-	}))
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(student.IDIn(ids...))
 	neighbors, err := query.All(ctx)
 	if err != nil {
 		return err
 	}
 	for _, n := range neighbors {
-		fk := n.user_student
-		if fk == nil {
-			return fmt.Errorf(`foreign-key "user_student" is nil for node %v`, n.ID)
-		}
-		node, ok := nodeids[*fk]
+		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "user_student" returned %v for node %v`, *fk, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "student_user" returned %v`, n.ID)
 		}
-		assign(node, n)
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
 	}
 	return nil
 }

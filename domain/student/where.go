@@ -58,7 +58,7 @@ func HasUser() predicate.Student {
 	return predicate.Student(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, true, UserTable, UserColumn),
+			sqlgraph.Edge(sqlgraph.O2O, false, UserTable, UserColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
@@ -70,7 +70,277 @@ func HasUserWith(preds ...predicate.User) predicate.Student {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.To(UserInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, true, UserTable, UserColumn),
+			sqlgraph.Edge(sqlgraph.O2O, false, UserTable, UserColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasDepartment applies the HasEdge predicate on the "department" edge.
+func HasDepartment() predicate.Student {
+	return predicate.Student(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, DepartmentTable, DepartmentColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasDepartmentWith applies the HasEdge predicate on the "department" edge with a given conditions (other predicates).
+func HasDepartmentWith(preds ...predicate.Department) predicate.Student {
+	return predicate.Student(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(DepartmentInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, DepartmentTable, DepartmentColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasMajor applies the HasEdge predicate on the "major" edge.
+func HasMajor() predicate.Student {
+	return predicate.Student(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, MajorTable, MajorColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasMajorWith applies the HasEdge predicate on the "major" edge with a given conditions (other predicates).
+func HasMajorWith(preds ...predicate.Major) predicate.Student {
+	return predicate.Student(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(MajorInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, MajorTable, MajorColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasClass applies the HasEdge predicate on the "class" edge.
+func HasClass() predicate.Student {
+	return predicate.Student(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, ClassTable, ClassColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasClassWith applies the HasEdge predicate on the "class" edge with a given conditions (other predicates).
+func HasClassWith(preds ...predicate.Class) predicate.Student {
+	return predicate.Student(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(ClassInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, ClassTable, ClassColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasClassLeader applies the HasEdge predicate on the "class_leader" edge.
+func HasClassLeader() predicate.Student {
+	return predicate.Student(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, true, ClassLeaderTable, ClassLeaderColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasClassLeaderWith applies the HasEdge predicate on the "class_leader" edge with a given conditions (other predicates).
+func HasClassLeaderWith(preds ...predicate.ClassLeader) predicate.Student {
+	return predicate.Student(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(ClassLeaderInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, true, ClassLeaderTable, ClassLeaderColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasTutor applies the HasEdge predicate on the "tutor" edge.
+func HasTutor() predicate.Student {
+	return predicate.Student(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, true, TutorTable, TutorColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasTutorWith applies the HasEdge predicate on the "tutor" edge with a given conditions (other predicates).
+func HasTutorWith(preds ...predicate.Tutor) predicate.Student {
+	return predicate.Student(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(TutorInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, true, TutorTable, TutorColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasCertificate applies the HasEdge predicate on the "certificate" edge.
+func HasCertificate() predicate.Student {
+	return predicate.Student(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, true, CertificateTable, CertificateColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasCertificateWith applies the HasEdge predicate on the "certificate" edge with a given conditions (other predicates).
+func HasCertificateWith(preds ...predicate.Certificate) predicate.Student {
+	return predicate.Student(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(CertificateInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, true, CertificateTable, CertificateColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasEducationLevel applies the HasEdge predicate on the "education_level" edge.
+func HasEducationLevel() predicate.Student {
+	return predicate.Student(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, true, EducationLevelTable, EducationLevelColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasEducationLevelWith applies the HasEdge predicate on the "education_level" edge with a given conditions (other predicates).
+func HasEducationLevelWith(preds ...predicate.EducationLevel) predicate.Student {
+	return predicate.Student(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(EducationLevelInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, true, EducationLevelTable, EducationLevelColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasEnrollmentStatus applies the HasEdge predicate on the "enrollment_status" edge.
+func HasEnrollmentStatus() predicate.Student {
+	return predicate.Student(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, true, EnrollmentStatusTable, EnrollmentStatusColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasEnrollmentStatusWith applies the HasEdge predicate on the "enrollment_status" edge with a given conditions (other predicates).
+func HasEnrollmentStatusWith(preds ...predicate.EnrollmentStatus) predicate.Student {
+	return predicate.Student(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(EnrollmentStatusInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, true, EnrollmentStatusTable, EnrollmentStatusColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasFamilyInfo applies the HasEdge predicate on the "family_info" edge.
+func HasFamilyInfo() predicate.Student {
+	return predicate.Student(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, true, FamilyInfoTable, FamilyInfoColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasFamilyInfoWith applies the HasEdge predicate on the "family_info" edge with a given conditions (other predicates).
+func HasFamilyInfoWith(preds ...predicate.FamilyInfo) predicate.Student {
+	return predicate.Student(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(FamilyInfoInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, true, FamilyInfoTable, FamilyInfoColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasPracticalExperience applies the HasEdge predicate on the "practical_experience" edge.
+func HasPracticalExperience() predicate.Student {
+	return predicate.Student(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, true, PracticalExperienceTable, PracticalExperienceColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasPracticalExperienceWith applies the HasEdge predicate on the "practical_experience" edge with a given conditions (other predicates).
+func HasPracticalExperienceWith(preds ...predicate.PracticalExperience) predicate.Student {
+	return predicate.Student(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(PracticalExperienceInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, true, PracticalExperienceTable, PracticalExperienceColumn),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {

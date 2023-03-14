@@ -7,7 +7,12 @@ import (
 	"strings"
 
 	"entgo.io/ent/dialect/sql"
+	"github.com/devcui/ncepu-cs-project/domain/class"
+	"github.com/devcui/ncepu-cs-project/domain/classleader"
+	"github.com/devcui/ncepu-cs-project/domain/department"
+	"github.com/devcui/ncepu-cs-project/domain/major"
 	"github.com/devcui/ncepu-cs-project/domain/student"
+	"github.com/devcui/ncepu-cs-project/domain/tutor"
 	"github.com/devcui/ncepu-cs-project/domain/user"
 )
 
@@ -18,17 +23,41 @@ type Student struct {
 	ID int `json:"id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the StudentQuery when eager-loading is set.
-	Edges        StudentEdges `json:"edges"`
-	user_student *int
+	Edges                StudentEdges `json:"edges"`
+	class_leader_student *int
+	student_department   *int
+	student_major        *int
+	student_class        *int
+	tutor_student        *int
 }
 
 // StudentEdges holds the relations/edges for other nodes in the graph.
 type StudentEdges struct {
 	// User holds the value of the user edge.
 	User *User `json:"user,omitempty"`
+	// Department holds the value of the department edge.
+	Department *Department `json:"department,omitempty"`
+	// Major holds the value of the major edge.
+	Major *Major `json:"major,omitempty"`
+	// Class holds the value of the class edge.
+	Class *Class `json:"class,omitempty"`
+	// ClassLeader holds the value of the class_leader edge.
+	ClassLeader *ClassLeader `json:"class_leader,omitempty"`
+	// Tutor holds the value of the tutor edge.
+	Tutor *Tutor `json:"tutor,omitempty"`
+	// Certificate holds the value of the certificate edge.
+	Certificate []*Certificate `json:"certificate,omitempty"`
+	// EducationLevel holds the value of the education_level edge.
+	EducationLevel []*EducationLevel `json:"education_level,omitempty"`
+	// EnrollmentStatus holds the value of the enrollment_status edge.
+	EnrollmentStatus []*EnrollmentStatus `json:"enrollment_status,omitempty"`
+	// FamilyInfo holds the value of the family_info edge.
+	FamilyInfo []*FamilyInfo `json:"family_info,omitempty"`
+	// PracticalExperience holds the value of the practical_experience edge.
+	PracticalExperience []*PracticalExperience `json:"practical_experience,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [1]bool
+	loadedTypes [11]bool
 }
 
 // UserOrErr returns the User value or an error if the edge
@@ -44,6 +73,116 @@ func (e StudentEdges) UserOrErr() (*User, error) {
 	return nil, &NotLoadedError{edge: "user"}
 }
 
+// DepartmentOrErr returns the Department value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e StudentEdges) DepartmentOrErr() (*Department, error) {
+	if e.loadedTypes[1] {
+		if e.Department == nil {
+			// Edge was loaded but was not found.
+			return nil, &NotFoundError{label: department.Label}
+		}
+		return e.Department, nil
+	}
+	return nil, &NotLoadedError{edge: "department"}
+}
+
+// MajorOrErr returns the Major value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e StudentEdges) MajorOrErr() (*Major, error) {
+	if e.loadedTypes[2] {
+		if e.Major == nil {
+			// Edge was loaded but was not found.
+			return nil, &NotFoundError{label: major.Label}
+		}
+		return e.Major, nil
+	}
+	return nil, &NotLoadedError{edge: "major"}
+}
+
+// ClassOrErr returns the Class value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e StudentEdges) ClassOrErr() (*Class, error) {
+	if e.loadedTypes[3] {
+		if e.Class == nil {
+			// Edge was loaded but was not found.
+			return nil, &NotFoundError{label: class.Label}
+		}
+		return e.Class, nil
+	}
+	return nil, &NotLoadedError{edge: "class"}
+}
+
+// ClassLeaderOrErr returns the ClassLeader value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e StudentEdges) ClassLeaderOrErr() (*ClassLeader, error) {
+	if e.loadedTypes[4] {
+		if e.ClassLeader == nil {
+			// Edge was loaded but was not found.
+			return nil, &NotFoundError{label: classleader.Label}
+		}
+		return e.ClassLeader, nil
+	}
+	return nil, &NotLoadedError{edge: "class_leader"}
+}
+
+// TutorOrErr returns the Tutor value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e StudentEdges) TutorOrErr() (*Tutor, error) {
+	if e.loadedTypes[5] {
+		if e.Tutor == nil {
+			// Edge was loaded but was not found.
+			return nil, &NotFoundError{label: tutor.Label}
+		}
+		return e.Tutor, nil
+	}
+	return nil, &NotLoadedError{edge: "tutor"}
+}
+
+// CertificateOrErr returns the Certificate value or an error if the edge
+// was not loaded in eager-loading.
+func (e StudentEdges) CertificateOrErr() ([]*Certificate, error) {
+	if e.loadedTypes[6] {
+		return e.Certificate, nil
+	}
+	return nil, &NotLoadedError{edge: "certificate"}
+}
+
+// EducationLevelOrErr returns the EducationLevel value or an error if the edge
+// was not loaded in eager-loading.
+func (e StudentEdges) EducationLevelOrErr() ([]*EducationLevel, error) {
+	if e.loadedTypes[7] {
+		return e.EducationLevel, nil
+	}
+	return nil, &NotLoadedError{edge: "education_level"}
+}
+
+// EnrollmentStatusOrErr returns the EnrollmentStatus value or an error if the edge
+// was not loaded in eager-loading.
+func (e StudentEdges) EnrollmentStatusOrErr() ([]*EnrollmentStatus, error) {
+	if e.loadedTypes[8] {
+		return e.EnrollmentStatus, nil
+	}
+	return nil, &NotLoadedError{edge: "enrollment_status"}
+}
+
+// FamilyInfoOrErr returns the FamilyInfo value or an error if the edge
+// was not loaded in eager-loading.
+func (e StudentEdges) FamilyInfoOrErr() ([]*FamilyInfo, error) {
+	if e.loadedTypes[9] {
+		return e.FamilyInfo, nil
+	}
+	return nil, &NotLoadedError{edge: "family_info"}
+}
+
+// PracticalExperienceOrErr returns the PracticalExperience value or an error if the edge
+// was not loaded in eager-loading.
+func (e StudentEdges) PracticalExperienceOrErr() ([]*PracticalExperience, error) {
+	if e.loadedTypes[10] {
+		return e.PracticalExperience, nil
+	}
+	return nil, &NotLoadedError{edge: "practical_experience"}
+}
+
 // scanValues returns the types for scanning values from sql.Rows.
 func (*Student) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
@@ -51,7 +190,15 @@ func (*Student) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case student.FieldID:
 			values[i] = new(sql.NullInt64)
-		case student.ForeignKeys[0]: // user_student
+		case student.ForeignKeys[0]: // class_leader_student
+			values[i] = new(sql.NullInt64)
+		case student.ForeignKeys[1]: // student_department
+			values[i] = new(sql.NullInt64)
+		case student.ForeignKeys[2]: // student_major
+			values[i] = new(sql.NullInt64)
+		case student.ForeignKeys[3]: // student_class
+			values[i] = new(sql.NullInt64)
+		case student.ForeignKeys[4]: // tutor_student
 			values[i] = new(sql.NullInt64)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type Student", columns[i])
@@ -76,10 +223,38 @@ func (s *Student) assignValues(columns []string, values []any) error {
 			s.ID = int(value.Int64)
 		case student.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field user_student", value)
+				return fmt.Errorf("unexpected type %T for edge-field class_leader_student", value)
 			} else if value.Valid {
-				s.user_student = new(int)
-				*s.user_student = int(value.Int64)
+				s.class_leader_student = new(int)
+				*s.class_leader_student = int(value.Int64)
+			}
+		case student.ForeignKeys[1]:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for edge-field student_department", value)
+			} else if value.Valid {
+				s.student_department = new(int)
+				*s.student_department = int(value.Int64)
+			}
+		case student.ForeignKeys[2]:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for edge-field student_major", value)
+			} else if value.Valid {
+				s.student_major = new(int)
+				*s.student_major = int(value.Int64)
+			}
+		case student.ForeignKeys[3]:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for edge-field student_class", value)
+			} else if value.Valid {
+				s.student_class = new(int)
+				*s.student_class = int(value.Int64)
+			}
+		case student.ForeignKeys[4]:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for edge-field tutor_student", value)
+			} else if value.Valid {
+				s.tutor_student = new(int)
+				*s.tutor_student = int(value.Int64)
 			}
 		}
 	}
@@ -89,6 +264,56 @@ func (s *Student) assignValues(columns []string, values []any) error {
 // QueryUser queries the "user" edge of the Student entity.
 func (s *Student) QueryUser() *UserQuery {
 	return NewStudentClient(s.config).QueryUser(s)
+}
+
+// QueryDepartment queries the "department" edge of the Student entity.
+func (s *Student) QueryDepartment() *DepartmentQuery {
+	return NewStudentClient(s.config).QueryDepartment(s)
+}
+
+// QueryMajor queries the "major" edge of the Student entity.
+func (s *Student) QueryMajor() *MajorQuery {
+	return NewStudentClient(s.config).QueryMajor(s)
+}
+
+// QueryClass queries the "class" edge of the Student entity.
+func (s *Student) QueryClass() *ClassQuery {
+	return NewStudentClient(s.config).QueryClass(s)
+}
+
+// QueryClassLeader queries the "class_leader" edge of the Student entity.
+func (s *Student) QueryClassLeader() *ClassLeaderQuery {
+	return NewStudentClient(s.config).QueryClassLeader(s)
+}
+
+// QueryTutor queries the "tutor" edge of the Student entity.
+func (s *Student) QueryTutor() *TutorQuery {
+	return NewStudentClient(s.config).QueryTutor(s)
+}
+
+// QueryCertificate queries the "certificate" edge of the Student entity.
+func (s *Student) QueryCertificate() *CertificateQuery {
+	return NewStudentClient(s.config).QueryCertificate(s)
+}
+
+// QueryEducationLevel queries the "education_level" edge of the Student entity.
+func (s *Student) QueryEducationLevel() *EducationLevelQuery {
+	return NewStudentClient(s.config).QueryEducationLevel(s)
+}
+
+// QueryEnrollmentStatus queries the "enrollment_status" edge of the Student entity.
+func (s *Student) QueryEnrollmentStatus() *EnrollmentStatusQuery {
+	return NewStudentClient(s.config).QueryEnrollmentStatus(s)
+}
+
+// QueryFamilyInfo queries the "family_info" edge of the Student entity.
+func (s *Student) QueryFamilyInfo() *FamilyInfoQuery {
+	return NewStudentClient(s.config).QueryFamilyInfo(s)
+}
+
+// QueryPracticalExperience queries the "practical_experience" edge of the Student entity.
+func (s *Student) QueryPracticalExperience() *PracticalExperienceQuery {
+	return NewStudentClient(s.config).QueryPracticalExperience(s)
 }
 
 // Update returns a builder for updating this Student.

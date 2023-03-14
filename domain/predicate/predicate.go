@@ -9,6 +9,39 @@ import (
 // Authorization is the predicate function for authorization builders.
 type Authorization func(*sql.Selector)
 
+// Campus is the predicate function for campus builders.
+type Campus func(*sql.Selector)
+
+// Certificate is the predicate function for certificate builders.
+type Certificate func(*sql.Selector)
+
+// Class is the predicate function for class builders.
+type Class func(*sql.Selector)
+
+// ClassLeader is the predicate function for classleader builders.
+type ClassLeader func(*sql.Selector)
+
+// Department is the predicate function for department builders.
+type Department func(*sql.Selector)
+
+// EducationLevel is the predicate function for educationlevel builders.
+type EducationLevel func(*sql.Selector)
+
+// EnrollmentStatus is the predicate function for enrollmentstatus builders.
+type EnrollmentStatus func(*sql.Selector)
+
+// FamilyInfo is the predicate function for familyinfo builders.
+type FamilyInfo func(*sql.Selector)
+
+// Major is the predicate function for major builders.
+type Major func(*sql.Selector)
+
+// MajorDirection is the predicate function for majordirection builders.
+type MajorDirection func(*sql.Selector)
+
+// PracticalExperience is the predicate function for practicalexperience builders.
+type PracticalExperience func(*sql.Selector)
+
 // Resource is the predicate function for resource builders.
 type Resource func(*sql.Selector)
 
@@ -17,6 +50,9 @@ type Role func(*sql.Selector)
 
 // Student is the predicate function for student builders.
 type Student func(*sql.Selector)
+
+// Tutor is the predicate function for tutor builders.
+type Tutor func(*sql.Selector)
 
 // User is the predicate function for user builders.
 type User func(*sql.Selector)
