@@ -3,6 +3,7 @@ package routes
 import (
 	"github.com/devcui/ncepu-cs-project/routes/auth"
 	"github.com/devcui/ncepu-cs-project/routes/callback"
+	"github.com/devcui/ncepu-cs-project/routes/campus"
 	"github.com/devcui/ncepu-cs-project/routes/role"
 	"github.com/devcui/ncepu-cs-project/routes/student"
 	"github.com/devcui/ncepu-cs-project/routes/user"
@@ -15,4 +16,5 @@ func Routes(api *echo.Group) {
 	student.Setup(api)
 	user.Setup(api)
 	role.Setup(api)
+	campus.Setup(api)
 }

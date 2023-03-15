@@ -25,7 +25,7 @@ redis_session:
   life_time: 3600
   pool_size: 10
 mysql:
-  init: true
+  init: false
   host: 127.0.0.1
   port: 3306
   username: root
