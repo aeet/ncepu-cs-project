@@ -18,9 +18,17 @@ import (
 
 // Class is the model entity for the Class schema.
 type Class struct {
-	config
+	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// 班级名称
+	Name string `json:"name,omitempty"`
+	// 班级编号
+	Code string `json:"code,omitempty"`
+	// 班级描述
+	Description string `json:"description,omitempty"`
+	// 班级类型
+	Type string `json:"type,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the ClassQuery when eager-loading is set.
 	Edges                 ClassEdges `json:"edges"`
@@ -147,6 +155,8 @@ func (*Class) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case class.FieldID:
 			values[i] = new(sql.NullInt64)
+		case class.FieldName, class.FieldCode, class.FieldDescription, class.FieldType:
+			values[i] = new(sql.NullString)
 		case class.ForeignKeys[0]: // campus_class
 			values[i] = new(sql.NullInt64)
 		case class.ForeignKeys[1]: // class_major
@@ -180,6 +190,30 @@ func (c *Class) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			c.ID = int(value.Int64)
+		case class.FieldName:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field name", values[i])
+			} else if value.Valid {
+				c.Name = value.String
+			}
+		case class.FieldCode:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field code", values[i])
+			} else if value.Valid {
+				c.Code = value.String
+			}
+		case class.FieldDescription:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field description", values[i])
+			} else if value.Valid {
+				c.Description = value.String
+			}
+		case class.FieldType:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field type", values[i])
+			} else if value.Valid {
+				c.Type = value.String
+			}
 		case class.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for edge-field campus_class", value)
@@ -284,7 +318,18 @@ func (c *Class) Unwrap() *Class {
 func (c *Class) String() string {
 	var builder strings.Builder
 	builder.WriteString("Class(")
-	builder.WriteString(fmt.Sprintf("id=%v", c.ID))
+	builder.WriteString(fmt.Sprintf("id=%v, ", c.ID))
+	builder.WriteString("name=")
+	builder.WriteString(c.Name)
+	builder.WriteString(", ")
+	builder.WriteString("code=")
+	builder.WriteString(c.Code)
+	builder.WriteString(", ")
+	builder.WriteString("description=")
+	builder.WriteString(c.Description)
+	builder.WriteString(", ")
+	builder.WriteString("type=")
+	builder.WriteString(c.Type)
 	builder.WriteByte(')')
 	return builder.String()
 }

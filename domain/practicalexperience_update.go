@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -25,6 +26,36 @@ type PracticalExperienceUpdate struct {
 // Where appends a list predicates to the PracticalExperienceUpdate builder.
 func (peu *PracticalExperienceUpdate) Where(ps ...predicate.PracticalExperience) *PracticalExperienceUpdate {
 	peu.mutation.Where(ps...)
+	return peu
+}
+
+// SetName sets the "name" field.
+func (peu *PracticalExperienceUpdate) SetName(s string) *PracticalExperienceUpdate {
+	peu.mutation.SetName(s)
+	return peu
+}
+
+// SetUnit sets the "unit" field.
+func (peu *PracticalExperienceUpdate) SetUnit(s string) *PracticalExperienceUpdate {
+	peu.mutation.SetUnit(s)
+	return peu
+}
+
+// SetStartTime sets the "start_time" field.
+func (peu *PracticalExperienceUpdate) SetStartTime(t time.Time) *PracticalExperienceUpdate {
+	peu.mutation.SetStartTime(t)
+	return peu
+}
+
+// SetEndTime sets the "end_time" field.
+func (peu *PracticalExperienceUpdate) SetEndTime(t time.Time) *PracticalExperienceUpdate {
+	peu.mutation.SetEndTime(t)
+	return peu
+}
+
+// SetDescribe sets the "describe" field.
+func (peu *PracticalExperienceUpdate) SetDescribe(s string) *PracticalExperienceUpdate {
+	peu.mutation.SetDescribe(s)
 	return peu
 }
 
@@ -94,6 +125,21 @@ func (peu *PracticalExperienceUpdate) sqlSave(ctx context.Context) (n int, err e
 			}
 		}
 	}
+	if value, ok := peu.mutation.Name(); ok {
+		_spec.SetField(practicalexperience.FieldName, field.TypeString, value)
+	}
+	if value, ok := peu.mutation.Unit(); ok {
+		_spec.SetField(practicalexperience.FieldUnit, field.TypeString, value)
+	}
+	if value, ok := peu.mutation.StartTime(); ok {
+		_spec.SetField(practicalexperience.FieldStartTime, field.TypeTime, value)
+	}
+	if value, ok := peu.mutation.EndTime(); ok {
+		_spec.SetField(practicalexperience.FieldEndTime, field.TypeTime, value)
+	}
+	if value, ok := peu.mutation.Describe(); ok {
+		_spec.SetField(practicalexperience.FieldDescribe, field.TypeString, value)
+	}
 	if peu.mutation.StudentCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
@@ -141,6 +187,36 @@ type PracticalExperienceUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *PracticalExperienceMutation
+}
+
+// SetName sets the "name" field.
+func (peuo *PracticalExperienceUpdateOne) SetName(s string) *PracticalExperienceUpdateOne {
+	peuo.mutation.SetName(s)
+	return peuo
+}
+
+// SetUnit sets the "unit" field.
+func (peuo *PracticalExperienceUpdateOne) SetUnit(s string) *PracticalExperienceUpdateOne {
+	peuo.mutation.SetUnit(s)
+	return peuo
+}
+
+// SetStartTime sets the "start_time" field.
+func (peuo *PracticalExperienceUpdateOne) SetStartTime(t time.Time) *PracticalExperienceUpdateOne {
+	peuo.mutation.SetStartTime(t)
+	return peuo
+}
+
+// SetEndTime sets the "end_time" field.
+func (peuo *PracticalExperienceUpdateOne) SetEndTime(t time.Time) *PracticalExperienceUpdateOne {
+	peuo.mutation.SetEndTime(t)
+	return peuo
+}
+
+// SetDescribe sets the "describe" field.
+func (peuo *PracticalExperienceUpdateOne) SetDescribe(s string) *PracticalExperienceUpdateOne {
+	peuo.mutation.SetDescribe(s)
+	return peuo
 }
 
 // SetStudentID sets the "student" edge to the Student entity by ID.
@@ -238,6 +314,21 @@ func (peuo *PracticalExperienceUpdateOne) sqlSave(ctx context.Context) (_node *P
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := peuo.mutation.Name(); ok {
+		_spec.SetField(practicalexperience.FieldName, field.TypeString, value)
+	}
+	if value, ok := peuo.mutation.Unit(); ok {
+		_spec.SetField(practicalexperience.FieldUnit, field.TypeString, value)
+	}
+	if value, ok := peuo.mutation.StartTime(); ok {
+		_spec.SetField(practicalexperience.FieldStartTime, field.TypeTime, value)
+	}
+	if value, ok := peuo.mutation.EndTime(); ok {
+		_spec.SetField(practicalexperience.FieldEndTime, field.TypeTime, value)
+	}
+	if value, ok := peuo.mutation.Describe(); ok {
+		_spec.SetField(practicalexperience.FieldDescribe, field.TypeString, value)
 	}
 	if peuo.mutation.StudentCleared() {
 		edge := &sqlgraph.EdgeSpec{

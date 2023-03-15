@@ -7,6 +7,8 @@ const (
 	Label = "major_direction"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldName holds the string denoting the name field in the database.
+	FieldName = "name"
 	// EdgeClass holds the string denoting the class edge name in mutations.
 	EdgeClass = "class"
 	// Table holds the table name of the majordirection in the database.
@@ -23,6 +25,7 @@ const (
 // Columns holds all SQL columns for majordirection fields.
 var Columns = []string{
 	FieldID,
+	FieldName,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).

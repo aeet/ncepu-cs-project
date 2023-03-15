@@ -7,6 +7,26 @@ const (
 	Label = "certificate"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldName holds the string denoting the name field in the database.
+	FieldName = "name"
+	// FieldCode holds the string denoting the code field in the database.
+	FieldCode = "code"
+	// FieldDescription holds the string denoting the description field in the database.
+	FieldDescription = "description"
+	// FieldDepartment holds the string denoting the department field in the database.
+	FieldDepartment = "department"
+	// FieldIssueDate holds the string denoting the issue_date field in the database.
+	FieldIssueDate = "issue_date"
+	// FieldCertificateType holds the string denoting the certificate_type field in the database.
+	FieldCertificateType = "certificate_type"
+	// FieldCertificateLevel holds the string denoting the certificate_level field in the database.
+	FieldCertificateLevel = "certificate_level"
+	// FieldCertificateType2 holds the string denoting the certificate_type2 field in the database.
+	FieldCertificateType2 = "certificate_type2"
+	// FieldAwardCategory holds the string denoting the award_category field in the database.
+	FieldAwardCategory = "award_category"
+	// FieldCertificateImage holds the string denoting the certificate_image field in the database.
+	FieldCertificateImage = "certificate_image"
 	// EdgeStudent holds the string denoting the student edge name in mutations.
 	EdgeStudent = "student"
 	// Table holds the table name of the certificate in the database.
@@ -23,6 +43,16 @@ const (
 // Columns holds all SQL columns for certificate fields.
 var Columns = []string{
 	FieldID,
+	FieldName,
+	FieldCode,
+	FieldDescription,
+	FieldDepartment,
+	FieldIssueDate,
+	FieldCertificateType,
+	FieldCertificateLevel,
+	FieldCertificateType2,
+	FieldAwardCategory,
+	FieldCertificateImage,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the "certificates"

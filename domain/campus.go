@@ -13,9 +13,13 @@ import (
 
 // Campus is the model entity for the Campus schema.
 type Campus struct {
-	config
+	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// 校区名称
+	Name string `json:"name,omitempty"`
+	// 校区地址
+	Address string `json:"address,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the CampusQuery when eager-loading is set.
 	Edges CampusEdges `json:"edges"`
@@ -50,6 +54,8 @@ func (*Campus) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case campus.FieldID:
 			values[i] = new(sql.NullInt64)
+		case campus.FieldName, campus.FieldAddress:
+			values[i] = new(sql.NullString)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type Campus", columns[i])
 		}
@@ -71,6 +77,18 @@ func (c *Campus) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			c.ID = int(value.Int64)
+		case campus.FieldName:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field name", values[i])
+			} else if value.Valid {
+				c.Name = value.String
+			}
+		case campus.FieldAddress:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field address", values[i])
+			} else if value.Valid {
+				c.Address = value.String
+			}
 		}
 	}
 	return nil
@@ -103,7 +121,12 @@ func (c *Campus) Unwrap() *Campus {
 func (c *Campus) String() string {
 	var builder strings.Builder
 	builder.WriteString("Campus(")
-	builder.WriteString(fmt.Sprintf("id=%v", c.ID))
+	builder.WriteString(fmt.Sprintf("id=%v, ", c.ID))
+	builder.WriteString("name=")
+	builder.WriteString(c.Name)
+	builder.WriteString(", ")
+	builder.WriteString("address=")
+	builder.WriteString(c.Address)
 	builder.WriteByte(')')
 	return builder.String()
 }

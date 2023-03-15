@@ -34,6 +34,30 @@ func (cu *ClassUpdate) Where(ps ...predicate.Class) *ClassUpdate {
 	return cu
 }
 
+// SetName sets the "name" field.
+func (cu *ClassUpdate) SetName(s string) *ClassUpdate {
+	cu.mutation.SetName(s)
+	return cu
+}
+
+// SetCode sets the "code" field.
+func (cu *ClassUpdate) SetCode(s string) *ClassUpdate {
+	cu.mutation.SetCode(s)
+	return cu
+}
+
+// SetDescription sets the "description" field.
+func (cu *ClassUpdate) SetDescription(s string) *ClassUpdate {
+	cu.mutation.SetDescription(s)
+	return cu
+}
+
+// SetType sets the "type" field.
+func (cu *ClassUpdate) SetType(s string) *ClassUpdate {
+	cu.mutation.SetType(s)
+	return cu
+}
+
 // SetMajorID sets the "major" edge to the Major entity by ID.
 func (cu *ClassUpdate) SetMajorID(id int) *ClassUpdate {
 	cu.mutation.SetMajorID(id)
@@ -260,6 +284,18 @@ func (cu *ClassUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := cu.mutation.Name(); ok {
+		_spec.SetField(class.FieldName, field.TypeString, value)
+	}
+	if value, ok := cu.mutation.Code(); ok {
+		_spec.SetField(class.FieldCode, field.TypeString, value)
+	}
+	if value, ok := cu.mutation.Description(); ok {
+		_spec.SetField(class.FieldDescription, field.TypeString, value)
+	}
+	if value, ok := cu.mutation.GetType(); ok {
+		_spec.SetField(class.FieldType, field.TypeString, value)
 	}
 	if cu.mutation.MajorCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -498,6 +534,30 @@ type ClassUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *ClassMutation
+}
+
+// SetName sets the "name" field.
+func (cuo *ClassUpdateOne) SetName(s string) *ClassUpdateOne {
+	cuo.mutation.SetName(s)
+	return cuo
+}
+
+// SetCode sets the "code" field.
+func (cuo *ClassUpdateOne) SetCode(s string) *ClassUpdateOne {
+	cuo.mutation.SetCode(s)
+	return cuo
+}
+
+// SetDescription sets the "description" field.
+func (cuo *ClassUpdateOne) SetDescription(s string) *ClassUpdateOne {
+	cuo.mutation.SetDescription(s)
+	return cuo
+}
+
+// SetType sets the "type" field.
+func (cuo *ClassUpdateOne) SetType(s string) *ClassUpdateOne {
+	cuo.mutation.SetType(s)
+	return cuo
 }
 
 // SetMajorID sets the "major" edge to the Major entity by ID.
@@ -756,6 +816,18 @@ func (cuo *ClassUpdateOne) sqlSave(ctx context.Context) (_node *Class, err error
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := cuo.mutation.Name(); ok {
+		_spec.SetField(class.FieldName, field.TypeString, value)
+	}
+	if value, ok := cuo.mutation.Code(); ok {
+		_spec.SetField(class.FieldCode, field.TypeString, value)
+	}
+	if value, ok := cuo.mutation.Description(); ok {
+		_spec.SetField(class.FieldDescription, field.TypeString, value)
+	}
+	if value, ok := cuo.mutation.GetType(); ok {
+		_spec.SetField(class.FieldType, field.TypeString, value)
 	}
 	if cuo.mutation.MajorCleared() {
 		edge := &sqlgraph.EdgeSpec{

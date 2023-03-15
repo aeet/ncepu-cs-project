@@ -28,6 +28,60 @@ func (fiu *FamilyInfoUpdate) Where(ps ...predicate.FamilyInfo) *FamilyInfoUpdate
 	return fiu
 }
 
+// SetName sets the "name" field.
+func (fiu *FamilyInfoUpdate) SetName(s string) *FamilyInfoUpdate {
+	fiu.mutation.SetName(s)
+	return fiu
+}
+
+// SetRelationship sets the "relationship" field.
+func (fiu *FamilyInfoUpdate) SetRelationship(s string) *FamilyInfoUpdate {
+	fiu.mutation.SetRelationship(s)
+	return fiu
+}
+
+// SetIDCard sets the "id_card" field.
+func (fiu *FamilyInfoUpdate) SetIDCard(s string) *FamilyInfoUpdate {
+	fiu.mutation.SetIDCard(s)
+	return fiu
+}
+
+// SetAge sets the "age" field.
+func (fiu *FamilyInfoUpdate) SetAge(s string) *FamilyInfoUpdate {
+	fiu.mutation.SetAge(s)
+	return fiu
+}
+
+// SetOccupation sets the "occupation" field.
+func (fiu *FamilyInfoUpdate) SetOccupation(s string) *FamilyInfoUpdate {
+	fiu.mutation.SetOccupation(s)
+	return fiu
+}
+
+// SetPost sets the "post" field.
+func (fiu *FamilyInfoUpdate) SetPost(s string) *FamilyInfoUpdate {
+	fiu.mutation.SetPost(s)
+	return fiu
+}
+
+// SetWorkUnit sets the "work_unit" field.
+func (fiu *FamilyInfoUpdate) SetWorkUnit(s string) *FamilyInfoUpdate {
+	fiu.mutation.SetWorkUnit(s)
+	return fiu
+}
+
+// SetContactNumber sets the "contact_number" field.
+func (fiu *FamilyInfoUpdate) SetContactNumber(s string) *FamilyInfoUpdate {
+	fiu.mutation.SetContactNumber(s)
+	return fiu
+}
+
+// SetHealth sets the "health" field.
+func (fiu *FamilyInfoUpdate) SetHealth(s string) *FamilyInfoUpdate {
+	fiu.mutation.SetHealth(s)
+	return fiu
+}
+
 // SetStudentID sets the "student" edge to the Student entity by ID.
 func (fiu *FamilyInfoUpdate) SetStudentID(id int) *FamilyInfoUpdate {
 	fiu.mutation.SetStudentID(id)
@@ -94,6 +148,33 @@ func (fiu *FamilyInfoUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
+	if value, ok := fiu.mutation.Name(); ok {
+		_spec.SetField(familyinfo.FieldName, field.TypeString, value)
+	}
+	if value, ok := fiu.mutation.Relationship(); ok {
+		_spec.SetField(familyinfo.FieldRelationship, field.TypeString, value)
+	}
+	if value, ok := fiu.mutation.IDCard(); ok {
+		_spec.SetField(familyinfo.FieldIDCard, field.TypeString, value)
+	}
+	if value, ok := fiu.mutation.Age(); ok {
+		_spec.SetField(familyinfo.FieldAge, field.TypeString, value)
+	}
+	if value, ok := fiu.mutation.Occupation(); ok {
+		_spec.SetField(familyinfo.FieldOccupation, field.TypeString, value)
+	}
+	if value, ok := fiu.mutation.Post(); ok {
+		_spec.SetField(familyinfo.FieldPost, field.TypeString, value)
+	}
+	if value, ok := fiu.mutation.WorkUnit(); ok {
+		_spec.SetField(familyinfo.FieldWorkUnit, field.TypeString, value)
+	}
+	if value, ok := fiu.mutation.ContactNumber(); ok {
+		_spec.SetField(familyinfo.FieldContactNumber, field.TypeString, value)
+	}
+	if value, ok := fiu.mutation.Health(); ok {
+		_spec.SetField(familyinfo.FieldHealth, field.TypeString, value)
+	}
 	if fiu.mutation.StudentCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
@@ -141,6 +222,60 @@ type FamilyInfoUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *FamilyInfoMutation
+}
+
+// SetName sets the "name" field.
+func (fiuo *FamilyInfoUpdateOne) SetName(s string) *FamilyInfoUpdateOne {
+	fiuo.mutation.SetName(s)
+	return fiuo
+}
+
+// SetRelationship sets the "relationship" field.
+func (fiuo *FamilyInfoUpdateOne) SetRelationship(s string) *FamilyInfoUpdateOne {
+	fiuo.mutation.SetRelationship(s)
+	return fiuo
+}
+
+// SetIDCard sets the "id_card" field.
+func (fiuo *FamilyInfoUpdateOne) SetIDCard(s string) *FamilyInfoUpdateOne {
+	fiuo.mutation.SetIDCard(s)
+	return fiuo
+}
+
+// SetAge sets the "age" field.
+func (fiuo *FamilyInfoUpdateOne) SetAge(s string) *FamilyInfoUpdateOne {
+	fiuo.mutation.SetAge(s)
+	return fiuo
+}
+
+// SetOccupation sets the "occupation" field.
+func (fiuo *FamilyInfoUpdateOne) SetOccupation(s string) *FamilyInfoUpdateOne {
+	fiuo.mutation.SetOccupation(s)
+	return fiuo
+}
+
+// SetPost sets the "post" field.
+func (fiuo *FamilyInfoUpdateOne) SetPost(s string) *FamilyInfoUpdateOne {
+	fiuo.mutation.SetPost(s)
+	return fiuo
+}
+
+// SetWorkUnit sets the "work_unit" field.
+func (fiuo *FamilyInfoUpdateOne) SetWorkUnit(s string) *FamilyInfoUpdateOne {
+	fiuo.mutation.SetWorkUnit(s)
+	return fiuo
+}
+
+// SetContactNumber sets the "contact_number" field.
+func (fiuo *FamilyInfoUpdateOne) SetContactNumber(s string) *FamilyInfoUpdateOne {
+	fiuo.mutation.SetContactNumber(s)
+	return fiuo
+}
+
+// SetHealth sets the "health" field.
+func (fiuo *FamilyInfoUpdateOne) SetHealth(s string) *FamilyInfoUpdateOne {
+	fiuo.mutation.SetHealth(s)
+	return fiuo
 }
 
 // SetStudentID sets the "student" edge to the Student entity by ID.
@@ -238,6 +373,33 @@ func (fiuo *FamilyInfoUpdateOne) sqlSave(ctx context.Context) (_node *FamilyInfo
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := fiuo.mutation.Name(); ok {
+		_spec.SetField(familyinfo.FieldName, field.TypeString, value)
+	}
+	if value, ok := fiuo.mutation.Relationship(); ok {
+		_spec.SetField(familyinfo.FieldRelationship, field.TypeString, value)
+	}
+	if value, ok := fiuo.mutation.IDCard(); ok {
+		_spec.SetField(familyinfo.FieldIDCard, field.TypeString, value)
+	}
+	if value, ok := fiuo.mutation.Age(); ok {
+		_spec.SetField(familyinfo.FieldAge, field.TypeString, value)
+	}
+	if value, ok := fiuo.mutation.Occupation(); ok {
+		_spec.SetField(familyinfo.FieldOccupation, field.TypeString, value)
+	}
+	if value, ok := fiuo.mutation.Post(); ok {
+		_spec.SetField(familyinfo.FieldPost, field.TypeString, value)
+	}
+	if value, ok := fiuo.mutation.WorkUnit(); ok {
+		_spec.SetField(familyinfo.FieldWorkUnit, field.TypeString, value)
+	}
+	if value, ok := fiuo.mutation.ContactNumber(); ok {
+		_spec.SetField(familyinfo.FieldContactNumber, field.TypeString, value)
+	}
+	if value, ok := fiuo.mutation.Health(); ok {
+		_spec.SetField(familyinfo.FieldHealth, field.TypeString, value)
 	}
 	if fiuo.mutation.StudentCleared() {
 		edge := &sqlgraph.EdgeSpec{

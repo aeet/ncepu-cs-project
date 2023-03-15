@@ -13,9 +13,27 @@ import (
 
 // FamilyInfo is the model entity for the FamilyInfo schema.
 type FamilyInfo struct {
-	config
+	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// 家庭成员姓名
+	Name string `json:"name,omitempty"`
+	// 与学生关系
+	Relationship string `json:"relationship,omitempty"`
+	// 身份证号
+	IDCard string `json:"id_card,omitempty"`
+	// 年龄
+	Age string `json:"age,omitempty"`
+	// 职业
+	Occupation string `json:"occupation,omitempty"`
+	// 职务
+	Post string `json:"post,omitempty"`
+	// 工作单位
+	WorkUnit string `json:"work_unit,omitempty"`
+	// 联系电话
+	ContactNumber string `json:"contact_number,omitempty"`
+	// 健康状况
+	Health string `json:"health,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the FamilyInfoQuery when eager-loading is set.
 	Edges               FamilyInfoEdges `json:"edges"`
@@ -51,6 +69,8 @@ func (*FamilyInfo) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case familyinfo.FieldID:
 			values[i] = new(sql.NullInt64)
+		case familyinfo.FieldName, familyinfo.FieldRelationship, familyinfo.FieldIDCard, familyinfo.FieldAge, familyinfo.FieldOccupation, familyinfo.FieldPost, familyinfo.FieldWorkUnit, familyinfo.FieldContactNumber, familyinfo.FieldHealth:
+			values[i] = new(sql.NullString)
 		case familyinfo.ForeignKeys[0]: // family_info_student
 			values[i] = new(sql.NullInt64)
 		default:
@@ -74,6 +94,60 @@ func (fi *FamilyInfo) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			fi.ID = int(value.Int64)
+		case familyinfo.FieldName:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field name", values[i])
+			} else if value.Valid {
+				fi.Name = value.String
+			}
+		case familyinfo.FieldRelationship:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field relationship", values[i])
+			} else if value.Valid {
+				fi.Relationship = value.String
+			}
+		case familyinfo.FieldIDCard:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field id_card", values[i])
+			} else if value.Valid {
+				fi.IDCard = value.String
+			}
+		case familyinfo.FieldAge:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field age", values[i])
+			} else if value.Valid {
+				fi.Age = value.String
+			}
+		case familyinfo.FieldOccupation:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field occupation", values[i])
+			} else if value.Valid {
+				fi.Occupation = value.String
+			}
+		case familyinfo.FieldPost:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field post", values[i])
+			} else if value.Valid {
+				fi.Post = value.String
+			}
+		case familyinfo.FieldWorkUnit:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field work_unit", values[i])
+			} else if value.Valid {
+				fi.WorkUnit = value.String
+			}
+		case familyinfo.FieldContactNumber:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field contact_number", values[i])
+			} else if value.Valid {
+				fi.ContactNumber = value.String
+			}
+		case familyinfo.FieldHealth:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field health", values[i])
+			} else if value.Valid {
+				fi.Health = value.String
+			}
 		case familyinfo.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for edge-field family_info_student", value)
@@ -113,7 +187,33 @@ func (fi *FamilyInfo) Unwrap() *FamilyInfo {
 func (fi *FamilyInfo) String() string {
 	var builder strings.Builder
 	builder.WriteString("FamilyInfo(")
-	builder.WriteString(fmt.Sprintf("id=%v", fi.ID))
+	builder.WriteString(fmt.Sprintf("id=%v, ", fi.ID))
+	builder.WriteString("name=")
+	builder.WriteString(fi.Name)
+	builder.WriteString(", ")
+	builder.WriteString("relationship=")
+	builder.WriteString(fi.Relationship)
+	builder.WriteString(", ")
+	builder.WriteString("id_card=")
+	builder.WriteString(fi.IDCard)
+	builder.WriteString(", ")
+	builder.WriteString("age=")
+	builder.WriteString(fi.Age)
+	builder.WriteString(", ")
+	builder.WriteString("occupation=")
+	builder.WriteString(fi.Occupation)
+	builder.WriteString(", ")
+	builder.WriteString("post=")
+	builder.WriteString(fi.Post)
+	builder.WriteString(", ")
+	builder.WriteString("work_unit=")
+	builder.WriteString(fi.WorkUnit)
+	builder.WriteString(", ")
+	builder.WriteString("contact_number=")
+	builder.WriteString(fi.ContactNumber)
+	builder.WriteString(", ")
+	builder.WriteString("health=")
+	builder.WriteString(fi.Health)
 	builder.WriteByte(')')
 	return builder.String()
 }

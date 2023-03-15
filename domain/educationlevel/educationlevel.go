@@ -7,6 +7,8 @@ const (
 	Label = "education_level"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldName holds the string denoting the name field in the database.
+	FieldName = "name"
 	// EdgeStudent holds the string denoting the student edge name in mutations.
 	EdgeStudent = "student"
 	// Table holds the table name of the educationlevel in the database.
@@ -23,6 +25,7 @@ const (
 // Columns holds all SQL columns for educationlevel fields.
 var Columns = []string{
 	FieldID,
+	FieldName,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the "education_levels"

@@ -4,6 +4,7 @@ package domain
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -17,6 +18,60 @@ type FamilyInfoCreate struct {
 	config
 	mutation *FamilyInfoMutation
 	hooks    []Hook
+}
+
+// SetName sets the "name" field.
+func (fic *FamilyInfoCreate) SetName(s string) *FamilyInfoCreate {
+	fic.mutation.SetName(s)
+	return fic
+}
+
+// SetRelationship sets the "relationship" field.
+func (fic *FamilyInfoCreate) SetRelationship(s string) *FamilyInfoCreate {
+	fic.mutation.SetRelationship(s)
+	return fic
+}
+
+// SetIDCard sets the "id_card" field.
+func (fic *FamilyInfoCreate) SetIDCard(s string) *FamilyInfoCreate {
+	fic.mutation.SetIDCard(s)
+	return fic
+}
+
+// SetAge sets the "age" field.
+func (fic *FamilyInfoCreate) SetAge(s string) *FamilyInfoCreate {
+	fic.mutation.SetAge(s)
+	return fic
+}
+
+// SetOccupation sets the "occupation" field.
+func (fic *FamilyInfoCreate) SetOccupation(s string) *FamilyInfoCreate {
+	fic.mutation.SetOccupation(s)
+	return fic
+}
+
+// SetPost sets the "post" field.
+func (fic *FamilyInfoCreate) SetPost(s string) *FamilyInfoCreate {
+	fic.mutation.SetPost(s)
+	return fic
+}
+
+// SetWorkUnit sets the "work_unit" field.
+func (fic *FamilyInfoCreate) SetWorkUnit(s string) *FamilyInfoCreate {
+	fic.mutation.SetWorkUnit(s)
+	return fic
+}
+
+// SetContactNumber sets the "contact_number" field.
+func (fic *FamilyInfoCreate) SetContactNumber(s string) *FamilyInfoCreate {
+	fic.mutation.SetContactNumber(s)
+	return fic
+}
+
+// SetHealth sets the "health" field.
+func (fic *FamilyInfoCreate) SetHealth(s string) *FamilyInfoCreate {
+	fic.mutation.SetHealth(s)
+	return fic
 }
 
 // SetStudentID sets the "student" edge to the Student entity by ID.
@@ -72,6 +127,33 @@ func (fic *FamilyInfoCreate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (fic *FamilyInfoCreate) check() error {
+	if _, ok := fic.mutation.Name(); !ok {
+		return &ValidationError{Name: "name", err: errors.New(`domain: missing required field "FamilyInfo.name"`)}
+	}
+	if _, ok := fic.mutation.Relationship(); !ok {
+		return &ValidationError{Name: "relationship", err: errors.New(`domain: missing required field "FamilyInfo.relationship"`)}
+	}
+	if _, ok := fic.mutation.IDCard(); !ok {
+		return &ValidationError{Name: "id_card", err: errors.New(`domain: missing required field "FamilyInfo.id_card"`)}
+	}
+	if _, ok := fic.mutation.Age(); !ok {
+		return &ValidationError{Name: "age", err: errors.New(`domain: missing required field "FamilyInfo.age"`)}
+	}
+	if _, ok := fic.mutation.Occupation(); !ok {
+		return &ValidationError{Name: "occupation", err: errors.New(`domain: missing required field "FamilyInfo.occupation"`)}
+	}
+	if _, ok := fic.mutation.Post(); !ok {
+		return &ValidationError{Name: "post", err: errors.New(`domain: missing required field "FamilyInfo.post"`)}
+	}
+	if _, ok := fic.mutation.WorkUnit(); !ok {
+		return &ValidationError{Name: "work_unit", err: errors.New(`domain: missing required field "FamilyInfo.work_unit"`)}
+	}
+	if _, ok := fic.mutation.ContactNumber(); !ok {
+		return &ValidationError{Name: "contact_number", err: errors.New(`domain: missing required field "FamilyInfo.contact_number"`)}
+	}
+	if _, ok := fic.mutation.Health(); !ok {
+		return &ValidationError{Name: "health", err: errors.New(`domain: missing required field "FamilyInfo.health"`)}
+	}
 	return nil
 }
 
@@ -98,6 +180,42 @@ func (fic *FamilyInfoCreate) createSpec() (*FamilyInfo, *sqlgraph.CreateSpec) {
 		_node = &FamilyInfo{config: fic.config}
 		_spec = sqlgraph.NewCreateSpec(familyinfo.Table, sqlgraph.NewFieldSpec(familyinfo.FieldID, field.TypeInt))
 	)
+	if value, ok := fic.mutation.Name(); ok {
+		_spec.SetField(familyinfo.FieldName, field.TypeString, value)
+		_node.Name = value
+	}
+	if value, ok := fic.mutation.Relationship(); ok {
+		_spec.SetField(familyinfo.FieldRelationship, field.TypeString, value)
+		_node.Relationship = value
+	}
+	if value, ok := fic.mutation.IDCard(); ok {
+		_spec.SetField(familyinfo.FieldIDCard, field.TypeString, value)
+		_node.IDCard = value
+	}
+	if value, ok := fic.mutation.Age(); ok {
+		_spec.SetField(familyinfo.FieldAge, field.TypeString, value)
+		_node.Age = value
+	}
+	if value, ok := fic.mutation.Occupation(); ok {
+		_spec.SetField(familyinfo.FieldOccupation, field.TypeString, value)
+		_node.Occupation = value
+	}
+	if value, ok := fic.mutation.Post(); ok {
+		_spec.SetField(familyinfo.FieldPost, field.TypeString, value)
+		_node.Post = value
+	}
+	if value, ok := fic.mutation.WorkUnit(); ok {
+		_spec.SetField(familyinfo.FieldWorkUnit, field.TypeString, value)
+		_node.WorkUnit = value
+	}
+	if value, ok := fic.mutation.ContactNumber(); ok {
+		_spec.SetField(familyinfo.FieldContactNumber, field.TypeString, value)
+		_node.ContactNumber = value
+	}
+	if value, ok := fic.mutation.Health(); ok {
+		_spec.SetField(familyinfo.FieldHealth, field.TypeString, value)
+		_node.Health = value
+	}
 	if nodes := fic.mutation.StudentIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,

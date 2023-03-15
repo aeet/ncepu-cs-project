@@ -22,6 +22,14 @@ type Major struct {
 	Code string `json:"code,omitempty"`
 	// 专业描述
 	Description string `json:"description,omitempty"`
+	// 特殊类型
+	SpecialType string `json:"special_type,omitempty"`
+	// 招生类型
+	EnrollmentType string `json:"enrollment_type,omitempty"`
+	// 是否专业大类
+	IsMajorCategory bool `json:"is_major_category,omitempty"`
+	// 专业大类
+	MajorCategory string `json:"major_category,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the MajorQuery when eager-loading is set.
 	Edges            MajorEdges `json:"edges"`
@@ -77,9 +85,11 @@ func (*Major) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
+		case major.FieldIsMajorCategory:
+			values[i] = new(sql.NullBool)
 		case major.FieldID:
 			values[i] = new(sql.NullInt64)
-		case major.FieldName, major.FieldCode, major.FieldDescription:
+		case major.FieldName, major.FieldCode, major.FieldDescription, major.FieldSpecialType, major.FieldEnrollmentType, major.FieldMajorCategory:
 			values[i] = new(sql.NullString)
 		case major.ForeignKeys[0]: // major_department
 			values[i] = new(sql.NullInt64)
@@ -121,6 +131,30 @@ func (m *Major) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field description", values[i])
 			} else if value.Valid {
 				m.Description = value.String
+			}
+		case major.FieldSpecialType:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field special_type", values[i])
+			} else if value.Valid {
+				m.SpecialType = value.String
+			}
+		case major.FieldEnrollmentType:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field enrollment_type", values[i])
+			} else if value.Valid {
+				m.EnrollmentType = value.String
+			}
+		case major.FieldIsMajorCategory:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field is_major_category", values[i])
+			} else if value.Valid {
+				m.IsMajorCategory = value.Bool
+			}
+		case major.FieldMajorCategory:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field major_category", values[i])
+			} else if value.Valid {
+				m.MajorCategory = value.String
 			}
 		case major.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -180,6 +214,18 @@ func (m *Major) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("description=")
 	builder.WriteString(m.Description)
+	builder.WriteString(", ")
+	builder.WriteString("special_type=")
+	builder.WriteString(m.SpecialType)
+	builder.WriteString(", ")
+	builder.WriteString("enrollment_type=")
+	builder.WriteString(m.EnrollmentType)
+	builder.WriteString(", ")
+	builder.WriteString("is_major_category=")
+	builder.WriteString(fmt.Sprintf("%v", m.IsMajorCategory))
+	builder.WriteString(", ")
+	builder.WriteString("major_category=")
+	builder.WriteString(m.MajorCategory)
 	builder.WriteByte(')')
 	return builder.String()
 }

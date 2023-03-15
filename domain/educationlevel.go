@@ -13,9 +13,11 @@ import (
 
 // EducationLevel is the model entity for the EducationLevel schema.
 type EducationLevel struct {
-	config
+	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// 培养层次名称
+	Name string `json:"name,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the EducationLevelQuery when eager-loading is set.
 	Edges                   EducationLevelEdges `json:"edges"`
@@ -51,6 +53,8 @@ func (*EducationLevel) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case educationlevel.FieldID:
 			values[i] = new(sql.NullInt64)
+		case educationlevel.FieldName:
+			values[i] = new(sql.NullString)
 		case educationlevel.ForeignKeys[0]: // education_level_student
 			values[i] = new(sql.NullInt64)
 		default:
@@ -74,6 +78,12 @@ func (el *EducationLevel) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			el.ID = int(value.Int64)
+		case educationlevel.FieldName:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field name", values[i])
+			} else if value.Valid {
+				el.Name = value.String
+			}
 		case educationlevel.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for edge-field education_level_student", value)
@@ -113,7 +123,9 @@ func (el *EducationLevel) Unwrap() *EducationLevel {
 func (el *EducationLevel) String() string {
 	var builder strings.Builder
 	builder.WriteString("EducationLevel(")
-	builder.WriteString(fmt.Sprintf("id=%v", el.ID))
+	builder.WriteString(fmt.Sprintf("id=%v, ", el.ID))
+	builder.WriteString("name=")
+	builder.WriteString(el.Name)
 	builder.WriteByte(')')
 	return builder.String()
 }

@@ -511,6 +511,18 @@ func (cq *ClassQuery) WithMajorDirection(opts ...func(*MajorDirectionQuery)) *Cl
 
 // GroupBy is used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
+//
+// Example:
+//
+//	var v []struct {
+//		Name string `json:"name,omitempty"`
+//		Count int `json:"count,omitempty"`
+//	}
+//
+//	client.Class.Query().
+//		GroupBy(class.FieldName).
+//		Aggregate(domain.Count()).
+//		Scan(ctx, &v)
 func (cq *ClassQuery) GroupBy(field string, fields ...string) *ClassGroupBy {
 	cq.ctx.Fields = append([]string{field}, fields...)
 	grbuild := &ClassGroupBy{build: cq}
@@ -522,6 +534,16 @@ func (cq *ClassQuery) GroupBy(field string, fields ...string) *ClassGroupBy {
 
 // Select allows the selection one or more fields/columns for the given query,
 // instead of selecting all fields in the entity.
+//
+// Example:
+//
+//	var v []struct {
+//		Name string `json:"name,omitempty"`
+//	}
+//
+//	client.Class.Query().
+//		Select(class.FieldName).
+//		Scan(ctx, &v)
 func (cq *ClassQuery) Select(fields ...string) *ClassSelect {
 	cq.ctx.Fields = append(cq.ctx.Fields, fields...)
 	sbuild := &ClassSelect{ClassQuery: cq}

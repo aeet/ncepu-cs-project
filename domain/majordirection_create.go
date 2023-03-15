@@ -4,6 +4,7 @@ package domain
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -17,6 +18,12 @@ type MajorDirectionCreate struct {
 	config
 	mutation *MajorDirectionMutation
 	hooks    []Hook
+}
+
+// SetName sets the "name" field.
+func (mdc *MajorDirectionCreate) SetName(s string) *MajorDirectionCreate {
+	mdc.mutation.SetName(s)
+	return mdc
 }
 
 // SetClassID sets the "class" edge to the Class entity by ID.
@@ -72,6 +79,9 @@ func (mdc *MajorDirectionCreate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (mdc *MajorDirectionCreate) check() error {
+	if _, ok := mdc.mutation.Name(); !ok {
+		return &ValidationError{Name: "name", err: errors.New(`domain: missing required field "MajorDirection.name"`)}
+	}
 	return nil
 }
 
@@ -98,6 +108,10 @@ func (mdc *MajorDirectionCreate) createSpec() (*MajorDirection, *sqlgraph.Create
 		_node = &MajorDirection{config: mdc.config}
 		_spec = sqlgraph.NewCreateSpec(majordirection.Table, sqlgraph.NewFieldSpec(majordirection.FieldID, field.TypeInt))
 	)
+	if value, ok := mdc.mutation.Name(); ok {
+		_spec.SetField(majordirection.FieldName, field.TypeString, value)
+		_node.Name = value
+	}
 	if nodes := mdc.mutation.ClassIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2O,

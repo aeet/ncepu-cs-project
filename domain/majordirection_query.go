@@ -294,6 +294,18 @@ func (mdq *MajorDirectionQuery) WithClass(opts ...func(*ClassQuery)) *MajorDirec
 
 // GroupBy is used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
+//
+// Example:
+//
+//	var v []struct {
+//		Name string `json:"name,omitempty"`
+//		Count int `json:"count,omitempty"`
+//	}
+//
+//	client.MajorDirection.Query().
+//		GroupBy(majordirection.FieldName).
+//		Aggregate(domain.Count()).
+//		Scan(ctx, &v)
 func (mdq *MajorDirectionQuery) GroupBy(field string, fields ...string) *MajorDirectionGroupBy {
 	mdq.ctx.Fields = append([]string{field}, fields...)
 	grbuild := &MajorDirectionGroupBy{build: mdq}
@@ -305,6 +317,16 @@ func (mdq *MajorDirectionQuery) GroupBy(field string, fields ...string) *MajorDi
 
 // Select allows the selection one or more fields/columns for the given query,
 // instead of selecting all fields in the entity.
+//
+// Example:
+//
+//	var v []struct {
+//		Name string `json:"name,omitempty"`
+//	}
+//
+//	client.MajorDirection.Query().
+//		Select(majordirection.FieldName).
+//		Scan(ctx, &v)
 func (mdq *MajorDirectionQuery) Select(fields ...string) *MajorDirectionSelect {
 	mdq.ctx.Fields = append(mdq.ctx.Fields, fields...)
 	sbuild := &MajorDirectionSelect{MajorDirectionQuery: mdq}

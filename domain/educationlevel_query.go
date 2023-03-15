@@ -294,6 +294,18 @@ func (elq *EducationLevelQuery) WithStudent(opts ...func(*StudentQuery)) *Educat
 
 // GroupBy is used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
+//
+// Example:
+//
+//	var v []struct {
+//		Name string `json:"name,omitempty"`
+//		Count int `json:"count,omitempty"`
+//	}
+//
+//	client.EducationLevel.Query().
+//		GroupBy(educationlevel.FieldName).
+//		Aggregate(domain.Count()).
+//		Scan(ctx, &v)
 func (elq *EducationLevelQuery) GroupBy(field string, fields ...string) *EducationLevelGroupBy {
 	elq.ctx.Fields = append([]string{field}, fields...)
 	grbuild := &EducationLevelGroupBy{build: elq}
@@ -305,6 +317,16 @@ func (elq *EducationLevelQuery) GroupBy(field string, fields ...string) *Educati
 
 // Select allows the selection one or more fields/columns for the given query,
 // instead of selecting all fields in the entity.
+//
+// Example:
+//
+//	var v []struct {
+//		Name string `json:"name,omitempty"`
+//	}
+//
+//	client.EducationLevel.Query().
+//		Select(educationlevel.FieldName).
+//		Scan(ctx, &v)
 func (elq *EducationLevelQuery) Select(fields ...string) *EducationLevelSelect {
 	elq.ctx.Fields = append(elq.ctx.Fields, fields...)
 	sbuild := &EducationLevelSelect{EducationLevelQuery: elq}

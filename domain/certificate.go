@@ -5,6 +5,7 @@ package domain
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"github.com/devcui/ncepu-cs-project/domain/certificate"
@@ -13,9 +14,29 @@ import (
 
 // Certificate is the model entity for the Certificate schema.
 type Certificate struct {
-	config
+	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// 证书名称
+	Name string `json:"name,omitempty"`
+	// 证书代码
+	Code string `json:"code,omitempty"`
+	// 证书描述
+	Description string `json:"description,omitempty"`
+	// 颁发部门
+	Department string `json:"department,omitempty"`
+	// 颁发日期
+	IssueDate time.Time `json:"issue_date,omitempty"`
+	// 证书类型
+	CertificateType string `json:"certificate_type,omitempty"`
+	// 证书级别
+	CertificateLevel string `json:"certificate_level,omitempty"`
+	// 证书类别
+	CertificateType2 string `json:"certificate_type2,omitempty"`
+	// 获奖类别
+	AwardCategory string `json:"award_category,omitempty"`
+	// 证书图片
+	CertificateImage []byte `json:"certificate_image,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the CertificateQuery when eager-loading is set.
 	Edges               CertificateEdges `json:"edges"`
@@ -49,8 +70,14 @@ func (*Certificate) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
+		case certificate.FieldCertificateImage:
+			values[i] = new([]byte)
 		case certificate.FieldID:
 			values[i] = new(sql.NullInt64)
+		case certificate.FieldName, certificate.FieldCode, certificate.FieldDescription, certificate.FieldDepartment, certificate.FieldCertificateType, certificate.FieldCertificateLevel, certificate.FieldCertificateType2, certificate.FieldAwardCategory:
+			values[i] = new(sql.NullString)
+		case certificate.FieldIssueDate:
+			values[i] = new(sql.NullTime)
 		case certificate.ForeignKeys[0]: // certificate_student
 			values[i] = new(sql.NullInt64)
 		default:
@@ -74,6 +101,66 @@ func (c *Certificate) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			c.ID = int(value.Int64)
+		case certificate.FieldName:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field name", values[i])
+			} else if value.Valid {
+				c.Name = value.String
+			}
+		case certificate.FieldCode:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field code", values[i])
+			} else if value.Valid {
+				c.Code = value.String
+			}
+		case certificate.FieldDescription:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field description", values[i])
+			} else if value.Valid {
+				c.Description = value.String
+			}
+		case certificate.FieldDepartment:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field department", values[i])
+			} else if value.Valid {
+				c.Department = value.String
+			}
+		case certificate.FieldIssueDate:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field issue_date", values[i])
+			} else if value.Valid {
+				c.IssueDate = value.Time
+			}
+		case certificate.FieldCertificateType:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field certificate_type", values[i])
+			} else if value.Valid {
+				c.CertificateType = value.String
+			}
+		case certificate.FieldCertificateLevel:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field certificate_level", values[i])
+			} else if value.Valid {
+				c.CertificateLevel = value.String
+			}
+		case certificate.FieldCertificateType2:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field certificate_type2", values[i])
+			} else if value.Valid {
+				c.CertificateType2 = value.String
+			}
+		case certificate.FieldAwardCategory:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field award_category", values[i])
+			} else if value.Valid {
+				c.AwardCategory = value.String
+			}
+		case certificate.FieldCertificateImage:
+			if value, ok := values[i].(*[]byte); !ok {
+				return fmt.Errorf("unexpected type %T for field certificate_image", values[i])
+			} else if value != nil {
+				c.CertificateImage = *value
+			}
 		case certificate.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for edge-field certificate_student", value)
@@ -113,7 +200,36 @@ func (c *Certificate) Unwrap() *Certificate {
 func (c *Certificate) String() string {
 	var builder strings.Builder
 	builder.WriteString("Certificate(")
-	builder.WriteString(fmt.Sprintf("id=%v", c.ID))
+	builder.WriteString(fmt.Sprintf("id=%v, ", c.ID))
+	builder.WriteString("name=")
+	builder.WriteString(c.Name)
+	builder.WriteString(", ")
+	builder.WriteString("code=")
+	builder.WriteString(c.Code)
+	builder.WriteString(", ")
+	builder.WriteString("description=")
+	builder.WriteString(c.Description)
+	builder.WriteString(", ")
+	builder.WriteString("department=")
+	builder.WriteString(c.Department)
+	builder.WriteString(", ")
+	builder.WriteString("issue_date=")
+	builder.WriteString(c.IssueDate.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("certificate_type=")
+	builder.WriteString(c.CertificateType)
+	builder.WriteString(", ")
+	builder.WriteString("certificate_level=")
+	builder.WriteString(c.CertificateLevel)
+	builder.WriteString(", ")
+	builder.WriteString("certificate_type2=")
+	builder.WriteString(c.CertificateType2)
+	builder.WriteString(", ")
+	builder.WriteString("award_category=")
+	builder.WriteString(c.AwardCategory)
+	builder.WriteString(", ")
+	builder.WriteString("certificate_image=")
+	builder.WriteString(fmt.Sprintf("%v", c.CertificateImage))
 	builder.WriteByte(')')
 	return builder.String()
 }

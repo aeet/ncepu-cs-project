@@ -7,6 +7,24 @@ const (
 	Label = "family_info"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldName holds the string denoting the name field in the database.
+	FieldName = "name"
+	// FieldRelationship holds the string denoting the relationship field in the database.
+	FieldRelationship = "relationship"
+	// FieldIDCard holds the string denoting the id_card field in the database.
+	FieldIDCard = "id_card"
+	// FieldAge holds the string denoting the age field in the database.
+	FieldAge = "age"
+	// FieldOccupation holds the string denoting the occupation field in the database.
+	FieldOccupation = "occupation"
+	// FieldPost holds the string denoting the post field in the database.
+	FieldPost = "post"
+	// FieldWorkUnit holds the string denoting the work_unit field in the database.
+	FieldWorkUnit = "work_unit"
+	// FieldContactNumber holds the string denoting the contact_number field in the database.
+	FieldContactNumber = "contact_number"
+	// FieldHealth holds the string denoting the health field in the database.
+	FieldHealth = "health"
 	// EdgeStudent holds the string denoting the student edge name in mutations.
 	EdgeStudent = "student"
 	// Table holds the table name of the familyinfo in the database.
@@ -23,6 +41,15 @@ const (
 // Columns holds all SQL columns for familyinfo fields.
 var Columns = []string{
 	FieldID,
+	FieldName,
+	FieldRelationship,
+	FieldIDCard,
+	FieldAge,
+	FieldOccupation,
+	FieldPost,
+	FieldWorkUnit,
+	FieldContactNumber,
+	FieldHealth,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the "family_infos"

@@ -48,6 +48,30 @@ func (mu *MajorUpdate) SetDescription(s string) *MajorUpdate {
 	return mu
 }
 
+// SetSpecialType sets the "special_type" field.
+func (mu *MajorUpdate) SetSpecialType(s string) *MajorUpdate {
+	mu.mutation.SetSpecialType(s)
+	return mu
+}
+
+// SetEnrollmentType sets the "enrollment_type" field.
+func (mu *MajorUpdate) SetEnrollmentType(s string) *MajorUpdate {
+	mu.mutation.SetEnrollmentType(s)
+	return mu
+}
+
+// SetIsMajorCategory sets the "is_major_category" field.
+func (mu *MajorUpdate) SetIsMajorCategory(b bool) *MajorUpdate {
+	mu.mutation.SetIsMajorCategory(b)
+	return mu
+}
+
+// SetMajorCategory sets the "major_category" field.
+func (mu *MajorUpdate) SetMajorCategory(s string) *MajorUpdate {
+	mu.mutation.SetMajorCategory(s)
+	return mu
+}
+
 // SetDepartmentID sets the "department" edge to the Department entity by ID.
 func (mu *MajorUpdate) SetDepartmentID(id int) *MajorUpdate {
 	mu.mutation.SetDepartmentID(id)
@@ -194,6 +218,18 @@ func (mu *MajorUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := mu.mutation.Description(); ok {
 		_spec.SetField(major.FieldDescription, field.TypeString, value)
+	}
+	if value, ok := mu.mutation.SpecialType(); ok {
+		_spec.SetField(major.FieldSpecialType, field.TypeString, value)
+	}
+	if value, ok := mu.mutation.EnrollmentType(); ok {
+		_spec.SetField(major.FieldEnrollmentType, field.TypeString, value)
+	}
+	if value, ok := mu.mutation.IsMajorCategory(); ok {
+		_spec.SetField(major.FieldIsMajorCategory, field.TypeBool, value)
+	}
+	if value, ok := mu.mutation.MajorCategory(); ok {
+		_spec.SetField(major.FieldMajorCategory, field.TypeString, value)
 	}
 	if mu.mutation.DepartmentCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -349,6 +385,30 @@ func (muo *MajorUpdateOne) SetCode(s string) *MajorUpdateOne {
 // SetDescription sets the "description" field.
 func (muo *MajorUpdateOne) SetDescription(s string) *MajorUpdateOne {
 	muo.mutation.SetDescription(s)
+	return muo
+}
+
+// SetSpecialType sets the "special_type" field.
+func (muo *MajorUpdateOne) SetSpecialType(s string) *MajorUpdateOne {
+	muo.mutation.SetSpecialType(s)
+	return muo
+}
+
+// SetEnrollmentType sets the "enrollment_type" field.
+func (muo *MajorUpdateOne) SetEnrollmentType(s string) *MajorUpdateOne {
+	muo.mutation.SetEnrollmentType(s)
+	return muo
+}
+
+// SetIsMajorCategory sets the "is_major_category" field.
+func (muo *MajorUpdateOne) SetIsMajorCategory(b bool) *MajorUpdateOne {
+	muo.mutation.SetIsMajorCategory(b)
+	return muo
+}
+
+// SetMajorCategory sets the "major_category" field.
+func (muo *MajorUpdateOne) SetMajorCategory(s string) *MajorUpdateOne {
+	muo.mutation.SetMajorCategory(s)
 	return muo
 }
 
@@ -528,6 +588,18 @@ func (muo *MajorUpdateOne) sqlSave(ctx context.Context) (_node *Major, err error
 	}
 	if value, ok := muo.mutation.Description(); ok {
 		_spec.SetField(major.FieldDescription, field.TypeString, value)
+	}
+	if value, ok := muo.mutation.SpecialType(); ok {
+		_spec.SetField(major.FieldSpecialType, field.TypeString, value)
+	}
+	if value, ok := muo.mutation.EnrollmentType(); ok {
+		_spec.SetField(major.FieldEnrollmentType, field.TypeString, value)
+	}
+	if value, ok := muo.mutation.IsMajorCategory(); ok {
+		_spec.SetField(major.FieldIsMajorCategory, field.TypeBool, value)
+	}
+	if value, ok := muo.mutation.MajorCategory(); ok {
+		_spec.SetField(major.FieldMajorCategory, field.TypeString, value)
 	}
 	if muo.mutation.DepartmentCleared() {
 		edge := &sqlgraph.EdgeSpec{

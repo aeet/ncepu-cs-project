@@ -13,9 +13,11 @@ import (
 
 // EnrollmentStatus is the model entity for the EnrollmentStatus schema.
 type EnrollmentStatus struct {
-	config
+	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// 学籍状态名称
+	Name string `json:"name,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the EnrollmentStatusQuery when eager-loading is set.
 	Edges                     EnrollmentStatusEdges `json:"edges"`
@@ -51,6 +53,8 @@ func (*EnrollmentStatus) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case enrollmentstatus.FieldID:
 			values[i] = new(sql.NullInt64)
+		case enrollmentstatus.FieldName:
+			values[i] = new(sql.NullString)
 		case enrollmentstatus.ForeignKeys[0]: // enrollment_status_student
 			values[i] = new(sql.NullInt64)
 		default:
@@ -74,6 +78,12 @@ func (es *EnrollmentStatus) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			es.ID = int(value.Int64)
+		case enrollmentstatus.FieldName:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field name", values[i])
+			} else if value.Valid {
+				es.Name = value.String
+			}
 		case enrollmentstatus.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for edge-field enrollment_status_student", value)
@@ -113,7 +123,9 @@ func (es *EnrollmentStatus) Unwrap() *EnrollmentStatus {
 func (es *EnrollmentStatus) String() string {
 	var builder strings.Builder
 	builder.WriteString("EnrollmentStatus(")
-	builder.WriteString(fmt.Sprintf("id=%v", es.ID))
+	builder.WriteString(fmt.Sprintf("id=%v, ", es.ID))
+	builder.WriteString("name=")
+	builder.WriteString(es.Name)
 	builder.WriteByte(')')
 	return builder.String()
 }

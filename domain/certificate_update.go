@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -25,6 +26,66 @@ type CertificateUpdate struct {
 // Where appends a list predicates to the CertificateUpdate builder.
 func (cu *CertificateUpdate) Where(ps ...predicate.Certificate) *CertificateUpdate {
 	cu.mutation.Where(ps...)
+	return cu
+}
+
+// SetName sets the "name" field.
+func (cu *CertificateUpdate) SetName(s string) *CertificateUpdate {
+	cu.mutation.SetName(s)
+	return cu
+}
+
+// SetCode sets the "code" field.
+func (cu *CertificateUpdate) SetCode(s string) *CertificateUpdate {
+	cu.mutation.SetCode(s)
+	return cu
+}
+
+// SetDescription sets the "description" field.
+func (cu *CertificateUpdate) SetDescription(s string) *CertificateUpdate {
+	cu.mutation.SetDescription(s)
+	return cu
+}
+
+// SetDepartment sets the "department" field.
+func (cu *CertificateUpdate) SetDepartment(s string) *CertificateUpdate {
+	cu.mutation.SetDepartment(s)
+	return cu
+}
+
+// SetIssueDate sets the "issue_date" field.
+func (cu *CertificateUpdate) SetIssueDate(t time.Time) *CertificateUpdate {
+	cu.mutation.SetIssueDate(t)
+	return cu
+}
+
+// SetCertificateType sets the "certificate_type" field.
+func (cu *CertificateUpdate) SetCertificateType(s string) *CertificateUpdate {
+	cu.mutation.SetCertificateType(s)
+	return cu
+}
+
+// SetCertificateLevel sets the "certificate_level" field.
+func (cu *CertificateUpdate) SetCertificateLevel(s string) *CertificateUpdate {
+	cu.mutation.SetCertificateLevel(s)
+	return cu
+}
+
+// SetCertificateType2 sets the "certificate_type2" field.
+func (cu *CertificateUpdate) SetCertificateType2(s string) *CertificateUpdate {
+	cu.mutation.SetCertificateType2(s)
+	return cu
+}
+
+// SetAwardCategory sets the "award_category" field.
+func (cu *CertificateUpdate) SetAwardCategory(s string) *CertificateUpdate {
+	cu.mutation.SetAwardCategory(s)
+	return cu
+}
+
+// SetCertificateImage sets the "certificate_image" field.
+func (cu *CertificateUpdate) SetCertificateImage(b []byte) *CertificateUpdate {
+	cu.mutation.SetCertificateImage(b)
 	return cu
 }
 
@@ -94,6 +155,36 @@ func (cu *CertificateUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
+	if value, ok := cu.mutation.Name(); ok {
+		_spec.SetField(certificate.FieldName, field.TypeString, value)
+	}
+	if value, ok := cu.mutation.Code(); ok {
+		_spec.SetField(certificate.FieldCode, field.TypeString, value)
+	}
+	if value, ok := cu.mutation.Description(); ok {
+		_spec.SetField(certificate.FieldDescription, field.TypeString, value)
+	}
+	if value, ok := cu.mutation.Department(); ok {
+		_spec.SetField(certificate.FieldDepartment, field.TypeString, value)
+	}
+	if value, ok := cu.mutation.IssueDate(); ok {
+		_spec.SetField(certificate.FieldIssueDate, field.TypeTime, value)
+	}
+	if value, ok := cu.mutation.CertificateType(); ok {
+		_spec.SetField(certificate.FieldCertificateType, field.TypeString, value)
+	}
+	if value, ok := cu.mutation.CertificateLevel(); ok {
+		_spec.SetField(certificate.FieldCertificateLevel, field.TypeString, value)
+	}
+	if value, ok := cu.mutation.CertificateType2(); ok {
+		_spec.SetField(certificate.FieldCertificateType2, field.TypeString, value)
+	}
+	if value, ok := cu.mutation.AwardCategory(); ok {
+		_spec.SetField(certificate.FieldAwardCategory, field.TypeString, value)
+	}
+	if value, ok := cu.mutation.CertificateImage(); ok {
+		_spec.SetField(certificate.FieldCertificateImage, field.TypeBytes, value)
+	}
 	if cu.mutation.StudentCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
@@ -141,6 +232,66 @@ type CertificateUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *CertificateMutation
+}
+
+// SetName sets the "name" field.
+func (cuo *CertificateUpdateOne) SetName(s string) *CertificateUpdateOne {
+	cuo.mutation.SetName(s)
+	return cuo
+}
+
+// SetCode sets the "code" field.
+func (cuo *CertificateUpdateOne) SetCode(s string) *CertificateUpdateOne {
+	cuo.mutation.SetCode(s)
+	return cuo
+}
+
+// SetDescription sets the "description" field.
+func (cuo *CertificateUpdateOne) SetDescription(s string) *CertificateUpdateOne {
+	cuo.mutation.SetDescription(s)
+	return cuo
+}
+
+// SetDepartment sets the "department" field.
+func (cuo *CertificateUpdateOne) SetDepartment(s string) *CertificateUpdateOne {
+	cuo.mutation.SetDepartment(s)
+	return cuo
+}
+
+// SetIssueDate sets the "issue_date" field.
+func (cuo *CertificateUpdateOne) SetIssueDate(t time.Time) *CertificateUpdateOne {
+	cuo.mutation.SetIssueDate(t)
+	return cuo
+}
+
+// SetCertificateType sets the "certificate_type" field.
+func (cuo *CertificateUpdateOne) SetCertificateType(s string) *CertificateUpdateOne {
+	cuo.mutation.SetCertificateType(s)
+	return cuo
+}
+
+// SetCertificateLevel sets the "certificate_level" field.
+func (cuo *CertificateUpdateOne) SetCertificateLevel(s string) *CertificateUpdateOne {
+	cuo.mutation.SetCertificateLevel(s)
+	return cuo
+}
+
+// SetCertificateType2 sets the "certificate_type2" field.
+func (cuo *CertificateUpdateOne) SetCertificateType2(s string) *CertificateUpdateOne {
+	cuo.mutation.SetCertificateType2(s)
+	return cuo
+}
+
+// SetAwardCategory sets the "award_category" field.
+func (cuo *CertificateUpdateOne) SetAwardCategory(s string) *CertificateUpdateOne {
+	cuo.mutation.SetAwardCategory(s)
+	return cuo
+}
+
+// SetCertificateImage sets the "certificate_image" field.
+func (cuo *CertificateUpdateOne) SetCertificateImage(b []byte) *CertificateUpdateOne {
+	cuo.mutation.SetCertificateImage(b)
+	return cuo
 }
 
 // SetStudentID sets the "student" edge to the Student entity by ID.
@@ -238,6 +389,36 @@ func (cuo *CertificateUpdateOne) sqlSave(ctx context.Context) (_node *Certificat
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := cuo.mutation.Name(); ok {
+		_spec.SetField(certificate.FieldName, field.TypeString, value)
+	}
+	if value, ok := cuo.mutation.Code(); ok {
+		_spec.SetField(certificate.FieldCode, field.TypeString, value)
+	}
+	if value, ok := cuo.mutation.Description(); ok {
+		_spec.SetField(certificate.FieldDescription, field.TypeString, value)
+	}
+	if value, ok := cuo.mutation.Department(); ok {
+		_spec.SetField(certificate.FieldDepartment, field.TypeString, value)
+	}
+	if value, ok := cuo.mutation.IssueDate(); ok {
+		_spec.SetField(certificate.FieldIssueDate, field.TypeTime, value)
+	}
+	if value, ok := cuo.mutation.CertificateType(); ok {
+		_spec.SetField(certificate.FieldCertificateType, field.TypeString, value)
+	}
+	if value, ok := cuo.mutation.CertificateLevel(); ok {
+		_spec.SetField(certificate.FieldCertificateLevel, field.TypeString, value)
+	}
+	if value, ok := cuo.mutation.CertificateType2(); ok {
+		_spec.SetField(certificate.FieldCertificateType2, field.TypeString, value)
+	}
+	if value, ok := cuo.mutation.AwardCategory(); ok {
+		_spec.SetField(certificate.FieldAwardCategory, field.TypeString, value)
+	}
+	if value, ok := cuo.mutation.CertificateImage(); ok {
+		_spec.SetField(certificate.FieldCertificateImage, field.TypeBytes, value)
 	}
 	if cuo.mutation.StudentCleared() {
 		edge := &sqlgraph.EdgeSpec{

@@ -53,6 +53,636 @@ func IDLTE(id int) predicate.FamilyInfo {
 	return predicate.FamilyInfo(sql.FieldLTE(FieldID, id))
 }
 
+// Name applies equality check predicate on the "name" field. It's identical to NameEQ.
+func Name(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldEQ(FieldName, v))
+}
+
+// Relationship applies equality check predicate on the "relationship" field. It's identical to RelationshipEQ.
+func Relationship(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldEQ(FieldRelationship, v))
+}
+
+// IDCard applies equality check predicate on the "id_card" field. It's identical to IDCardEQ.
+func IDCard(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldEQ(FieldIDCard, v))
+}
+
+// Age applies equality check predicate on the "age" field. It's identical to AgeEQ.
+func Age(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldEQ(FieldAge, v))
+}
+
+// Occupation applies equality check predicate on the "occupation" field. It's identical to OccupationEQ.
+func Occupation(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldEQ(FieldOccupation, v))
+}
+
+// Post applies equality check predicate on the "post" field. It's identical to PostEQ.
+func Post(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldEQ(FieldPost, v))
+}
+
+// WorkUnit applies equality check predicate on the "work_unit" field. It's identical to WorkUnitEQ.
+func WorkUnit(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldEQ(FieldWorkUnit, v))
+}
+
+// ContactNumber applies equality check predicate on the "contact_number" field. It's identical to ContactNumberEQ.
+func ContactNumber(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldEQ(FieldContactNumber, v))
+}
+
+// Health applies equality check predicate on the "health" field. It's identical to HealthEQ.
+func Health(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldEQ(FieldHealth, v))
+}
+
+// NameEQ applies the EQ predicate on the "name" field.
+func NameEQ(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldEQ(FieldName, v))
+}
+
+// NameNEQ applies the NEQ predicate on the "name" field.
+func NameNEQ(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldNEQ(FieldName, v))
+}
+
+// NameIn applies the In predicate on the "name" field.
+func NameIn(vs ...string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldIn(FieldName, vs...))
+}
+
+// NameNotIn applies the NotIn predicate on the "name" field.
+func NameNotIn(vs ...string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldNotIn(FieldName, vs...))
+}
+
+// NameGT applies the GT predicate on the "name" field.
+func NameGT(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldGT(FieldName, v))
+}
+
+// NameGTE applies the GTE predicate on the "name" field.
+func NameGTE(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldGTE(FieldName, v))
+}
+
+// NameLT applies the LT predicate on the "name" field.
+func NameLT(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldLT(FieldName, v))
+}
+
+// NameLTE applies the LTE predicate on the "name" field.
+func NameLTE(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldLTE(FieldName, v))
+}
+
+// NameContains applies the Contains predicate on the "name" field.
+func NameContains(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldContains(FieldName, v))
+}
+
+// NameHasPrefix applies the HasPrefix predicate on the "name" field.
+func NameHasPrefix(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldHasPrefix(FieldName, v))
+}
+
+// NameHasSuffix applies the HasSuffix predicate on the "name" field.
+func NameHasSuffix(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldHasSuffix(FieldName, v))
+}
+
+// NameEqualFold applies the EqualFold predicate on the "name" field.
+func NameEqualFold(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldEqualFold(FieldName, v))
+}
+
+// NameContainsFold applies the ContainsFold predicate on the "name" field.
+func NameContainsFold(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldContainsFold(FieldName, v))
+}
+
+// RelationshipEQ applies the EQ predicate on the "relationship" field.
+func RelationshipEQ(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldEQ(FieldRelationship, v))
+}
+
+// RelationshipNEQ applies the NEQ predicate on the "relationship" field.
+func RelationshipNEQ(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldNEQ(FieldRelationship, v))
+}
+
+// RelationshipIn applies the In predicate on the "relationship" field.
+func RelationshipIn(vs ...string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldIn(FieldRelationship, vs...))
+}
+
+// RelationshipNotIn applies the NotIn predicate on the "relationship" field.
+func RelationshipNotIn(vs ...string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldNotIn(FieldRelationship, vs...))
+}
+
+// RelationshipGT applies the GT predicate on the "relationship" field.
+func RelationshipGT(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldGT(FieldRelationship, v))
+}
+
+// RelationshipGTE applies the GTE predicate on the "relationship" field.
+func RelationshipGTE(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldGTE(FieldRelationship, v))
+}
+
+// RelationshipLT applies the LT predicate on the "relationship" field.
+func RelationshipLT(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldLT(FieldRelationship, v))
+}
+
+// RelationshipLTE applies the LTE predicate on the "relationship" field.
+func RelationshipLTE(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldLTE(FieldRelationship, v))
+}
+
+// RelationshipContains applies the Contains predicate on the "relationship" field.
+func RelationshipContains(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldContains(FieldRelationship, v))
+}
+
+// RelationshipHasPrefix applies the HasPrefix predicate on the "relationship" field.
+func RelationshipHasPrefix(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldHasPrefix(FieldRelationship, v))
+}
+
+// RelationshipHasSuffix applies the HasSuffix predicate on the "relationship" field.
+func RelationshipHasSuffix(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldHasSuffix(FieldRelationship, v))
+}
+
+// RelationshipEqualFold applies the EqualFold predicate on the "relationship" field.
+func RelationshipEqualFold(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldEqualFold(FieldRelationship, v))
+}
+
+// RelationshipContainsFold applies the ContainsFold predicate on the "relationship" field.
+func RelationshipContainsFold(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldContainsFold(FieldRelationship, v))
+}
+
+// IDCardEQ applies the EQ predicate on the "id_card" field.
+func IDCardEQ(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldEQ(FieldIDCard, v))
+}
+
+// IDCardNEQ applies the NEQ predicate on the "id_card" field.
+func IDCardNEQ(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldNEQ(FieldIDCard, v))
+}
+
+// IDCardIn applies the In predicate on the "id_card" field.
+func IDCardIn(vs ...string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldIn(FieldIDCard, vs...))
+}
+
+// IDCardNotIn applies the NotIn predicate on the "id_card" field.
+func IDCardNotIn(vs ...string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldNotIn(FieldIDCard, vs...))
+}
+
+// IDCardGT applies the GT predicate on the "id_card" field.
+func IDCardGT(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldGT(FieldIDCard, v))
+}
+
+// IDCardGTE applies the GTE predicate on the "id_card" field.
+func IDCardGTE(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldGTE(FieldIDCard, v))
+}
+
+// IDCardLT applies the LT predicate on the "id_card" field.
+func IDCardLT(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldLT(FieldIDCard, v))
+}
+
+// IDCardLTE applies the LTE predicate on the "id_card" field.
+func IDCardLTE(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldLTE(FieldIDCard, v))
+}
+
+// IDCardContains applies the Contains predicate on the "id_card" field.
+func IDCardContains(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldContains(FieldIDCard, v))
+}
+
+// IDCardHasPrefix applies the HasPrefix predicate on the "id_card" field.
+func IDCardHasPrefix(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldHasPrefix(FieldIDCard, v))
+}
+
+// IDCardHasSuffix applies the HasSuffix predicate on the "id_card" field.
+func IDCardHasSuffix(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldHasSuffix(FieldIDCard, v))
+}
+
+// IDCardEqualFold applies the EqualFold predicate on the "id_card" field.
+func IDCardEqualFold(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldEqualFold(FieldIDCard, v))
+}
+
+// IDCardContainsFold applies the ContainsFold predicate on the "id_card" field.
+func IDCardContainsFold(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldContainsFold(FieldIDCard, v))
+}
+
+// AgeEQ applies the EQ predicate on the "age" field.
+func AgeEQ(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldEQ(FieldAge, v))
+}
+
+// AgeNEQ applies the NEQ predicate on the "age" field.
+func AgeNEQ(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldNEQ(FieldAge, v))
+}
+
+// AgeIn applies the In predicate on the "age" field.
+func AgeIn(vs ...string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldIn(FieldAge, vs...))
+}
+
+// AgeNotIn applies the NotIn predicate on the "age" field.
+func AgeNotIn(vs ...string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldNotIn(FieldAge, vs...))
+}
+
+// AgeGT applies the GT predicate on the "age" field.
+func AgeGT(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldGT(FieldAge, v))
+}
+
+// AgeGTE applies the GTE predicate on the "age" field.
+func AgeGTE(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldGTE(FieldAge, v))
+}
+
+// AgeLT applies the LT predicate on the "age" field.
+func AgeLT(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldLT(FieldAge, v))
+}
+
+// AgeLTE applies the LTE predicate on the "age" field.
+func AgeLTE(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldLTE(FieldAge, v))
+}
+
+// AgeContains applies the Contains predicate on the "age" field.
+func AgeContains(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldContains(FieldAge, v))
+}
+
+// AgeHasPrefix applies the HasPrefix predicate on the "age" field.
+func AgeHasPrefix(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldHasPrefix(FieldAge, v))
+}
+
+// AgeHasSuffix applies the HasSuffix predicate on the "age" field.
+func AgeHasSuffix(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldHasSuffix(FieldAge, v))
+}
+
+// AgeEqualFold applies the EqualFold predicate on the "age" field.
+func AgeEqualFold(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldEqualFold(FieldAge, v))
+}
+
+// AgeContainsFold applies the ContainsFold predicate on the "age" field.
+func AgeContainsFold(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldContainsFold(FieldAge, v))
+}
+
+// OccupationEQ applies the EQ predicate on the "occupation" field.
+func OccupationEQ(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldEQ(FieldOccupation, v))
+}
+
+// OccupationNEQ applies the NEQ predicate on the "occupation" field.
+func OccupationNEQ(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldNEQ(FieldOccupation, v))
+}
+
+// OccupationIn applies the In predicate on the "occupation" field.
+func OccupationIn(vs ...string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldIn(FieldOccupation, vs...))
+}
+
+// OccupationNotIn applies the NotIn predicate on the "occupation" field.
+func OccupationNotIn(vs ...string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldNotIn(FieldOccupation, vs...))
+}
+
+// OccupationGT applies the GT predicate on the "occupation" field.
+func OccupationGT(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldGT(FieldOccupation, v))
+}
+
+// OccupationGTE applies the GTE predicate on the "occupation" field.
+func OccupationGTE(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldGTE(FieldOccupation, v))
+}
+
+// OccupationLT applies the LT predicate on the "occupation" field.
+func OccupationLT(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldLT(FieldOccupation, v))
+}
+
+// OccupationLTE applies the LTE predicate on the "occupation" field.
+func OccupationLTE(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldLTE(FieldOccupation, v))
+}
+
+// OccupationContains applies the Contains predicate on the "occupation" field.
+func OccupationContains(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldContains(FieldOccupation, v))
+}
+
+// OccupationHasPrefix applies the HasPrefix predicate on the "occupation" field.
+func OccupationHasPrefix(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldHasPrefix(FieldOccupation, v))
+}
+
+// OccupationHasSuffix applies the HasSuffix predicate on the "occupation" field.
+func OccupationHasSuffix(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldHasSuffix(FieldOccupation, v))
+}
+
+// OccupationEqualFold applies the EqualFold predicate on the "occupation" field.
+func OccupationEqualFold(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldEqualFold(FieldOccupation, v))
+}
+
+// OccupationContainsFold applies the ContainsFold predicate on the "occupation" field.
+func OccupationContainsFold(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldContainsFold(FieldOccupation, v))
+}
+
+// PostEQ applies the EQ predicate on the "post" field.
+func PostEQ(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldEQ(FieldPost, v))
+}
+
+// PostNEQ applies the NEQ predicate on the "post" field.
+func PostNEQ(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldNEQ(FieldPost, v))
+}
+
+// PostIn applies the In predicate on the "post" field.
+func PostIn(vs ...string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldIn(FieldPost, vs...))
+}
+
+// PostNotIn applies the NotIn predicate on the "post" field.
+func PostNotIn(vs ...string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldNotIn(FieldPost, vs...))
+}
+
+// PostGT applies the GT predicate on the "post" field.
+func PostGT(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldGT(FieldPost, v))
+}
+
+// PostGTE applies the GTE predicate on the "post" field.
+func PostGTE(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldGTE(FieldPost, v))
+}
+
+// PostLT applies the LT predicate on the "post" field.
+func PostLT(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldLT(FieldPost, v))
+}
+
+// PostLTE applies the LTE predicate on the "post" field.
+func PostLTE(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldLTE(FieldPost, v))
+}
+
+// PostContains applies the Contains predicate on the "post" field.
+func PostContains(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldContains(FieldPost, v))
+}
+
+// PostHasPrefix applies the HasPrefix predicate on the "post" field.
+func PostHasPrefix(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldHasPrefix(FieldPost, v))
+}
+
+// PostHasSuffix applies the HasSuffix predicate on the "post" field.
+func PostHasSuffix(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldHasSuffix(FieldPost, v))
+}
+
+// PostEqualFold applies the EqualFold predicate on the "post" field.
+func PostEqualFold(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldEqualFold(FieldPost, v))
+}
+
+// PostContainsFold applies the ContainsFold predicate on the "post" field.
+func PostContainsFold(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldContainsFold(FieldPost, v))
+}
+
+// WorkUnitEQ applies the EQ predicate on the "work_unit" field.
+func WorkUnitEQ(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldEQ(FieldWorkUnit, v))
+}
+
+// WorkUnitNEQ applies the NEQ predicate on the "work_unit" field.
+func WorkUnitNEQ(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldNEQ(FieldWorkUnit, v))
+}
+
+// WorkUnitIn applies the In predicate on the "work_unit" field.
+func WorkUnitIn(vs ...string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldIn(FieldWorkUnit, vs...))
+}
+
+// WorkUnitNotIn applies the NotIn predicate on the "work_unit" field.
+func WorkUnitNotIn(vs ...string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldNotIn(FieldWorkUnit, vs...))
+}
+
+// WorkUnitGT applies the GT predicate on the "work_unit" field.
+func WorkUnitGT(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldGT(FieldWorkUnit, v))
+}
+
+// WorkUnitGTE applies the GTE predicate on the "work_unit" field.
+func WorkUnitGTE(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldGTE(FieldWorkUnit, v))
+}
+
+// WorkUnitLT applies the LT predicate on the "work_unit" field.
+func WorkUnitLT(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldLT(FieldWorkUnit, v))
+}
+
+// WorkUnitLTE applies the LTE predicate on the "work_unit" field.
+func WorkUnitLTE(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldLTE(FieldWorkUnit, v))
+}
+
+// WorkUnitContains applies the Contains predicate on the "work_unit" field.
+func WorkUnitContains(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldContains(FieldWorkUnit, v))
+}
+
+// WorkUnitHasPrefix applies the HasPrefix predicate on the "work_unit" field.
+func WorkUnitHasPrefix(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldHasPrefix(FieldWorkUnit, v))
+}
+
+// WorkUnitHasSuffix applies the HasSuffix predicate on the "work_unit" field.
+func WorkUnitHasSuffix(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldHasSuffix(FieldWorkUnit, v))
+}
+
+// WorkUnitEqualFold applies the EqualFold predicate on the "work_unit" field.
+func WorkUnitEqualFold(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldEqualFold(FieldWorkUnit, v))
+}
+
+// WorkUnitContainsFold applies the ContainsFold predicate on the "work_unit" field.
+func WorkUnitContainsFold(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldContainsFold(FieldWorkUnit, v))
+}
+
+// ContactNumberEQ applies the EQ predicate on the "contact_number" field.
+func ContactNumberEQ(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldEQ(FieldContactNumber, v))
+}
+
+// ContactNumberNEQ applies the NEQ predicate on the "contact_number" field.
+func ContactNumberNEQ(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldNEQ(FieldContactNumber, v))
+}
+
+// ContactNumberIn applies the In predicate on the "contact_number" field.
+func ContactNumberIn(vs ...string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldIn(FieldContactNumber, vs...))
+}
+
+// ContactNumberNotIn applies the NotIn predicate on the "contact_number" field.
+func ContactNumberNotIn(vs ...string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldNotIn(FieldContactNumber, vs...))
+}
+
+// ContactNumberGT applies the GT predicate on the "contact_number" field.
+func ContactNumberGT(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldGT(FieldContactNumber, v))
+}
+
+// ContactNumberGTE applies the GTE predicate on the "contact_number" field.
+func ContactNumberGTE(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldGTE(FieldContactNumber, v))
+}
+
+// ContactNumberLT applies the LT predicate on the "contact_number" field.
+func ContactNumberLT(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldLT(FieldContactNumber, v))
+}
+
+// ContactNumberLTE applies the LTE predicate on the "contact_number" field.
+func ContactNumberLTE(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldLTE(FieldContactNumber, v))
+}
+
+// ContactNumberContains applies the Contains predicate on the "contact_number" field.
+func ContactNumberContains(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldContains(FieldContactNumber, v))
+}
+
+// ContactNumberHasPrefix applies the HasPrefix predicate on the "contact_number" field.
+func ContactNumberHasPrefix(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldHasPrefix(FieldContactNumber, v))
+}
+
+// ContactNumberHasSuffix applies the HasSuffix predicate on the "contact_number" field.
+func ContactNumberHasSuffix(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldHasSuffix(FieldContactNumber, v))
+}
+
+// ContactNumberEqualFold applies the EqualFold predicate on the "contact_number" field.
+func ContactNumberEqualFold(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldEqualFold(FieldContactNumber, v))
+}
+
+// ContactNumberContainsFold applies the ContainsFold predicate on the "contact_number" field.
+func ContactNumberContainsFold(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldContainsFold(FieldContactNumber, v))
+}
+
+// HealthEQ applies the EQ predicate on the "health" field.
+func HealthEQ(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldEQ(FieldHealth, v))
+}
+
+// HealthNEQ applies the NEQ predicate on the "health" field.
+func HealthNEQ(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldNEQ(FieldHealth, v))
+}
+
+// HealthIn applies the In predicate on the "health" field.
+func HealthIn(vs ...string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldIn(FieldHealth, vs...))
+}
+
+// HealthNotIn applies the NotIn predicate on the "health" field.
+func HealthNotIn(vs ...string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldNotIn(FieldHealth, vs...))
+}
+
+// HealthGT applies the GT predicate on the "health" field.
+func HealthGT(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldGT(FieldHealth, v))
+}
+
+// HealthGTE applies the GTE predicate on the "health" field.
+func HealthGTE(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldGTE(FieldHealth, v))
+}
+
+// HealthLT applies the LT predicate on the "health" field.
+func HealthLT(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldLT(FieldHealth, v))
+}
+
+// HealthLTE applies the LTE predicate on the "health" field.
+func HealthLTE(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldLTE(FieldHealth, v))
+}
+
+// HealthContains applies the Contains predicate on the "health" field.
+func HealthContains(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldContains(FieldHealth, v))
+}
+
+// HealthHasPrefix applies the HasPrefix predicate on the "health" field.
+func HealthHasPrefix(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldHasPrefix(FieldHealth, v))
+}
+
+// HealthHasSuffix applies the HasSuffix predicate on the "health" field.
+func HealthHasSuffix(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldHasSuffix(FieldHealth, v))
+}
+
+// HealthEqualFold applies the EqualFold predicate on the "health" field.
+func HealthEqualFold(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldEqualFold(FieldHealth, v))
+}
+
+// HealthContainsFold applies the ContainsFold predicate on the "health" field.
+func HealthContainsFold(v string) predicate.FamilyInfo {
+	return predicate.FamilyInfo(sql.FieldContainsFold(FieldHealth, v))
+}
+
 // HasStudent applies the HasEdge predicate on the "student" edge.
 func HasStudent() predicate.FamilyInfo {
 	return predicate.FamilyInfo(func(s *sql.Selector) {

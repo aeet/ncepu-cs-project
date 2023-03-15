@@ -4,6 +4,7 @@ package domain
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -17,6 +18,12 @@ type EnrollmentStatusCreate struct {
 	config
 	mutation *EnrollmentStatusMutation
 	hooks    []Hook
+}
+
+// SetName sets the "name" field.
+func (esc *EnrollmentStatusCreate) SetName(s string) *EnrollmentStatusCreate {
+	esc.mutation.SetName(s)
+	return esc
 }
 
 // SetStudentID sets the "student" edge to the Student entity by ID.
@@ -72,6 +79,9 @@ func (esc *EnrollmentStatusCreate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (esc *EnrollmentStatusCreate) check() error {
+	if _, ok := esc.mutation.Name(); !ok {
+		return &ValidationError{Name: "name", err: errors.New(`domain: missing required field "EnrollmentStatus.name"`)}
+	}
 	return nil
 }
 
@@ -98,6 +108,10 @@ func (esc *EnrollmentStatusCreate) createSpec() (*EnrollmentStatus, *sqlgraph.Cr
 		_node = &EnrollmentStatus{config: esc.config}
 		_spec = sqlgraph.NewCreateSpec(enrollmentstatus.Table, sqlgraph.NewFieldSpec(enrollmentstatus.FieldID, field.TypeInt))
 	)
+	if value, ok := esc.mutation.Name(); ok {
+		_spec.SetField(enrollmentstatus.FieldName, field.TypeString, value)
+		_node.Name = value
+	}
 	if nodes := esc.mutation.StudentIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,

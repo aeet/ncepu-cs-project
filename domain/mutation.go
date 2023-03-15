@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"sync"
+	"time"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
@@ -839,6 +840,8 @@ type CampusMutation struct {
 	op            Op
 	typ           string
 	id            *int
+	name          *string
+	address       *string
 	clearedFields map[string]struct{}
 	class         *int
 	clearedclass  bool
@@ -945,6 +948,78 @@ func (m *CampusMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
+// SetName sets the "name" field.
+func (m *CampusMutation) SetName(s string) {
+	m.name = &s
+}
+
+// Name returns the value of the "name" field in the mutation.
+func (m *CampusMutation) Name() (r string, exists bool) {
+	v := m.name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldName returns the old "name" field's value of the Campus entity.
+// If the Campus object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CampusMutation) OldName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldName: %w", err)
+	}
+	return oldValue.Name, nil
+}
+
+// ResetName resets all changes to the "name" field.
+func (m *CampusMutation) ResetName() {
+	m.name = nil
+}
+
+// SetAddress sets the "address" field.
+func (m *CampusMutation) SetAddress(s string) {
+	m.address = &s
+}
+
+// Address returns the value of the "address" field in the mutation.
+func (m *CampusMutation) Address() (r string, exists bool) {
+	v := m.address
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAddress returns the old "address" field's value of the Campus entity.
+// If the Campus object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CampusMutation) OldAddress(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAddress is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAddress requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAddress: %w", err)
+	}
+	return oldValue.Address, nil
+}
+
+// ResetAddress resets all changes to the "address" field.
+func (m *CampusMutation) ResetAddress() {
+	m.address = nil
+}
+
 // SetClassID sets the "class" edge to the Class entity by id.
 func (m *CampusMutation) SetClassID(id int) {
 	m.class = &id
@@ -1018,7 +1093,13 @@ func (m *CampusMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *CampusMutation) Fields() []string {
-	fields := make([]string, 0, 0)
+	fields := make([]string, 0, 2)
+	if m.name != nil {
+		fields = append(fields, campus.FieldName)
+	}
+	if m.address != nil {
+		fields = append(fields, campus.FieldAddress)
+	}
 	return fields
 }
 
@@ -1026,6 +1107,12 @@ func (m *CampusMutation) Fields() []string {
 // return value indicates that this field was not set, or was not defined in the
 // schema.
 func (m *CampusMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case campus.FieldName:
+		return m.Name()
+	case campus.FieldAddress:
+		return m.Address()
+	}
 	return nil, false
 }
 
@@ -1033,6 +1120,12 @@ func (m *CampusMutation) Field(name string) (ent.Value, bool) {
 // returned if the mutation operation is not UpdateOne, or the query to the
 // database failed.
 func (m *CampusMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case campus.FieldName:
+		return m.OldName(ctx)
+	case campus.FieldAddress:
+		return m.OldAddress(ctx)
+	}
 	return nil, fmt.Errorf("unknown Campus field %s", name)
 }
 
@@ -1041,6 +1134,20 @@ func (m *CampusMutation) OldField(ctx context.Context, name string) (ent.Value, 
 // type.
 func (m *CampusMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case campus.FieldName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetName(v)
+		return nil
+	case campus.FieldAddress:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAddress(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Campus field %s", name)
 }
@@ -1062,6 +1169,8 @@ func (m *CampusMutation) AddedField(name string) (ent.Value, bool) {
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
 func (m *CampusMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
 	return fmt.Errorf("unknown Campus numeric field %s", name)
 }
 
@@ -1087,6 +1196,14 @@ func (m *CampusMutation) ClearField(name string) error {
 // ResetField resets all changes in the mutation for the field with the given name.
 // It returns an error if the field is not defined in the schema.
 func (m *CampusMutation) ResetField(name string) error {
+	switch name {
+	case campus.FieldName:
+		m.ResetName()
+		return nil
+	case campus.FieldAddress:
+		m.ResetAddress()
+		return nil
+	}
 	return fmt.Errorf("unknown Campus field %s", name)
 }
 
@@ -1167,15 +1284,25 @@ func (m *CampusMutation) ResetEdge(name string) error {
 // CertificateMutation represents an operation that mutates the Certificate nodes in the graph.
 type CertificateMutation struct {
 	config
-	op             Op
-	typ            string
-	id             *int
-	clearedFields  map[string]struct{}
-	student        *int
-	clearedstudent bool
-	done           bool
-	oldValue       func(context.Context) (*Certificate, error)
-	predicates     []predicate.Certificate
+	op                Op
+	typ               string
+	id                *int
+	name              *string
+	code              *string
+	description       *string
+	department        *string
+	issue_date        *time.Time
+	certificate_type  *string
+	certificate_level *string
+	certificate_type2 *string
+	award_category    *string
+	certificate_image *[]byte
+	clearedFields     map[string]struct{}
+	student           *int
+	clearedstudent    bool
+	done              bool
+	oldValue          func(context.Context) (*Certificate, error)
+	predicates        []predicate.Certificate
 }
 
 var _ ent.Mutation = (*CertificateMutation)(nil)
@@ -1276,6 +1403,366 @@ func (m *CertificateMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
+// SetName sets the "name" field.
+func (m *CertificateMutation) SetName(s string) {
+	m.name = &s
+}
+
+// Name returns the value of the "name" field in the mutation.
+func (m *CertificateMutation) Name() (r string, exists bool) {
+	v := m.name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldName returns the old "name" field's value of the Certificate entity.
+// If the Certificate object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CertificateMutation) OldName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldName: %w", err)
+	}
+	return oldValue.Name, nil
+}
+
+// ResetName resets all changes to the "name" field.
+func (m *CertificateMutation) ResetName() {
+	m.name = nil
+}
+
+// SetCode sets the "code" field.
+func (m *CertificateMutation) SetCode(s string) {
+	m.code = &s
+}
+
+// Code returns the value of the "code" field in the mutation.
+func (m *CertificateMutation) Code() (r string, exists bool) {
+	v := m.code
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCode returns the old "code" field's value of the Certificate entity.
+// If the Certificate object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CertificateMutation) OldCode(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCode is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCode requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCode: %w", err)
+	}
+	return oldValue.Code, nil
+}
+
+// ResetCode resets all changes to the "code" field.
+func (m *CertificateMutation) ResetCode() {
+	m.code = nil
+}
+
+// SetDescription sets the "description" field.
+func (m *CertificateMutation) SetDescription(s string) {
+	m.description = &s
+}
+
+// Description returns the value of the "description" field in the mutation.
+func (m *CertificateMutation) Description() (r string, exists bool) {
+	v := m.description
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDescription returns the old "description" field's value of the Certificate entity.
+// If the Certificate object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CertificateMutation) OldDescription(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDescription is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDescription requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDescription: %w", err)
+	}
+	return oldValue.Description, nil
+}
+
+// ResetDescription resets all changes to the "description" field.
+func (m *CertificateMutation) ResetDescription() {
+	m.description = nil
+}
+
+// SetDepartment sets the "department" field.
+func (m *CertificateMutation) SetDepartment(s string) {
+	m.department = &s
+}
+
+// Department returns the value of the "department" field in the mutation.
+func (m *CertificateMutation) Department() (r string, exists bool) {
+	v := m.department
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDepartment returns the old "department" field's value of the Certificate entity.
+// If the Certificate object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CertificateMutation) OldDepartment(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDepartment is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDepartment requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDepartment: %w", err)
+	}
+	return oldValue.Department, nil
+}
+
+// ResetDepartment resets all changes to the "department" field.
+func (m *CertificateMutation) ResetDepartment() {
+	m.department = nil
+}
+
+// SetIssueDate sets the "issue_date" field.
+func (m *CertificateMutation) SetIssueDate(t time.Time) {
+	m.issue_date = &t
+}
+
+// IssueDate returns the value of the "issue_date" field in the mutation.
+func (m *CertificateMutation) IssueDate() (r time.Time, exists bool) {
+	v := m.issue_date
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIssueDate returns the old "issue_date" field's value of the Certificate entity.
+// If the Certificate object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CertificateMutation) OldIssueDate(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIssueDate is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIssueDate requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIssueDate: %w", err)
+	}
+	return oldValue.IssueDate, nil
+}
+
+// ResetIssueDate resets all changes to the "issue_date" field.
+func (m *CertificateMutation) ResetIssueDate() {
+	m.issue_date = nil
+}
+
+// SetCertificateType sets the "certificate_type" field.
+func (m *CertificateMutation) SetCertificateType(s string) {
+	m.certificate_type = &s
+}
+
+// CertificateType returns the value of the "certificate_type" field in the mutation.
+func (m *CertificateMutation) CertificateType() (r string, exists bool) {
+	v := m.certificate_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCertificateType returns the old "certificate_type" field's value of the Certificate entity.
+// If the Certificate object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CertificateMutation) OldCertificateType(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCertificateType is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCertificateType requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCertificateType: %w", err)
+	}
+	return oldValue.CertificateType, nil
+}
+
+// ResetCertificateType resets all changes to the "certificate_type" field.
+func (m *CertificateMutation) ResetCertificateType() {
+	m.certificate_type = nil
+}
+
+// SetCertificateLevel sets the "certificate_level" field.
+func (m *CertificateMutation) SetCertificateLevel(s string) {
+	m.certificate_level = &s
+}
+
+// CertificateLevel returns the value of the "certificate_level" field in the mutation.
+func (m *CertificateMutation) CertificateLevel() (r string, exists bool) {
+	v := m.certificate_level
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCertificateLevel returns the old "certificate_level" field's value of the Certificate entity.
+// If the Certificate object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CertificateMutation) OldCertificateLevel(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCertificateLevel is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCertificateLevel requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCertificateLevel: %w", err)
+	}
+	return oldValue.CertificateLevel, nil
+}
+
+// ResetCertificateLevel resets all changes to the "certificate_level" field.
+func (m *CertificateMutation) ResetCertificateLevel() {
+	m.certificate_level = nil
+}
+
+// SetCertificateType2 sets the "certificate_type2" field.
+func (m *CertificateMutation) SetCertificateType2(s string) {
+	m.certificate_type2 = &s
+}
+
+// CertificateType2 returns the value of the "certificate_type2" field in the mutation.
+func (m *CertificateMutation) CertificateType2() (r string, exists bool) {
+	v := m.certificate_type2
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCertificateType2 returns the old "certificate_type2" field's value of the Certificate entity.
+// If the Certificate object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CertificateMutation) OldCertificateType2(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCertificateType2 is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCertificateType2 requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCertificateType2: %w", err)
+	}
+	return oldValue.CertificateType2, nil
+}
+
+// ResetCertificateType2 resets all changes to the "certificate_type2" field.
+func (m *CertificateMutation) ResetCertificateType2() {
+	m.certificate_type2 = nil
+}
+
+// SetAwardCategory sets the "award_category" field.
+func (m *CertificateMutation) SetAwardCategory(s string) {
+	m.award_category = &s
+}
+
+// AwardCategory returns the value of the "award_category" field in the mutation.
+func (m *CertificateMutation) AwardCategory() (r string, exists bool) {
+	v := m.award_category
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAwardCategory returns the old "award_category" field's value of the Certificate entity.
+// If the Certificate object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CertificateMutation) OldAwardCategory(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAwardCategory is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAwardCategory requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAwardCategory: %w", err)
+	}
+	return oldValue.AwardCategory, nil
+}
+
+// ResetAwardCategory resets all changes to the "award_category" field.
+func (m *CertificateMutation) ResetAwardCategory() {
+	m.award_category = nil
+}
+
+// SetCertificateImage sets the "certificate_image" field.
+func (m *CertificateMutation) SetCertificateImage(b []byte) {
+	m.certificate_image = &b
+}
+
+// CertificateImage returns the value of the "certificate_image" field in the mutation.
+func (m *CertificateMutation) CertificateImage() (r []byte, exists bool) {
+	v := m.certificate_image
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCertificateImage returns the old "certificate_image" field's value of the Certificate entity.
+// If the Certificate object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CertificateMutation) OldCertificateImage(ctx context.Context) (v []byte, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCertificateImage is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCertificateImage requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCertificateImage: %w", err)
+	}
+	return oldValue.CertificateImage, nil
+}
+
+// ResetCertificateImage resets all changes to the "certificate_image" field.
+func (m *CertificateMutation) ResetCertificateImage() {
+	m.certificate_image = nil
+}
+
 // SetStudentID sets the "student" edge to the Student entity by id.
 func (m *CertificateMutation) SetStudentID(id int) {
 	m.student = &id
@@ -1349,7 +1836,37 @@ func (m *CertificateMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *CertificateMutation) Fields() []string {
-	fields := make([]string, 0, 0)
+	fields := make([]string, 0, 10)
+	if m.name != nil {
+		fields = append(fields, certificate.FieldName)
+	}
+	if m.code != nil {
+		fields = append(fields, certificate.FieldCode)
+	}
+	if m.description != nil {
+		fields = append(fields, certificate.FieldDescription)
+	}
+	if m.department != nil {
+		fields = append(fields, certificate.FieldDepartment)
+	}
+	if m.issue_date != nil {
+		fields = append(fields, certificate.FieldIssueDate)
+	}
+	if m.certificate_type != nil {
+		fields = append(fields, certificate.FieldCertificateType)
+	}
+	if m.certificate_level != nil {
+		fields = append(fields, certificate.FieldCertificateLevel)
+	}
+	if m.certificate_type2 != nil {
+		fields = append(fields, certificate.FieldCertificateType2)
+	}
+	if m.award_category != nil {
+		fields = append(fields, certificate.FieldAwardCategory)
+	}
+	if m.certificate_image != nil {
+		fields = append(fields, certificate.FieldCertificateImage)
+	}
 	return fields
 }
 
@@ -1357,6 +1874,28 @@ func (m *CertificateMutation) Fields() []string {
 // return value indicates that this field was not set, or was not defined in the
 // schema.
 func (m *CertificateMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case certificate.FieldName:
+		return m.Name()
+	case certificate.FieldCode:
+		return m.Code()
+	case certificate.FieldDescription:
+		return m.Description()
+	case certificate.FieldDepartment:
+		return m.Department()
+	case certificate.FieldIssueDate:
+		return m.IssueDate()
+	case certificate.FieldCertificateType:
+		return m.CertificateType()
+	case certificate.FieldCertificateLevel:
+		return m.CertificateLevel()
+	case certificate.FieldCertificateType2:
+		return m.CertificateType2()
+	case certificate.FieldAwardCategory:
+		return m.AwardCategory()
+	case certificate.FieldCertificateImage:
+		return m.CertificateImage()
+	}
 	return nil, false
 }
 
@@ -1364,6 +1903,28 @@ func (m *CertificateMutation) Field(name string) (ent.Value, bool) {
 // returned if the mutation operation is not UpdateOne, or the query to the
 // database failed.
 func (m *CertificateMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case certificate.FieldName:
+		return m.OldName(ctx)
+	case certificate.FieldCode:
+		return m.OldCode(ctx)
+	case certificate.FieldDescription:
+		return m.OldDescription(ctx)
+	case certificate.FieldDepartment:
+		return m.OldDepartment(ctx)
+	case certificate.FieldIssueDate:
+		return m.OldIssueDate(ctx)
+	case certificate.FieldCertificateType:
+		return m.OldCertificateType(ctx)
+	case certificate.FieldCertificateLevel:
+		return m.OldCertificateLevel(ctx)
+	case certificate.FieldCertificateType2:
+		return m.OldCertificateType2(ctx)
+	case certificate.FieldAwardCategory:
+		return m.OldAwardCategory(ctx)
+	case certificate.FieldCertificateImage:
+		return m.OldCertificateImage(ctx)
+	}
 	return nil, fmt.Errorf("unknown Certificate field %s", name)
 }
 
@@ -1372,6 +1933,76 @@ func (m *CertificateMutation) OldField(ctx context.Context, name string) (ent.Va
 // type.
 func (m *CertificateMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case certificate.FieldName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetName(v)
+		return nil
+	case certificate.FieldCode:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCode(v)
+		return nil
+	case certificate.FieldDescription:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDescription(v)
+		return nil
+	case certificate.FieldDepartment:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDepartment(v)
+		return nil
+	case certificate.FieldIssueDate:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIssueDate(v)
+		return nil
+	case certificate.FieldCertificateType:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCertificateType(v)
+		return nil
+	case certificate.FieldCertificateLevel:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCertificateLevel(v)
+		return nil
+	case certificate.FieldCertificateType2:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCertificateType2(v)
+		return nil
+	case certificate.FieldAwardCategory:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAwardCategory(v)
+		return nil
+	case certificate.FieldCertificateImage:
+		v, ok := value.([]byte)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCertificateImage(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Certificate field %s", name)
 }
@@ -1393,6 +2024,8 @@ func (m *CertificateMutation) AddedField(name string) (ent.Value, bool) {
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
 func (m *CertificateMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
 	return fmt.Errorf("unknown Certificate numeric field %s", name)
 }
 
@@ -1418,6 +2051,38 @@ func (m *CertificateMutation) ClearField(name string) error {
 // ResetField resets all changes in the mutation for the field with the given name.
 // It returns an error if the field is not defined in the schema.
 func (m *CertificateMutation) ResetField(name string) error {
+	switch name {
+	case certificate.FieldName:
+		m.ResetName()
+		return nil
+	case certificate.FieldCode:
+		m.ResetCode()
+		return nil
+	case certificate.FieldDescription:
+		m.ResetDescription()
+		return nil
+	case certificate.FieldDepartment:
+		m.ResetDepartment()
+		return nil
+	case certificate.FieldIssueDate:
+		m.ResetIssueDate()
+		return nil
+	case certificate.FieldCertificateType:
+		m.ResetCertificateType()
+		return nil
+	case certificate.FieldCertificateLevel:
+		m.ResetCertificateLevel()
+		return nil
+	case certificate.FieldCertificateType2:
+		m.ResetCertificateType2()
+		return nil
+	case certificate.FieldAwardCategory:
+		m.ResetAwardCategory()
+		return nil
+	case certificate.FieldCertificateImage:
+		m.ResetCertificateImage()
+		return nil
+	}
 	return fmt.Errorf("unknown Certificate field %s", name)
 }
 
@@ -1501,6 +2166,10 @@ type ClassMutation struct {
 	op                     Op
 	typ                    string
 	id                     *int
+	name                   *string
+	code                   *string
+	description            *string
+	_type                  *string
 	clearedFields          map[string]struct{}
 	major                  *int
 	clearedmajor           bool
@@ -1618,6 +2287,150 @@ func (m *ClassMutation) IDs(ctx context.Context) ([]int, error) {
 	default:
 		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
 	}
+}
+
+// SetName sets the "name" field.
+func (m *ClassMutation) SetName(s string) {
+	m.name = &s
+}
+
+// Name returns the value of the "name" field in the mutation.
+func (m *ClassMutation) Name() (r string, exists bool) {
+	v := m.name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldName returns the old "name" field's value of the Class entity.
+// If the Class object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ClassMutation) OldName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldName: %w", err)
+	}
+	return oldValue.Name, nil
+}
+
+// ResetName resets all changes to the "name" field.
+func (m *ClassMutation) ResetName() {
+	m.name = nil
+}
+
+// SetCode sets the "code" field.
+func (m *ClassMutation) SetCode(s string) {
+	m.code = &s
+}
+
+// Code returns the value of the "code" field in the mutation.
+func (m *ClassMutation) Code() (r string, exists bool) {
+	v := m.code
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCode returns the old "code" field's value of the Class entity.
+// If the Class object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ClassMutation) OldCode(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCode is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCode requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCode: %w", err)
+	}
+	return oldValue.Code, nil
+}
+
+// ResetCode resets all changes to the "code" field.
+func (m *ClassMutation) ResetCode() {
+	m.code = nil
+}
+
+// SetDescription sets the "description" field.
+func (m *ClassMutation) SetDescription(s string) {
+	m.description = &s
+}
+
+// Description returns the value of the "description" field in the mutation.
+func (m *ClassMutation) Description() (r string, exists bool) {
+	v := m.description
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDescription returns the old "description" field's value of the Class entity.
+// If the Class object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ClassMutation) OldDescription(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDescription is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDescription requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDescription: %w", err)
+	}
+	return oldValue.Description, nil
+}
+
+// ResetDescription resets all changes to the "description" field.
+func (m *ClassMutation) ResetDescription() {
+	m.description = nil
+}
+
+// SetType sets the "type" field.
+func (m *ClassMutation) SetType(s string) {
+	m._type = &s
+}
+
+// GetType returns the value of the "type" field in the mutation.
+func (m *ClassMutation) GetType() (r string, exists bool) {
+	v := m._type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldType returns the old "type" field's value of the Class entity.
+// If the Class object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ClassMutation) OldType(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldType is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldType requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldType: %w", err)
+	}
+	return oldValue.Type, nil
+}
+
+// ResetType resets all changes to the "type" field.
+func (m *ClassMutation) ResetType() {
+	m._type = nil
 }
 
 // SetMajorID sets the "major" edge to the Major entity by id.
@@ -1942,7 +2755,19 @@ func (m *ClassMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ClassMutation) Fields() []string {
-	fields := make([]string, 0, 0)
+	fields := make([]string, 0, 4)
+	if m.name != nil {
+		fields = append(fields, class.FieldName)
+	}
+	if m.code != nil {
+		fields = append(fields, class.FieldCode)
+	}
+	if m.description != nil {
+		fields = append(fields, class.FieldDescription)
+	}
+	if m._type != nil {
+		fields = append(fields, class.FieldType)
+	}
 	return fields
 }
 
@@ -1950,6 +2775,16 @@ func (m *ClassMutation) Fields() []string {
 // return value indicates that this field was not set, or was not defined in the
 // schema.
 func (m *ClassMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case class.FieldName:
+		return m.Name()
+	case class.FieldCode:
+		return m.Code()
+	case class.FieldDescription:
+		return m.Description()
+	case class.FieldType:
+		return m.GetType()
+	}
 	return nil, false
 }
 
@@ -1957,6 +2792,16 @@ func (m *ClassMutation) Field(name string) (ent.Value, bool) {
 // returned if the mutation operation is not UpdateOne, or the query to the
 // database failed.
 func (m *ClassMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case class.FieldName:
+		return m.OldName(ctx)
+	case class.FieldCode:
+		return m.OldCode(ctx)
+	case class.FieldDescription:
+		return m.OldDescription(ctx)
+	case class.FieldType:
+		return m.OldType(ctx)
+	}
 	return nil, fmt.Errorf("unknown Class field %s", name)
 }
 
@@ -1965,6 +2810,34 @@ func (m *ClassMutation) OldField(ctx context.Context, name string) (ent.Value, e
 // type.
 func (m *ClassMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case class.FieldName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetName(v)
+		return nil
+	case class.FieldCode:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCode(v)
+		return nil
+	case class.FieldDescription:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDescription(v)
+		return nil
+	case class.FieldType:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetType(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Class field %s", name)
 }
@@ -1986,6 +2859,8 @@ func (m *ClassMutation) AddedField(name string) (ent.Value, bool) {
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
 func (m *ClassMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
 	return fmt.Errorf("unknown Class numeric field %s", name)
 }
 
@@ -2011,6 +2886,20 @@ func (m *ClassMutation) ClearField(name string) error {
 // ResetField resets all changes in the mutation for the field with the given name.
 // It returns an error if the field is not defined in the schema.
 func (m *ClassMutation) ResetField(name string) error {
+	switch name {
+	case class.FieldName:
+		m.ResetName()
+		return nil
+	case class.FieldCode:
+		m.ResetCode()
+		return nil
+	case class.FieldDescription:
+		m.ResetDescription()
+		return nil
+	case class.FieldType:
+		m.ResetType()
+		return nil
+	}
 	return fmt.Errorf("unknown Class field %s", name)
 }
 
@@ -3295,6 +4184,7 @@ type EducationLevelMutation struct {
 	op             Op
 	typ            string
 	id             *int
+	name           *string
 	clearedFields  map[string]struct{}
 	student        *int
 	clearedstudent bool
@@ -3401,6 +4291,42 @@ func (m *EducationLevelMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
+// SetName sets the "name" field.
+func (m *EducationLevelMutation) SetName(s string) {
+	m.name = &s
+}
+
+// Name returns the value of the "name" field in the mutation.
+func (m *EducationLevelMutation) Name() (r string, exists bool) {
+	v := m.name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldName returns the old "name" field's value of the EducationLevel entity.
+// If the EducationLevel object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EducationLevelMutation) OldName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldName: %w", err)
+	}
+	return oldValue.Name, nil
+}
+
+// ResetName resets all changes to the "name" field.
+func (m *EducationLevelMutation) ResetName() {
+	m.name = nil
+}
+
 // SetStudentID sets the "student" edge to the Student entity by id.
 func (m *EducationLevelMutation) SetStudentID(id int) {
 	m.student = &id
@@ -3474,7 +4400,10 @@ func (m *EducationLevelMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *EducationLevelMutation) Fields() []string {
-	fields := make([]string, 0, 0)
+	fields := make([]string, 0, 1)
+	if m.name != nil {
+		fields = append(fields, educationlevel.FieldName)
+	}
 	return fields
 }
 
@@ -3482,6 +4411,10 @@ func (m *EducationLevelMutation) Fields() []string {
 // return value indicates that this field was not set, or was not defined in the
 // schema.
 func (m *EducationLevelMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case educationlevel.FieldName:
+		return m.Name()
+	}
 	return nil, false
 }
 
@@ -3489,6 +4422,10 @@ func (m *EducationLevelMutation) Field(name string) (ent.Value, bool) {
 // returned if the mutation operation is not UpdateOne, or the query to the
 // database failed.
 func (m *EducationLevelMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case educationlevel.FieldName:
+		return m.OldName(ctx)
+	}
 	return nil, fmt.Errorf("unknown EducationLevel field %s", name)
 }
 
@@ -3497,6 +4434,13 @@ func (m *EducationLevelMutation) OldField(ctx context.Context, name string) (ent
 // type.
 func (m *EducationLevelMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case educationlevel.FieldName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetName(v)
+		return nil
 	}
 	return fmt.Errorf("unknown EducationLevel field %s", name)
 }
@@ -3518,6 +4462,8 @@ func (m *EducationLevelMutation) AddedField(name string) (ent.Value, bool) {
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
 func (m *EducationLevelMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
 	return fmt.Errorf("unknown EducationLevel numeric field %s", name)
 }
 
@@ -3543,6 +4489,11 @@ func (m *EducationLevelMutation) ClearField(name string) error {
 // ResetField resets all changes in the mutation for the field with the given name.
 // It returns an error if the field is not defined in the schema.
 func (m *EducationLevelMutation) ResetField(name string) error {
+	switch name {
+	case educationlevel.FieldName:
+		m.ResetName()
+		return nil
+	}
 	return fmt.Errorf("unknown EducationLevel field %s", name)
 }
 
@@ -3626,6 +4577,7 @@ type EnrollmentStatusMutation struct {
 	op             Op
 	typ            string
 	id             *int
+	name           *string
 	clearedFields  map[string]struct{}
 	student        *int
 	clearedstudent bool
@@ -3732,6 +4684,42 @@ func (m *EnrollmentStatusMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
+// SetName sets the "name" field.
+func (m *EnrollmentStatusMutation) SetName(s string) {
+	m.name = &s
+}
+
+// Name returns the value of the "name" field in the mutation.
+func (m *EnrollmentStatusMutation) Name() (r string, exists bool) {
+	v := m.name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldName returns the old "name" field's value of the EnrollmentStatus entity.
+// If the EnrollmentStatus object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EnrollmentStatusMutation) OldName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldName: %w", err)
+	}
+	return oldValue.Name, nil
+}
+
+// ResetName resets all changes to the "name" field.
+func (m *EnrollmentStatusMutation) ResetName() {
+	m.name = nil
+}
+
 // SetStudentID sets the "student" edge to the Student entity by id.
 func (m *EnrollmentStatusMutation) SetStudentID(id int) {
 	m.student = &id
@@ -3805,7 +4793,10 @@ func (m *EnrollmentStatusMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *EnrollmentStatusMutation) Fields() []string {
-	fields := make([]string, 0, 0)
+	fields := make([]string, 0, 1)
+	if m.name != nil {
+		fields = append(fields, enrollmentstatus.FieldName)
+	}
 	return fields
 }
 
@@ -3813,6 +4804,10 @@ func (m *EnrollmentStatusMutation) Fields() []string {
 // return value indicates that this field was not set, or was not defined in the
 // schema.
 func (m *EnrollmentStatusMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case enrollmentstatus.FieldName:
+		return m.Name()
+	}
 	return nil, false
 }
 
@@ -3820,6 +4815,10 @@ func (m *EnrollmentStatusMutation) Field(name string) (ent.Value, bool) {
 // returned if the mutation operation is not UpdateOne, or the query to the
 // database failed.
 func (m *EnrollmentStatusMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case enrollmentstatus.FieldName:
+		return m.OldName(ctx)
+	}
 	return nil, fmt.Errorf("unknown EnrollmentStatus field %s", name)
 }
 
@@ -3828,6 +4827,13 @@ func (m *EnrollmentStatusMutation) OldField(ctx context.Context, name string) (e
 // type.
 func (m *EnrollmentStatusMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case enrollmentstatus.FieldName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetName(v)
+		return nil
 	}
 	return fmt.Errorf("unknown EnrollmentStatus field %s", name)
 }
@@ -3849,6 +4855,8 @@ func (m *EnrollmentStatusMutation) AddedField(name string) (ent.Value, bool) {
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
 func (m *EnrollmentStatusMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
 	return fmt.Errorf("unknown EnrollmentStatus numeric field %s", name)
 }
 
@@ -3874,6 +4882,11 @@ func (m *EnrollmentStatusMutation) ClearField(name string) error {
 // ResetField resets all changes in the mutation for the field with the given name.
 // It returns an error if the field is not defined in the schema.
 func (m *EnrollmentStatusMutation) ResetField(name string) error {
+	switch name {
+	case enrollmentstatus.FieldName:
+		m.ResetName()
+		return nil
+	}
 	return fmt.Errorf("unknown EnrollmentStatus field %s", name)
 }
 
@@ -3957,6 +4970,15 @@ type FamilyInfoMutation struct {
 	op             Op
 	typ            string
 	id             *int
+	name           *string
+	relationship   *string
+	id_card        *string
+	age            *string
+	occupation     *string
+	post           *string
+	work_unit      *string
+	contact_number *string
+	health         *string
 	clearedFields  map[string]struct{}
 	student        *int
 	clearedstudent bool
@@ -4063,6 +5085,330 @@ func (m *FamilyInfoMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
+// SetName sets the "name" field.
+func (m *FamilyInfoMutation) SetName(s string) {
+	m.name = &s
+}
+
+// Name returns the value of the "name" field in the mutation.
+func (m *FamilyInfoMutation) Name() (r string, exists bool) {
+	v := m.name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldName returns the old "name" field's value of the FamilyInfo entity.
+// If the FamilyInfo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *FamilyInfoMutation) OldName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldName: %w", err)
+	}
+	return oldValue.Name, nil
+}
+
+// ResetName resets all changes to the "name" field.
+func (m *FamilyInfoMutation) ResetName() {
+	m.name = nil
+}
+
+// SetRelationship sets the "relationship" field.
+func (m *FamilyInfoMutation) SetRelationship(s string) {
+	m.relationship = &s
+}
+
+// Relationship returns the value of the "relationship" field in the mutation.
+func (m *FamilyInfoMutation) Relationship() (r string, exists bool) {
+	v := m.relationship
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRelationship returns the old "relationship" field's value of the FamilyInfo entity.
+// If the FamilyInfo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *FamilyInfoMutation) OldRelationship(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRelationship is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRelationship requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRelationship: %w", err)
+	}
+	return oldValue.Relationship, nil
+}
+
+// ResetRelationship resets all changes to the "relationship" field.
+func (m *FamilyInfoMutation) ResetRelationship() {
+	m.relationship = nil
+}
+
+// SetIDCard sets the "id_card" field.
+func (m *FamilyInfoMutation) SetIDCard(s string) {
+	m.id_card = &s
+}
+
+// IDCard returns the value of the "id_card" field in the mutation.
+func (m *FamilyInfoMutation) IDCard() (r string, exists bool) {
+	v := m.id_card
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIDCard returns the old "id_card" field's value of the FamilyInfo entity.
+// If the FamilyInfo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *FamilyInfoMutation) OldIDCard(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIDCard is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIDCard requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIDCard: %w", err)
+	}
+	return oldValue.IDCard, nil
+}
+
+// ResetIDCard resets all changes to the "id_card" field.
+func (m *FamilyInfoMutation) ResetIDCard() {
+	m.id_card = nil
+}
+
+// SetAge sets the "age" field.
+func (m *FamilyInfoMutation) SetAge(s string) {
+	m.age = &s
+}
+
+// Age returns the value of the "age" field in the mutation.
+func (m *FamilyInfoMutation) Age() (r string, exists bool) {
+	v := m.age
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAge returns the old "age" field's value of the FamilyInfo entity.
+// If the FamilyInfo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *FamilyInfoMutation) OldAge(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAge is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAge requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAge: %w", err)
+	}
+	return oldValue.Age, nil
+}
+
+// ResetAge resets all changes to the "age" field.
+func (m *FamilyInfoMutation) ResetAge() {
+	m.age = nil
+}
+
+// SetOccupation sets the "occupation" field.
+func (m *FamilyInfoMutation) SetOccupation(s string) {
+	m.occupation = &s
+}
+
+// Occupation returns the value of the "occupation" field in the mutation.
+func (m *FamilyInfoMutation) Occupation() (r string, exists bool) {
+	v := m.occupation
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldOccupation returns the old "occupation" field's value of the FamilyInfo entity.
+// If the FamilyInfo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *FamilyInfoMutation) OldOccupation(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldOccupation is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldOccupation requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldOccupation: %w", err)
+	}
+	return oldValue.Occupation, nil
+}
+
+// ResetOccupation resets all changes to the "occupation" field.
+func (m *FamilyInfoMutation) ResetOccupation() {
+	m.occupation = nil
+}
+
+// SetPost sets the "post" field.
+func (m *FamilyInfoMutation) SetPost(s string) {
+	m.post = &s
+}
+
+// Post returns the value of the "post" field in the mutation.
+func (m *FamilyInfoMutation) Post() (r string, exists bool) {
+	v := m.post
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPost returns the old "post" field's value of the FamilyInfo entity.
+// If the FamilyInfo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *FamilyInfoMutation) OldPost(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPost is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPost requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPost: %w", err)
+	}
+	return oldValue.Post, nil
+}
+
+// ResetPost resets all changes to the "post" field.
+func (m *FamilyInfoMutation) ResetPost() {
+	m.post = nil
+}
+
+// SetWorkUnit sets the "work_unit" field.
+func (m *FamilyInfoMutation) SetWorkUnit(s string) {
+	m.work_unit = &s
+}
+
+// WorkUnit returns the value of the "work_unit" field in the mutation.
+func (m *FamilyInfoMutation) WorkUnit() (r string, exists bool) {
+	v := m.work_unit
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldWorkUnit returns the old "work_unit" field's value of the FamilyInfo entity.
+// If the FamilyInfo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *FamilyInfoMutation) OldWorkUnit(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldWorkUnit is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldWorkUnit requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldWorkUnit: %w", err)
+	}
+	return oldValue.WorkUnit, nil
+}
+
+// ResetWorkUnit resets all changes to the "work_unit" field.
+func (m *FamilyInfoMutation) ResetWorkUnit() {
+	m.work_unit = nil
+}
+
+// SetContactNumber sets the "contact_number" field.
+func (m *FamilyInfoMutation) SetContactNumber(s string) {
+	m.contact_number = &s
+}
+
+// ContactNumber returns the value of the "contact_number" field in the mutation.
+func (m *FamilyInfoMutation) ContactNumber() (r string, exists bool) {
+	v := m.contact_number
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldContactNumber returns the old "contact_number" field's value of the FamilyInfo entity.
+// If the FamilyInfo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *FamilyInfoMutation) OldContactNumber(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldContactNumber is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldContactNumber requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldContactNumber: %w", err)
+	}
+	return oldValue.ContactNumber, nil
+}
+
+// ResetContactNumber resets all changes to the "contact_number" field.
+func (m *FamilyInfoMutation) ResetContactNumber() {
+	m.contact_number = nil
+}
+
+// SetHealth sets the "health" field.
+func (m *FamilyInfoMutation) SetHealth(s string) {
+	m.health = &s
+}
+
+// Health returns the value of the "health" field in the mutation.
+func (m *FamilyInfoMutation) Health() (r string, exists bool) {
+	v := m.health
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldHealth returns the old "health" field's value of the FamilyInfo entity.
+// If the FamilyInfo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *FamilyInfoMutation) OldHealth(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldHealth is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldHealth requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldHealth: %w", err)
+	}
+	return oldValue.Health, nil
+}
+
+// ResetHealth resets all changes to the "health" field.
+func (m *FamilyInfoMutation) ResetHealth() {
+	m.health = nil
+}
+
 // SetStudentID sets the "student" edge to the Student entity by id.
 func (m *FamilyInfoMutation) SetStudentID(id int) {
 	m.student = &id
@@ -4136,7 +5482,34 @@ func (m *FamilyInfoMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *FamilyInfoMutation) Fields() []string {
-	fields := make([]string, 0, 0)
+	fields := make([]string, 0, 9)
+	if m.name != nil {
+		fields = append(fields, familyinfo.FieldName)
+	}
+	if m.relationship != nil {
+		fields = append(fields, familyinfo.FieldRelationship)
+	}
+	if m.id_card != nil {
+		fields = append(fields, familyinfo.FieldIDCard)
+	}
+	if m.age != nil {
+		fields = append(fields, familyinfo.FieldAge)
+	}
+	if m.occupation != nil {
+		fields = append(fields, familyinfo.FieldOccupation)
+	}
+	if m.post != nil {
+		fields = append(fields, familyinfo.FieldPost)
+	}
+	if m.work_unit != nil {
+		fields = append(fields, familyinfo.FieldWorkUnit)
+	}
+	if m.contact_number != nil {
+		fields = append(fields, familyinfo.FieldContactNumber)
+	}
+	if m.health != nil {
+		fields = append(fields, familyinfo.FieldHealth)
+	}
 	return fields
 }
 
@@ -4144,6 +5517,26 @@ func (m *FamilyInfoMutation) Fields() []string {
 // return value indicates that this field was not set, or was not defined in the
 // schema.
 func (m *FamilyInfoMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case familyinfo.FieldName:
+		return m.Name()
+	case familyinfo.FieldRelationship:
+		return m.Relationship()
+	case familyinfo.FieldIDCard:
+		return m.IDCard()
+	case familyinfo.FieldAge:
+		return m.Age()
+	case familyinfo.FieldOccupation:
+		return m.Occupation()
+	case familyinfo.FieldPost:
+		return m.Post()
+	case familyinfo.FieldWorkUnit:
+		return m.WorkUnit()
+	case familyinfo.FieldContactNumber:
+		return m.ContactNumber()
+	case familyinfo.FieldHealth:
+		return m.Health()
+	}
 	return nil, false
 }
 
@@ -4151,6 +5544,26 @@ func (m *FamilyInfoMutation) Field(name string) (ent.Value, bool) {
 // returned if the mutation operation is not UpdateOne, or the query to the
 // database failed.
 func (m *FamilyInfoMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case familyinfo.FieldName:
+		return m.OldName(ctx)
+	case familyinfo.FieldRelationship:
+		return m.OldRelationship(ctx)
+	case familyinfo.FieldIDCard:
+		return m.OldIDCard(ctx)
+	case familyinfo.FieldAge:
+		return m.OldAge(ctx)
+	case familyinfo.FieldOccupation:
+		return m.OldOccupation(ctx)
+	case familyinfo.FieldPost:
+		return m.OldPost(ctx)
+	case familyinfo.FieldWorkUnit:
+		return m.OldWorkUnit(ctx)
+	case familyinfo.FieldContactNumber:
+		return m.OldContactNumber(ctx)
+	case familyinfo.FieldHealth:
+		return m.OldHealth(ctx)
+	}
 	return nil, fmt.Errorf("unknown FamilyInfo field %s", name)
 }
 
@@ -4159,6 +5572,69 @@ func (m *FamilyInfoMutation) OldField(ctx context.Context, name string) (ent.Val
 // type.
 func (m *FamilyInfoMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case familyinfo.FieldName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetName(v)
+		return nil
+	case familyinfo.FieldRelationship:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRelationship(v)
+		return nil
+	case familyinfo.FieldIDCard:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIDCard(v)
+		return nil
+	case familyinfo.FieldAge:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAge(v)
+		return nil
+	case familyinfo.FieldOccupation:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetOccupation(v)
+		return nil
+	case familyinfo.FieldPost:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPost(v)
+		return nil
+	case familyinfo.FieldWorkUnit:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetWorkUnit(v)
+		return nil
+	case familyinfo.FieldContactNumber:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetContactNumber(v)
+		return nil
+	case familyinfo.FieldHealth:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetHealth(v)
+		return nil
 	}
 	return fmt.Errorf("unknown FamilyInfo field %s", name)
 }
@@ -4180,6 +5656,8 @@ func (m *FamilyInfoMutation) AddedField(name string) (ent.Value, bool) {
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
 func (m *FamilyInfoMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
 	return fmt.Errorf("unknown FamilyInfo numeric field %s", name)
 }
 
@@ -4205,6 +5683,35 @@ func (m *FamilyInfoMutation) ClearField(name string) error {
 // ResetField resets all changes in the mutation for the field with the given name.
 // It returns an error if the field is not defined in the schema.
 func (m *FamilyInfoMutation) ResetField(name string) error {
+	switch name {
+	case familyinfo.FieldName:
+		m.ResetName()
+		return nil
+	case familyinfo.FieldRelationship:
+		m.ResetRelationship()
+		return nil
+	case familyinfo.FieldIDCard:
+		m.ResetIDCard()
+		return nil
+	case familyinfo.FieldAge:
+		m.ResetAge()
+		return nil
+	case familyinfo.FieldOccupation:
+		m.ResetOccupation()
+		return nil
+	case familyinfo.FieldPost:
+		m.ResetPost()
+		return nil
+	case familyinfo.FieldWorkUnit:
+		m.ResetWorkUnit()
+		return nil
+	case familyinfo.FieldContactNumber:
+		m.ResetContactNumber()
+		return nil
+	case familyinfo.FieldHealth:
+		m.ResetHealth()
+		return nil
+	}
 	return fmt.Errorf("unknown FamilyInfo field %s", name)
 }
 
@@ -4291,6 +5798,10 @@ type MajorMutation struct {
 	name              *string
 	code              *string
 	description       *string
+	special_type      *string
+	enrollment_type   *string
+	is_major_category *bool
+	major_category    *string
 	clearedFields     map[string]struct{}
 	department        *int
 	cleareddepartment bool
@@ -4511,6 +6022,150 @@ func (m *MajorMutation) ResetDescription() {
 	m.description = nil
 }
 
+// SetSpecialType sets the "special_type" field.
+func (m *MajorMutation) SetSpecialType(s string) {
+	m.special_type = &s
+}
+
+// SpecialType returns the value of the "special_type" field in the mutation.
+func (m *MajorMutation) SpecialType() (r string, exists bool) {
+	v := m.special_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSpecialType returns the old "special_type" field's value of the Major entity.
+// If the Major object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *MajorMutation) OldSpecialType(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSpecialType is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSpecialType requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSpecialType: %w", err)
+	}
+	return oldValue.SpecialType, nil
+}
+
+// ResetSpecialType resets all changes to the "special_type" field.
+func (m *MajorMutation) ResetSpecialType() {
+	m.special_type = nil
+}
+
+// SetEnrollmentType sets the "enrollment_type" field.
+func (m *MajorMutation) SetEnrollmentType(s string) {
+	m.enrollment_type = &s
+}
+
+// EnrollmentType returns the value of the "enrollment_type" field in the mutation.
+func (m *MajorMutation) EnrollmentType() (r string, exists bool) {
+	v := m.enrollment_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldEnrollmentType returns the old "enrollment_type" field's value of the Major entity.
+// If the Major object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *MajorMutation) OldEnrollmentType(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldEnrollmentType is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldEnrollmentType requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldEnrollmentType: %w", err)
+	}
+	return oldValue.EnrollmentType, nil
+}
+
+// ResetEnrollmentType resets all changes to the "enrollment_type" field.
+func (m *MajorMutation) ResetEnrollmentType() {
+	m.enrollment_type = nil
+}
+
+// SetIsMajorCategory sets the "is_major_category" field.
+func (m *MajorMutation) SetIsMajorCategory(b bool) {
+	m.is_major_category = &b
+}
+
+// IsMajorCategory returns the value of the "is_major_category" field in the mutation.
+func (m *MajorMutation) IsMajorCategory() (r bool, exists bool) {
+	v := m.is_major_category
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsMajorCategory returns the old "is_major_category" field's value of the Major entity.
+// If the Major object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *MajorMutation) OldIsMajorCategory(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIsMajorCategory is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIsMajorCategory requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsMajorCategory: %w", err)
+	}
+	return oldValue.IsMajorCategory, nil
+}
+
+// ResetIsMajorCategory resets all changes to the "is_major_category" field.
+func (m *MajorMutation) ResetIsMajorCategory() {
+	m.is_major_category = nil
+}
+
+// SetMajorCategory sets the "major_category" field.
+func (m *MajorMutation) SetMajorCategory(s string) {
+	m.major_category = &s
+}
+
+// MajorCategory returns the value of the "major_category" field in the mutation.
+func (m *MajorMutation) MajorCategory() (r string, exists bool) {
+	v := m.major_category
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMajorCategory returns the old "major_category" field's value of the Major entity.
+// If the Major object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *MajorMutation) OldMajorCategory(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldMajorCategory is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldMajorCategory requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMajorCategory: %w", err)
+	}
+	return oldValue.MajorCategory, nil
+}
+
+// ResetMajorCategory resets all changes to the "major_category" field.
+func (m *MajorMutation) ResetMajorCategory() {
+	m.major_category = nil
+}
+
 // SetDepartmentID sets the "department" edge to the Department entity by id.
 func (m *MajorMutation) SetDepartmentID(id int) {
 	m.department = &id
@@ -4692,7 +6347,7 @@ func (m *MajorMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *MajorMutation) Fields() []string {
-	fields := make([]string, 0, 3)
+	fields := make([]string, 0, 7)
 	if m.name != nil {
 		fields = append(fields, major.FieldName)
 	}
@@ -4701,6 +6356,18 @@ func (m *MajorMutation) Fields() []string {
 	}
 	if m.description != nil {
 		fields = append(fields, major.FieldDescription)
+	}
+	if m.special_type != nil {
+		fields = append(fields, major.FieldSpecialType)
+	}
+	if m.enrollment_type != nil {
+		fields = append(fields, major.FieldEnrollmentType)
+	}
+	if m.is_major_category != nil {
+		fields = append(fields, major.FieldIsMajorCategory)
+	}
+	if m.major_category != nil {
+		fields = append(fields, major.FieldMajorCategory)
 	}
 	return fields
 }
@@ -4716,6 +6383,14 @@ func (m *MajorMutation) Field(name string) (ent.Value, bool) {
 		return m.Code()
 	case major.FieldDescription:
 		return m.Description()
+	case major.FieldSpecialType:
+		return m.SpecialType()
+	case major.FieldEnrollmentType:
+		return m.EnrollmentType()
+	case major.FieldIsMajorCategory:
+		return m.IsMajorCategory()
+	case major.FieldMajorCategory:
+		return m.MajorCategory()
 	}
 	return nil, false
 }
@@ -4731,6 +6406,14 @@ func (m *MajorMutation) OldField(ctx context.Context, name string) (ent.Value, e
 		return m.OldCode(ctx)
 	case major.FieldDescription:
 		return m.OldDescription(ctx)
+	case major.FieldSpecialType:
+		return m.OldSpecialType(ctx)
+	case major.FieldEnrollmentType:
+		return m.OldEnrollmentType(ctx)
+	case major.FieldIsMajorCategory:
+		return m.OldIsMajorCategory(ctx)
+	case major.FieldMajorCategory:
+		return m.OldMajorCategory(ctx)
 	}
 	return nil, fmt.Errorf("unknown Major field %s", name)
 }
@@ -4760,6 +6443,34 @@ func (m *MajorMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetDescription(v)
+		return nil
+	case major.FieldSpecialType:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSpecialType(v)
+		return nil
+	case major.FieldEnrollmentType:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetEnrollmentType(v)
+		return nil
+	case major.FieldIsMajorCategory:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsMajorCategory(v)
+		return nil
+	case major.FieldMajorCategory:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMajorCategory(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Major field %s", name)
@@ -4818,6 +6529,18 @@ func (m *MajorMutation) ResetField(name string) error {
 		return nil
 	case major.FieldDescription:
 		m.ResetDescription()
+		return nil
+	case major.FieldSpecialType:
+		m.ResetSpecialType()
+		return nil
+	case major.FieldEnrollmentType:
+		m.ResetEnrollmentType()
+		return nil
+	case major.FieldIsMajorCategory:
+		m.ResetIsMajorCategory()
+		return nil
+	case major.FieldMajorCategory:
+		m.ResetMajorCategory()
 		return nil
 	}
 	return fmt.Errorf("unknown Major field %s", name)
@@ -4957,6 +6680,7 @@ type MajorDirectionMutation struct {
 	op            Op
 	typ           string
 	id            *int
+	name          *string
 	clearedFields map[string]struct{}
 	class         *int
 	clearedclass  bool
@@ -5063,6 +6787,42 @@ func (m *MajorDirectionMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
+// SetName sets the "name" field.
+func (m *MajorDirectionMutation) SetName(s string) {
+	m.name = &s
+}
+
+// Name returns the value of the "name" field in the mutation.
+func (m *MajorDirectionMutation) Name() (r string, exists bool) {
+	v := m.name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldName returns the old "name" field's value of the MajorDirection entity.
+// If the MajorDirection object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *MajorDirectionMutation) OldName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldName: %w", err)
+	}
+	return oldValue.Name, nil
+}
+
+// ResetName resets all changes to the "name" field.
+func (m *MajorDirectionMutation) ResetName() {
+	m.name = nil
+}
+
 // SetClassID sets the "class" edge to the Class entity by id.
 func (m *MajorDirectionMutation) SetClassID(id int) {
 	m.class = &id
@@ -5136,7 +6896,10 @@ func (m *MajorDirectionMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *MajorDirectionMutation) Fields() []string {
-	fields := make([]string, 0, 0)
+	fields := make([]string, 0, 1)
+	if m.name != nil {
+		fields = append(fields, majordirection.FieldName)
+	}
 	return fields
 }
 
@@ -5144,6 +6907,10 @@ func (m *MajorDirectionMutation) Fields() []string {
 // return value indicates that this field was not set, or was not defined in the
 // schema.
 func (m *MajorDirectionMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case majordirection.FieldName:
+		return m.Name()
+	}
 	return nil, false
 }
 
@@ -5151,6 +6918,10 @@ func (m *MajorDirectionMutation) Field(name string) (ent.Value, bool) {
 // returned if the mutation operation is not UpdateOne, or the query to the
 // database failed.
 func (m *MajorDirectionMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case majordirection.FieldName:
+		return m.OldName(ctx)
+	}
 	return nil, fmt.Errorf("unknown MajorDirection field %s", name)
 }
 
@@ -5159,6 +6930,13 @@ func (m *MajorDirectionMutation) OldField(ctx context.Context, name string) (ent
 // type.
 func (m *MajorDirectionMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case majordirection.FieldName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetName(v)
+		return nil
 	}
 	return fmt.Errorf("unknown MajorDirection field %s", name)
 }
@@ -5180,6 +6958,8 @@ func (m *MajorDirectionMutation) AddedField(name string) (ent.Value, bool) {
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
 func (m *MajorDirectionMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
 	return fmt.Errorf("unknown MajorDirection numeric field %s", name)
 }
 
@@ -5205,6 +6985,11 @@ func (m *MajorDirectionMutation) ClearField(name string) error {
 // ResetField resets all changes in the mutation for the field with the given name.
 // It returns an error if the field is not defined in the schema.
 func (m *MajorDirectionMutation) ResetField(name string) error {
+	switch name {
+	case majordirection.FieldName:
+		m.ResetName()
+		return nil
+	}
 	return fmt.Errorf("unknown MajorDirection field %s", name)
 }
 
@@ -5288,6 +7073,11 @@ type PracticalExperienceMutation struct {
 	op             Op
 	typ            string
 	id             *int
+	name           *string
+	unit           *string
+	start_time     *time.Time
+	end_time       *time.Time
+	describe       *string
 	clearedFields  map[string]struct{}
 	student        *int
 	clearedstudent bool
@@ -5394,6 +7184,186 @@ func (m *PracticalExperienceMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
+// SetName sets the "name" field.
+func (m *PracticalExperienceMutation) SetName(s string) {
+	m.name = &s
+}
+
+// Name returns the value of the "name" field in the mutation.
+func (m *PracticalExperienceMutation) Name() (r string, exists bool) {
+	v := m.name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldName returns the old "name" field's value of the PracticalExperience entity.
+// If the PracticalExperience object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PracticalExperienceMutation) OldName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldName: %w", err)
+	}
+	return oldValue.Name, nil
+}
+
+// ResetName resets all changes to the "name" field.
+func (m *PracticalExperienceMutation) ResetName() {
+	m.name = nil
+}
+
+// SetUnit sets the "unit" field.
+func (m *PracticalExperienceMutation) SetUnit(s string) {
+	m.unit = &s
+}
+
+// Unit returns the value of the "unit" field in the mutation.
+func (m *PracticalExperienceMutation) Unit() (r string, exists bool) {
+	v := m.unit
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUnit returns the old "unit" field's value of the PracticalExperience entity.
+// If the PracticalExperience object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PracticalExperienceMutation) OldUnit(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUnit is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUnit requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUnit: %w", err)
+	}
+	return oldValue.Unit, nil
+}
+
+// ResetUnit resets all changes to the "unit" field.
+func (m *PracticalExperienceMutation) ResetUnit() {
+	m.unit = nil
+}
+
+// SetStartTime sets the "start_time" field.
+func (m *PracticalExperienceMutation) SetStartTime(t time.Time) {
+	m.start_time = &t
+}
+
+// StartTime returns the value of the "start_time" field in the mutation.
+func (m *PracticalExperienceMutation) StartTime() (r time.Time, exists bool) {
+	v := m.start_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStartTime returns the old "start_time" field's value of the PracticalExperience entity.
+// If the PracticalExperience object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PracticalExperienceMutation) OldStartTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldStartTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldStartTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStartTime: %w", err)
+	}
+	return oldValue.StartTime, nil
+}
+
+// ResetStartTime resets all changes to the "start_time" field.
+func (m *PracticalExperienceMutation) ResetStartTime() {
+	m.start_time = nil
+}
+
+// SetEndTime sets the "end_time" field.
+func (m *PracticalExperienceMutation) SetEndTime(t time.Time) {
+	m.end_time = &t
+}
+
+// EndTime returns the value of the "end_time" field in the mutation.
+func (m *PracticalExperienceMutation) EndTime() (r time.Time, exists bool) {
+	v := m.end_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldEndTime returns the old "end_time" field's value of the PracticalExperience entity.
+// If the PracticalExperience object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PracticalExperienceMutation) OldEndTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldEndTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldEndTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldEndTime: %w", err)
+	}
+	return oldValue.EndTime, nil
+}
+
+// ResetEndTime resets all changes to the "end_time" field.
+func (m *PracticalExperienceMutation) ResetEndTime() {
+	m.end_time = nil
+}
+
+// SetDescribe sets the "describe" field.
+func (m *PracticalExperienceMutation) SetDescribe(s string) {
+	m.describe = &s
+}
+
+// Describe returns the value of the "describe" field in the mutation.
+func (m *PracticalExperienceMutation) Describe() (r string, exists bool) {
+	v := m.describe
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDescribe returns the old "describe" field's value of the PracticalExperience entity.
+// If the PracticalExperience object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PracticalExperienceMutation) OldDescribe(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDescribe is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDescribe requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDescribe: %w", err)
+	}
+	return oldValue.Describe, nil
+}
+
+// ResetDescribe resets all changes to the "describe" field.
+func (m *PracticalExperienceMutation) ResetDescribe() {
+	m.describe = nil
+}
+
 // SetStudentID sets the "student" edge to the Student entity by id.
 func (m *PracticalExperienceMutation) SetStudentID(id int) {
 	m.student = &id
@@ -5467,7 +7437,22 @@ func (m *PracticalExperienceMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *PracticalExperienceMutation) Fields() []string {
-	fields := make([]string, 0, 0)
+	fields := make([]string, 0, 5)
+	if m.name != nil {
+		fields = append(fields, practicalexperience.FieldName)
+	}
+	if m.unit != nil {
+		fields = append(fields, practicalexperience.FieldUnit)
+	}
+	if m.start_time != nil {
+		fields = append(fields, practicalexperience.FieldStartTime)
+	}
+	if m.end_time != nil {
+		fields = append(fields, practicalexperience.FieldEndTime)
+	}
+	if m.describe != nil {
+		fields = append(fields, practicalexperience.FieldDescribe)
+	}
 	return fields
 }
 
@@ -5475,6 +7460,18 @@ func (m *PracticalExperienceMutation) Fields() []string {
 // return value indicates that this field was not set, or was not defined in the
 // schema.
 func (m *PracticalExperienceMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case practicalexperience.FieldName:
+		return m.Name()
+	case practicalexperience.FieldUnit:
+		return m.Unit()
+	case practicalexperience.FieldStartTime:
+		return m.StartTime()
+	case practicalexperience.FieldEndTime:
+		return m.EndTime()
+	case practicalexperience.FieldDescribe:
+		return m.Describe()
+	}
 	return nil, false
 }
 
@@ -5482,6 +7479,18 @@ func (m *PracticalExperienceMutation) Field(name string) (ent.Value, bool) {
 // returned if the mutation operation is not UpdateOne, or the query to the
 // database failed.
 func (m *PracticalExperienceMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case practicalexperience.FieldName:
+		return m.OldName(ctx)
+	case practicalexperience.FieldUnit:
+		return m.OldUnit(ctx)
+	case practicalexperience.FieldStartTime:
+		return m.OldStartTime(ctx)
+	case practicalexperience.FieldEndTime:
+		return m.OldEndTime(ctx)
+	case practicalexperience.FieldDescribe:
+		return m.OldDescribe(ctx)
+	}
 	return nil, fmt.Errorf("unknown PracticalExperience field %s", name)
 }
 
@@ -5490,6 +7499,41 @@ func (m *PracticalExperienceMutation) OldField(ctx context.Context, name string)
 // type.
 func (m *PracticalExperienceMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case practicalexperience.FieldName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetName(v)
+		return nil
+	case practicalexperience.FieldUnit:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUnit(v)
+		return nil
+	case practicalexperience.FieldStartTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStartTime(v)
+		return nil
+	case practicalexperience.FieldEndTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetEndTime(v)
+		return nil
+	case practicalexperience.FieldDescribe:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDescribe(v)
+		return nil
 	}
 	return fmt.Errorf("unknown PracticalExperience field %s", name)
 }
@@ -5511,6 +7555,8 @@ func (m *PracticalExperienceMutation) AddedField(name string) (ent.Value, bool) 
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
 func (m *PracticalExperienceMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
 	return fmt.Errorf("unknown PracticalExperience numeric field %s", name)
 }
 
@@ -5536,6 +7582,23 @@ func (m *PracticalExperienceMutation) ClearField(name string) error {
 // ResetField resets all changes in the mutation for the field with the given name.
 // It returns an error if the field is not defined in the schema.
 func (m *PracticalExperienceMutation) ResetField(name string) error {
+	switch name {
+	case practicalexperience.FieldName:
+		m.ResetName()
+		return nil
+	case practicalexperience.FieldUnit:
+		m.ResetUnit()
+		return nil
+	case practicalexperience.FieldStartTime:
+		m.ResetStartTime()
+		return nil
+	case practicalexperience.FieldEndTime:
+		m.ResetEndTime()
+		return nil
+	case practicalexperience.FieldDescribe:
+		m.ResetDescribe()
+		return nil
+	}
 	return fmt.Errorf("unknown PracticalExperience field %s", name)
 }
 

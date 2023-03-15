@@ -7,6 +7,14 @@ const (
 	Label = "class"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldName holds the string denoting the name field in the database.
+	FieldName = "name"
+	// FieldCode holds the string denoting the code field in the database.
+	FieldCode = "code"
+	// FieldDescription holds the string denoting the description field in the database.
+	FieldDescription = "description"
+	// FieldType holds the string denoting the type field in the database.
+	FieldType = "type"
 	// EdgeMajor holds the string denoting the major edge name in mutations.
 	EdgeMajor = "major"
 	// EdgeDepartment holds the string denoting the department edge name in mutations.
@@ -77,6 +85,10 @@ const (
 // Columns holds all SQL columns for class fields.
 var Columns = []string{
 	FieldID,
+	FieldName,
+	FieldCode,
+	FieldDescription,
+	FieldType,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the "classes"

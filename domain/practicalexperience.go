@@ -5,6 +5,7 @@ package domain
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"github.com/devcui/ncepu-cs-project/domain/practicalexperience"
@@ -13,9 +14,19 @@ import (
 
 // PracticalExperience is the model entity for the PracticalExperience schema.
 type PracticalExperience struct {
-	config
+	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// 实践名称
+	Name string `json:"name,omitempty"`
+	// 实践单位
+	Unit string `json:"unit,omitempty"`
+	// 开始时间
+	StartTime time.Time `json:"start_time,omitempty"`
+	// 结束时间
+	EndTime time.Time `json:"end_time,omitempty"`
+	// 实践描述
+	Describe string `json:"describe,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the PracticalExperienceQuery when eager-loading is set.
 	Edges                        PracticalExperienceEdges `json:"edges"`
@@ -51,6 +62,10 @@ func (*PracticalExperience) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case practicalexperience.FieldID:
 			values[i] = new(sql.NullInt64)
+		case practicalexperience.FieldName, practicalexperience.FieldUnit, practicalexperience.FieldDescribe:
+			values[i] = new(sql.NullString)
+		case practicalexperience.FieldStartTime, practicalexperience.FieldEndTime:
+			values[i] = new(sql.NullTime)
 		case practicalexperience.ForeignKeys[0]: // practical_experience_student
 			values[i] = new(sql.NullInt64)
 		default:
@@ -74,6 +89,36 @@ func (pe *PracticalExperience) assignValues(columns []string, values []any) erro
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			pe.ID = int(value.Int64)
+		case practicalexperience.FieldName:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field name", values[i])
+			} else if value.Valid {
+				pe.Name = value.String
+			}
+		case practicalexperience.FieldUnit:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field unit", values[i])
+			} else if value.Valid {
+				pe.Unit = value.String
+			}
+		case practicalexperience.FieldStartTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field start_time", values[i])
+			} else if value.Valid {
+				pe.StartTime = value.Time
+			}
+		case practicalexperience.FieldEndTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field end_time", values[i])
+			} else if value.Valid {
+				pe.EndTime = value.Time
+			}
+		case practicalexperience.FieldDescribe:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field describe", values[i])
+			} else if value.Valid {
+				pe.Describe = value.String
+			}
 		case practicalexperience.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for edge-field practical_experience_student", value)
@@ -113,7 +158,21 @@ func (pe *PracticalExperience) Unwrap() *PracticalExperience {
 func (pe *PracticalExperience) String() string {
 	var builder strings.Builder
 	builder.WriteString("PracticalExperience(")
-	builder.WriteString(fmt.Sprintf("id=%v", pe.ID))
+	builder.WriteString(fmt.Sprintf("id=%v, ", pe.ID))
+	builder.WriteString("name=")
+	builder.WriteString(pe.Name)
+	builder.WriteString(", ")
+	builder.WriteString("unit=")
+	builder.WriteString(pe.Unit)
+	builder.WriteString(", ")
+	builder.WriteString("start_time=")
+	builder.WriteString(pe.StartTime.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("end_time=")
+	builder.WriteString(pe.EndTime.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("describe=")
+	builder.WriteString(pe.Describe)
 	builder.WriteByte(')')
 	return builder.String()
 }

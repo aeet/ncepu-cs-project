@@ -294,6 +294,18 @@ func (fiq *FamilyInfoQuery) WithStudent(opts ...func(*StudentQuery)) *FamilyInfo
 
 // GroupBy is used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
+//
+// Example:
+//
+//	var v []struct {
+//		Name string `json:"name,omitempty"`
+//		Count int `json:"count,omitempty"`
+//	}
+//
+//	client.FamilyInfo.Query().
+//		GroupBy(familyinfo.FieldName).
+//		Aggregate(domain.Count()).
+//		Scan(ctx, &v)
 func (fiq *FamilyInfoQuery) GroupBy(field string, fields ...string) *FamilyInfoGroupBy {
 	fiq.ctx.Fields = append([]string{field}, fields...)
 	grbuild := &FamilyInfoGroupBy{build: fiq}
@@ -305,6 +317,16 @@ func (fiq *FamilyInfoQuery) GroupBy(field string, fields ...string) *FamilyInfoG
 
 // Select allows the selection one or more fields/columns for the given query,
 // instead of selecting all fields in the entity.
+//
+// Example:
+//
+//	var v []struct {
+//		Name string `json:"name,omitempty"`
+//	}
+//
+//	client.FamilyInfo.Query().
+//		Select(familyinfo.FieldName).
+//		Scan(ctx, &v)
 func (fiq *FamilyInfoQuery) Select(fields ...string) *FamilyInfoSelect {
 	fiq.ctx.Fields = append(fiq.ctx.Fields, fields...)
 	sbuild := &FamilyInfoSelect{FamilyInfoQuery: fiq}

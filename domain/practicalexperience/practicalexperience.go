@@ -7,6 +7,16 @@ const (
 	Label = "practical_experience"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldName holds the string denoting the name field in the database.
+	FieldName = "name"
+	// FieldUnit holds the string denoting the unit field in the database.
+	FieldUnit = "unit"
+	// FieldStartTime holds the string denoting the start_time field in the database.
+	FieldStartTime = "start_time"
+	// FieldEndTime holds the string denoting the end_time field in the database.
+	FieldEndTime = "end_time"
+	// FieldDescribe holds the string denoting the describe field in the database.
+	FieldDescribe = "describe"
 	// EdgeStudent holds the string denoting the student edge name in mutations.
 	EdgeStudent = "student"
 	// Table holds the table name of the practicalexperience in the database.
@@ -23,6 +33,11 @@ const (
 // Columns holds all SQL columns for practicalexperience fields.
 var Columns = []string{
 	FieldID,
+	FieldName,
+	FieldUnit,
+	FieldStartTime,
+	FieldEndTime,
+	FieldDescribe,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the "practical_experiences"

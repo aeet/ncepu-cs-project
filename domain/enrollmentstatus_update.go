@@ -28,6 +28,12 @@ func (esu *EnrollmentStatusUpdate) Where(ps ...predicate.EnrollmentStatus) *Enro
 	return esu
 }
 
+// SetName sets the "name" field.
+func (esu *EnrollmentStatusUpdate) SetName(s string) *EnrollmentStatusUpdate {
+	esu.mutation.SetName(s)
+	return esu
+}
+
 // SetStudentID sets the "student" edge to the Student entity by ID.
 func (esu *EnrollmentStatusUpdate) SetStudentID(id int) *EnrollmentStatusUpdate {
 	esu.mutation.SetStudentID(id)
@@ -94,6 +100,9 @@ func (esu *EnrollmentStatusUpdate) sqlSave(ctx context.Context) (n int, err erro
 			}
 		}
 	}
+	if value, ok := esu.mutation.Name(); ok {
+		_spec.SetField(enrollmentstatus.FieldName, field.TypeString, value)
+	}
 	if esu.mutation.StudentCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
@@ -141,6 +150,12 @@ type EnrollmentStatusUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *EnrollmentStatusMutation
+}
+
+// SetName sets the "name" field.
+func (esuo *EnrollmentStatusUpdateOne) SetName(s string) *EnrollmentStatusUpdateOne {
+	esuo.mutation.SetName(s)
+	return esuo
 }
 
 // SetStudentID sets the "student" edge to the Student entity by ID.
@@ -238,6 +253,9 @@ func (esuo *EnrollmentStatusUpdateOne) sqlSave(ctx context.Context) (_node *Enro
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := esuo.mutation.Name(); ok {
+		_spec.SetField(enrollmentstatus.FieldName, field.TypeString, value)
 	}
 	if esuo.mutation.StudentCleared() {
 		edge := &sqlgraph.EdgeSpec{

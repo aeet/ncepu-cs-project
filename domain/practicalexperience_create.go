@@ -4,7 +4,9 @@ package domain
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -17,6 +19,36 @@ type PracticalExperienceCreate struct {
 	config
 	mutation *PracticalExperienceMutation
 	hooks    []Hook
+}
+
+// SetName sets the "name" field.
+func (pec *PracticalExperienceCreate) SetName(s string) *PracticalExperienceCreate {
+	pec.mutation.SetName(s)
+	return pec
+}
+
+// SetUnit sets the "unit" field.
+func (pec *PracticalExperienceCreate) SetUnit(s string) *PracticalExperienceCreate {
+	pec.mutation.SetUnit(s)
+	return pec
+}
+
+// SetStartTime sets the "start_time" field.
+func (pec *PracticalExperienceCreate) SetStartTime(t time.Time) *PracticalExperienceCreate {
+	pec.mutation.SetStartTime(t)
+	return pec
+}
+
+// SetEndTime sets the "end_time" field.
+func (pec *PracticalExperienceCreate) SetEndTime(t time.Time) *PracticalExperienceCreate {
+	pec.mutation.SetEndTime(t)
+	return pec
+}
+
+// SetDescribe sets the "describe" field.
+func (pec *PracticalExperienceCreate) SetDescribe(s string) *PracticalExperienceCreate {
+	pec.mutation.SetDescribe(s)
+	return pec
 }
 
 // SetStudentID sets the "student" edge to the Student entity by ID.
@@ -72,6 +104,21 @@ func (pec *PracticalExperienceCreate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (pec *PracticalExperienceCreate) check() error {
+	if _, ok := pec.mutation.Name(); !ok {
+		return &ValidationError{Name: "name", err: errors.New(`domain: missing required field "PracticalExperience.name"`)}
+	}
+	if _, ok := pec.mutation.Unit(); !ok {
+		return &ValidationError{Name: "unit", err: errors.New(`domain: missing required field "PracticalExperience.unit"`)}
+	}
+	if _, ok := pec.mutation.StartTime(); !ok {
+		return &ValidationError{Name: "start_time", err: errors.New(`domain: missing required field "PracticalExperience.start_time"`)}
+	}
+	if _, ok := pec.mutation.EndTime(); !ok {
+		return &ValidationError{Name: "end_time", err: errors.New(`domain: missing required field "PracticalExperience.end_time"`)}
+	}
+	if _, ok := pec.mutation.Describe(); !ok {
+		return &ValidationError{Name: "describe", err: errors.New(`domain: missing required field "PracticalExperience.describe"`)}
+	}
 	return nil
 }
 
@@ -98,6 +145,26 @@ func (pec *PracticalExperienceCreate) createSpec() (*PracticalExperience, *sqlgr
 		_node = &PracticalExperience{config: pec.config}
 		_spec = sqlgraph.NewCreateSpec(practicalexperience.Table, sqlgraph.NewFieldSpec(practicalexperience.FieldID, field.TypeInt))
 	)
+	if value, ok := pec.mutation.Name(); ok {
+		_spec.SetField(practicalexperience.FieldName, field.TypeString, value)
+		_node.Name = value
+	}
+	if value, ok := pec.mutation.Unit(); ok {
+		_spec.SetField(practicalexperience.FieldUnit, field.TypeString, value)
+		_node.Unit = value
+	}
+	if value, ok := pec.mutation.StartTime(); ok {
+		_spec.SetField(practicalexperience.FieldStartTime, field.TypeTime, value)
+		_node.StartTime = value
+	}
+	if value, ok := pec.mutation.EndTime(); ok {
+		_spec.SetField(practicalexperience.FieldEndTime, field.TypeTime, value)
+		_node.EndTime = value
+	}
+	if value, ok := pec.mutation.Describe(); ok {
+		_spec.SetField(practicalexperience.FieldDescribe, field.TypeString, value)
+		_node.Describe = value
+	}
 	if nodes := pec.mutation.StudentIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,

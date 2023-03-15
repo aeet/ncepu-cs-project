@@ -7,6 +7,10 @@ const (
 	Label = "campus"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldName holds the string denoting the name field in the database.
+	FieldName = "name"
+	// FieldAddress holds the string denoting the address field in the database.
+	FieldAddress = "address"
 	// EdgeClass holds the string denoting the class edge name in mutations.
 	EdgeClass = "class"
 	// Table holds the table name of the campus in the database.
@@ -23,6 +27,8 @@ const (
 // Columns holds all SQL columns for campus fields.
 var Columns = []string{
 	FieldID,
+	FieldName,
+	FieldAddress,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).

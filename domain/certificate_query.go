@@ -294,6 +294,18 @@ func (cq *CertificateQuery) WithStudent(opts ...func(*StudentQuery)) *Certificat
 
 // GroupBy is used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
+//
+// Example:
+//
+//	var v []struct {
+//		Name string `json:"name,omitempty"`
+//		Count int `json:"count,omitempty"`
+//	}
+//
+//	client.Certificate.Query().
+//		GroupBy(certificate.FieldName).
+//		Aggregate(domain.Count()).
+//		Scan(ctx, &v)
 func (cq *CertificateQuery) GroupBy(field string, fields ...string) *CertificateGroupBy {
 	cq.ctx.Fields = append([]string{field}, fields...)
 	grbuild := &CertificateGroupBy{build: cq}
@@ -305,6 +317,16 @@ func (cq *CertificateQuery) GroupBy(field string, fields ...string) *Certificate
 
 // Select allows the selection one or more fields/columns for the given query,
 // instead of selecting all fields in the entity.
+//
+// Example:
+//
+//	var v []struct {
+//		Name string `json:"name,omitempty"`
+//	}
+//
+//	client.Certificate.Query().
+//		Select(certificate.FieldName).
+//		Scan(ctx, &v)
 func (cq *CertificateQuery) Select(fields ...string) *CertificateSelect {
 	cq.ctx.Fields = append(cq.ctx.Fields, fields...)
 	sbuild := &CertificateSelect{CertificateQuery: cq}

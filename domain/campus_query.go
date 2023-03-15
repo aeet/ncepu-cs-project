@@ -294,6 +294,18 @@ func (cq *CampusQuery) WithClass(opts ...func(*ClassQuery)) *CampusQuery {
 
 // GroupBy is used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
+//
+// Example:
+//
+//	var v []struct {
+//		Name string `json:"name,omitempty"`
+//		Count int `json:"count,omitempty"`
+//	}
+//
+//	client.Campus.Query().
+//		GroupBy(campus.FieldName).
+//		Aggregate(domain.Count()).
+//		Scan(ctx, &v)
 func (cq *CampusQuery) GroupBy(field string, fields ...string) *CampusGroupBy {
 	cq.ctx.Fields = append([]string{field}, fields...)
 	grbuild := &CampusGroupBy{build: cq}
@@ -305,6 +317,16 @@ func (cq *CampusQuery) GroupBy(field string, fields ...string) *CampusGroupBy {
 
 // Select allows the selection one or more fields/columns for the given query,
 // instead of selecting all fields in the entity.
+//
+// Example:
+//
+//	var v []struct {
+//		Name string `json:"name,omitempty"`
+//	}
+//
+//	client.Campus.Query().
+//		Select(campus.FieldName).
+//		Scan(ctx, &v)
 func (cq *CampusQuery) Select(fields ...string) *CampusSelect {
 	cq.ctx.Fields = append(cq.ctx.Fields, fields...)
 	sbuild := &CampusSelect{CampusQuery: cq}

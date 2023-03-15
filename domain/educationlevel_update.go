@@ -28,6 +28,12 @@ func (elu *EducationLevelUpdate) Where(ps ...predicate.EducationLevel) *Educatio
 	return elu
 }
 
+// SetName sets the "name" field.
+func (elu *EducationLevelUpdate) SetName(s string) *EducationLevelUpdate {
+	elu.mutation.SetName(s)
+	return elu
+}
+
 // SetStudentID sets the "student" edge to the Student entity by ID.
 func (elu *EducationLevelUpdate) SetStudentID(id int) *EducationLevelUpdate {
 	elu.mutation.SetStudentID(id)
@@ -94,6 +100,9 @@ func (elu *EducationLevelUpdate) sqlSave(ctx context.Context) (n int, err error)
 			}
 		}
 	}
+	if value, ok := elu.mutation.Name(); ok {
+		_spec.SetField(educationlevel.FieldName, field.TypeString, value)
+	}
 	if elu.mutation.StudentCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
@@ -141,6 +150,12 @@ type EducationLevelUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *EducationLevelMutation
+}
+
+// SetName sets the "name" field.
+func (eluo *EducationLevelUpdateOne) SetName(s string) *EducationLevelUpdateOne {
+	eluo.mutation.SetName(s)
+	return eluo
 }
 
 // SetStudentID sets the "student" edge to the Student entity by ID.
@@ -238,6 +253,9 @@ func (eluo *EducationLevelUpdateOne) sqlSave(ctx context.Context) (_node *Educat
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := eluo.mutation.Name(); ok {
+		_spec.SetField(educationlevel.FieldName, field.TypeString, value)
 	}
 	if eluo.mutation.StudentCleared() {
 		edge := &sqlgraph.EdgeSpec{

@@ -4,7 +4,9 @@ package domain
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -17,6 +19,66 @@ type CertificateCreate struct {
 	config
 	mutation *CertificateMutation
 	hooks    []Hook
+}
+
+// SetName sets the "name" field.
+func (cc *CertificateCreate) SetName(s string) *CertificateCreate {
+	cc.mutation.SetName(s)
+	return cc
+}
+
+// SetCode sets the "code" field.
+func (cc *CertificateCreate) SetCode(s string) *CertificateCreate {
+	cc.mutation.SetCode(s)
+	return cc
+}
+
+// SetDescription sets the "description" field.
+func (cc *CertificateCreate) SetDescription(s string) *CertificateCreate {
+	cc.mutation.SetDescription(s)
+	return cc
+}
+
+// SetDepartment sets the "department" field.
+func (cc *CertificateCreate) SetDepartment(s string) *CertificateCreate {
+	cc.mutation.SetDepartment(s)
+	return cc
+}
+
+// SetIssueDate sets the "issue_date" field.
+func (cc *CertificateCreate) SetIssueDate(t time.Time) *CertificateCreate {
+	cc.mutation.SetIssueDate(t)
+	return cc
+}
+
+// SetCertificateType sets the "certificate_type" field.
+func (cc *CertificateCreate) SetCertificateType(s string) *CertificateCreate {
+	cc.mutation.SetCertificateType(s)
+	return cc
+}
+
+// SetCertificateLevel sets the "certificate_level" field.
+func (cc *CertificateCreate) SetCertificateLevel(s string) *CertificateCreate {
+	cc.mutation.SetCertificateLevel(s)
+	return cc
+}
+
+// SetCertificateType2 sets the "certificate_type2" field.
+func (cc *CertificateCreate) SetCertificateType2(s string) *CertificateCreate {
+	cc.mutation.SetCertificateType2(s)
+	return cc
+}
+
+// SetAwardCategory sets the "award_category" field.
+func (cc *CertificateCreate) SetAwardCategory(s string) *CertificateCreate {
+	cc.mutation.SetAwardCategory(s)
+	return cc
+}
+
+// SetCertificateImage sets the "certificate_image" field.
+func (cc *CertificateCreate) SetCertificateImage(b []byte) *CertificateCreate {
+	cc.mutation.SetCertificateImage(b)
+	return cc
 }
 
 // SetStudentID sets the "student" edge to the Student entity by ID.
@@ -72,6 +134,36 @@ func (cc *CertificateCreate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (cc *CertificateCreate) check() error {
+	if _, ok := cc.mutation.Name(); !ok {
+		return &ValidationError{Name: "name", err: errors.New(`domain: missing required field "Certificate.name"`)}
+	}
+	if _, ok := cc.mutation.Code(); !ok {
+		return &ValidationError{Name: "code", err: errors.New(`domain: missing required field "Certificate.code"`)}
+	}
+	if _, ok := cc.mutation.Description(); !ok {
+		return &ValidationError{Name: "description", err: errors.New(`domain: missing required field "Certificate.description"`)}
+	}
+	if _, ok := cc.mutation.Department(); !ok {
+		return &ValidationError{Name: "department", err: errors.New(`domain: missing required field "Certificate.department"`)}
+	}
+	if _, ok := cc.mutation.IssueDate(); !ok {
+		return &ValidationError{Name: "issue_date", err: errors.New(`domain: missing required field "Certificate.issue_date"`)}
+	}
+	if _, ok := cc.mutation.CertificateType(); !ok {
+		return &ValidationError{Name: "certificate_type", err: errors.New(`domain: missing required field "Certificate.certificate_type"`)}
+	}
+	if _, ok := cc.mutation.CertificateLevel(); !ok {
+		return &ValidationError{Name: "certificate_level", err: errors.New(`domain: missing required field "Certificate.certificate_level"`)}
+	}
+	if _, ok := cc.mutation.CertificateType2(); !ok {
+		return &ValidationError{Name: "certificate_type2", err: errors.New(`domain: missing required field "Certificate.certificate_type2"`)}
+	}
+	if _, ok := cc.mutation.AwardCategory(); !ok {
+		return &ValidationError{Name: "award_category", err: errors.New(`domain: missing required field "Certificate.award_category"`)}
+	}
+	if _, ok := cc.mutation.CertificateImage(); !ok {
+		return &ValidationError{Name: "certificate_image", err: errors.New(`domain: missing required field "Certificate.certificate_image"`)}
+	}
 	return nil
 }
 
@@ -98,6 +190,46 @@ func (cc *CertificateCreate) createSpec() (*Certificate, *sqlgraph.CreateSpec) {
 		_node = &Certificate{config: cc.config}
 		_spec = sqlgraph.NewCreateSpec(certificate.Table, sqlgraph.NewFieldSpec(certificate.FieldID, field.TypeInt))
 	)
+	if value, ok := cc.mutation.Name(); ok {
+		_spec.SetField(certificate.FieldName, field.TypeString, value)
+		_node.Name = value
+	}
+	if value, ok := cc.mutation.Code(); ok {
+		_spec.SetField(certificate.FieldCode, field.TypeString, value)
+		_node.Code = value
+	}
+	if value, ok := cc.mutation.Description(); ok {
+		_spec.SetField(certificate.FieldDescription, field.TypeString, value)
+		_node.Description = value
+	}
+	if value, ok := cc.mutation.Department(); ok {
+		_spec.SetField(certificate.FieldDepartment, field.TypeString, value)
+		_node.Department = value
+	}
+	if value, ok := cc.mutation.IssueDate(); ok {
+		_spec.SetField(certificate.FieldIssueDate, field.TypeTime, value)
+		_node.IssueDate = value
+	}
+	if value, ok := cc.mutation.CertificateType(); ok {
+		_spec.SetField(certificate.FieldCertificateType, field.TypeString, value)
+		_node.CertificateType = value
+	}
+	if value, ok := cc.mutation.CertificateLevel(); ok {
+		_spec.SetField(certificate.FieldCertificateLevel, field.TypeString, value)
+		_node.CertificateLevel = value
+	}
+	if value, ok := cc.mutation.CertificateType2(); ok {
+		_spec.SetField(certificate.FieldCertificateType2, field.TypeString, value)
+		_node.CertificateType2 = value
+	}
+	if value, ok := cc.mutation.AwardCategory(); ok {
+		_spec.SetField(certificate.FieldAwardCategory, field.TypeString, value)
+		_node.AwardCategory = value
+	}
+	if value, ok := cc.mutation.CertificateImage(); ok {
+		_spec.SetField(certificate.FieldCertificateImage, field.TypeBytes, value)
+		_node.CertificateImage = value
+	}
 	if nodes := cc.mutation.StudentIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,

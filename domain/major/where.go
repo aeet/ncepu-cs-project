@@ -68,6 +68,26 @@ func Description(v string) predicate.Major {
 	return predicate.Major(sql.FieldEQ(FieldDescription, v))
 }
 
+// SpecialType applies equality check predicate on the "special_type" field. It's identical to SpecialTypeEQ.
+func SpecialType(v string) predicate.Major {
+	return predicate.Major(sql.FieldEQ(FieldSpecialType, v))
+}
+
+// EnrollmentType applies equality check predicate on the "enrollment_type" field. It's identical to EnrollmentTypeEQ.
+func EnrollmentType(v string) predicate.Major {
+	return predicate.Major(sql.FieldEQ(FieldEnrollmentType, v))
+}
+
+// IsMajorCategory applies equality check predicate on the "is_major_category" field. It's identical to IsMajorCategoryEQ.
+func IsMajorCategory(v bool) predicate.Major {
+	return predicate.Major(sql.FieldEQ(FieldIsMajorCategory, v))
+}
+
+// MajorCategory applies equality check predicate on the "major_category" field. It's identical to MajorCategoryEQ.
+func MajorCategory(v string) predicate.Major {
+	return predicate.Major(sql.FieldEQ(FieldMajorCategory, v))
+}
+
 // NameEQ applies the EQ predicate on the "name" field.
 func NameEQ(v string) predicate.Major {
 	return predicate.Major(sql.FieldEQ(FieldName, v))
@@ -261,6 +281,211 @@ func DescriptionEqualFold(v string) predicate.Major {
 // DescriptionContainsFold applies the ContainsFold predicate on the "description" field.
 func DescriptionContainsFold(v string) predicate.Major {
 	return predicate.Major(sql.FieldContainsFold(FieldDescription, v))
+}
+
+// SpecialTypeEQ applies the EQ predicate on the "special_type" field.
+func SpecialTypeEQ(v string) predicate.Major {
+	return predicate.Major(sql.FieldEQ(FieldSpecialType, v))
+}
+
+// SpecialTypeNEQ applies the NEQ predicate on the "special_type" field.
+func SpecialTypeNEQ(v string) predicate.Major {
+	return predicate.Major(sql.FieldNEQ(FieldSpecialType, v))
+}
+
+// SpecialTypeIn applies the In predicate on the "special_type" field.
+func SpecialTypeIn(vs ...string) predicate.Major {
+	return predicate.Major(sql.FieldIn(FieldSpecialType, vs...))
+}
+
+// SpecialTypeNotIn applies the NotIn predicate on the "special_type" field.
+func SpecialTypeNotIn(vs ...string) predicate.Major {
+	return predicate.Major(sql.FieldNotIn(FieldSpecialType, vs...))
+}
+
+// SpecialTypeGT applies the GT predicate on the "special_type" field.
+func SpecialTypeGT(v string) predicate.Major {
+	return predicate.Major(sql.FieldGT(FieldSpecialType, v))
+}
+
+// SpecialTypeGTE applies the GTE predicate on the "special_type" field.
+func SpecialTypeGTE(v string) predicate.Major {
+	return predicate.Major(sql.FieldGTE(FieldSpecialType, v))
+}
+
+// SpecialTypeLT applies the LT predicate on the "special_type" field.
+func SpecialTypeLT(v string) predicate.Major {
+	return predicate.Major(sql.FieldLT(FieldSpecialType, v))
+}
+
+// SpecialTypeLTE applies the LTE predicate on the "special_type" field.
+func SpecialTypeLTE(v string) predicate.Major {
+	return predicate.Major(sql.FieldLTE(FieldSpecialType, v))
+}
+
+// SpecialTypeContains applies the Contains predicate on the "special_type" field.
+func SpecialTypeContains(v string) predicate.Major {
+	return predicate.Major(sql.FieldContains(FieldSpecialType, v))
+}
+
+// SpecialTypeHasPrefix applies the HasPrefix predicate on the "special_type" field.
+func SpecialTypeHasPrefix(v string) predicate.Major {
+	return predicate.Major(sql.FieldHasPrefix(FieldSpecialType, v))
+}
+
+// SpecialTypeHasSuffix applies the HasSuffix predicate on the "special_type" field.
+func SpecialTypeHasSuffix(v string) predicate.Major {
+	return predicate.Major(sql.FieldHasSuffix(FieldSpecialType, v))
+}
+
+// SpecialTypeEqualFold applies the EqualFold predicate on the "special_type" field.
+func SpecialTypeEqualFold(v string) predicate.Major {
+	return predicate.Major(sql.FieldEqualFold(FieldSpecialType, v))
+}
+
+// SpecialTypeContainsFold applies the ContainsFold predicate on the "special_type" field.
+func SpecialTypeContainsFold(v string) predicate.Major {
+	return predicate.Major(sql.FieldContainsFold(FieldSpecialType, v))
+}
+
+// EnrollmentTypeEQ applies the EQ predicate on the "enrollment_type" field.
+func EnrollmentTypeEQ(v string) predicate.Major {
+	return predicate.Major(sql.FieldEQ(FieldEnrollmentType, v))
+}
+
+// EnrollmentTypeNEQ applies the NEQ predicate on the "enrollment_type" field.
+func EnrollmentTypeNEQ(v string) predicate.Major {
+	return predicate.Major(sql.FieldNEQ(FieldEnrollmentType, v))
+}
+
+// EnrollmentTypeIn applies the In predicate on the "enrollment_type" field.
+func EnrollmentTypeIn(vs ...string) predicate.Major {
+	return predicate.Major(sql.FieldIn(FieldEnrollmentType, vs...))
+}
+
+// EnrollmentTypeNotIn applies the NotIn predicate on the "enrollment_type" field.
+func EnrollmentTypeNotIn(vs ...string) predicate.Major {
+	return predicate.Major(sql.FieldNotIn(FieldEnrollmentType, vs...))
+}
+
+// EnrollmentTypeGT applies the GT predicate on the "enrollment_type" field.
+func EnrollmentTypeGT(v string) predicate.Major {
+	return predicate.Major(sql.FieldGT(FieldEnrollmentType, v))
+}
+
+// EnrollmentTypeGTE applies the GTE predicate on the "enrollment_type" field.
+func EnrollmentTypeGTE(v string) predicate.Major {
+	return predicate.Major(sql.FieldGTE(FieldEnrollmentType, v))
+}
+
+// EnrollmentTypeLT applies the LT predicate on the "enrollment_type" field.
+func EnrollmentTypeLT(v string) predicate.Major {
+	return predicate.Major(sql.FieldLT(FieldEnrollmentType, v))
+}
+
+// EnrollmentTypeLTE applies the LTE predicate on the "enrollment_type" field.
+func EnrollmentTypeLTE(v string) predicate.Major {
+	return predicate.Major(sql.FieldLTE(FieldEnrollmentType, v))
+}
+
+// EnrollmentTypeContains applies the Contains predicate on the "enrollment_type" field.
+func EnrollmentTypeContains(v string) predicate.Major {
+	return predicate.Major(sql.FieldContains(FieldEnrollmentType, v))
+}
+
+// EnrollmentTypeHasPrefix applies the HasPrefix predicate on the "enrollment_type" field.
+func EnrollmentTypeHasPrefix(v string) predicate.Major {
+	return predicate.Major(sql.FieldHasPrefix(FieldEnrollmentType, v))
+}
+
+// EnrollmentTypeHasSuffix applies the HasSuffix predicate on the "enrollment_type" field.
+func EnrollmentTypeHasSuffix(v string) predicate.Major {
+	return predicate.Major(sql.FieldHasSuffix(FieldEnrollmentType, v))
+}
+
+// EnrollmentTypeEqualFold applies the EqualFold predicate on the "enrollment_type" field.
+func EnrollmentTypeEqualFold(v string) predicate.Major {
+	return predicate.Major(sql.FieldEqualFold(FieldEnrollmentType, v))
+}
+
+// EnrollmentTypeContainsFold applies the ContainsFold predicate on the "enrollment_type" field.
+func EnrollmentTypeContainsFold(v string) predicate.Major {
+	return predicate.Major(sql.FieldContainsFold(FieldEnrollmentType, v))
+}
+
+// IsMajorCategoryEQ applies the EQ predicate on the "is_major_category" field.
+func IsMajorCategoryEQ(v bool) predicate.Major {
+	return predicate.Major(sql.FieldEQ(FieldIsMajorCategory, v))
+}
+
+// IsMajorCategoryNEQ applies the NEQ predicate on the "is_major_category" field.
+func IsMajorCategoryNEQ(v bool) predicate.Major {
+	return predicate.Major(sql.FieldNEQ(FieldIsMajorCategory, v))
+}
+
+// MajorCategoryEQ applies the EQ predicate on the "major_category" field.
+func MajorCategoryEQ(v string) predicate.Major {
+	return predicate.Major(sql.FieldEQ(FieldMajorCategory, v))
+}
+
+// MajorCategoryNEQ applies the NEQ predicate on the "major_category" field.
+func MajorCategoryNEQ(v string) predicate.Major {
+	return predicate.Major(sql.FieldNEQ(FieldMajorCategory, v))
+}
+
+// MajorCategoryIn applies the In predicate on the "major_category" field.
+func MajorCategoryIn(vs ...string) predicate.Major {
+	return predicate.Major(sql.FieldIn(FieldMajorCategory, vs...))
+}
+
+// MajorCategoryNotIn applies the NotIn predicate on the "major_category" field.
+func MajorCategoryNotIn(vs ...string) predicate.Major {
+	return predicate.Major(sql.FieldNotIn(FieldMajorCategory, vs...))
+}
+
+// MajorCategoryGT applies the GT predicate on the "major_category" field.
+func MajorCategoryGT(v string) predicate.Major {
+	return predicate.Major(sql.FieldGT(FieldMajorCategory, v))
+}
+
+// MajorCategoryGTE applies the GTE predicate on the "major_category" field.
+func MajorCategoryGTE(v string) predicate.Major {
+	return predicate.Major(sql.FieldGTE(FieldMajorCategory, v))
+}
+
+// MajorCategoryLT applies the LT predicate on the "major_category" field.
+func MajorCategoryLT(v string) predicate.Major {
+	return predicate.Major(sql.FieldLT(FieldMajorCategory, v))
+}
+
+// MajorCategoryLTE applies the LTE predicate on the "major_category" field.
+func MajorCategoryLTE(v string) predicate.Major {
+	return predicate.Major(sql.FieldLTE(FieldMajorCategory, v))
+}
+
+// MajorCategoryContains applies the Contains predicate on the "major_category" field.
+func MajorCategoryContains(v string) predicate.Major {
+	return predicate.Major(sql.FieldContains(FieldMajorCategory, v))
+}
+
+// MajorCategoryHasPrefix applies the HasPrefix predicate on the "major_category" field.
+func MajorCategoryHasPrefix(v string) predicate.Major {
+	return predicate.Major(sql.FieldHasPrefix(FieldMajorCategory, v))
+}
+
+// MajorCategoryHasSuffix applies the HasSuffix predicate on the "major_category" field.
+func MajorCategoryHasSuffix(v string) predicate.Major {
+	return predicate.Major(sql.FieldHasSuffix(FieldMajorCategory, v))
+}
+
+// MajorCategoryEqualFold applies the EqualFold predicate on the "major_category" field.
+func MajorCategoryEqualFold(v string) predicate.Major {
+	return predicate.Major(sql.FieldEqualFold(FieldMajorCategory, v))
+}
+
+// MajorCategoryContainsFold applies the ContainsFold predicate on the "major_category" field.
+func MajorCategoryContainsFold(v string) predicate.Major {
+	return predicate.Major(sql.FieldContainsFold(FieldMajorCategory, v))
 }
 
 // HasDepartment applies the HasEdge predicate on the "department" edge.

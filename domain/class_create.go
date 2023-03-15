@@ -4,6 +4,7 @@ package domain
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -23,6 +24,30 @@ type ClassCreate struct {
 	config
 	mutation *ClassMutation
 	hooks    []Hook
+}
+
+// SetName sets the "name" field.
+func (cc *ClassCreate) SetName(s string) *ClassCreate {
+	cc.mutation.SetName(s)
+	return cc
+}
+
+// SetCode sets the "code" field.
+func (cc *ClassCreate) SetCode(s string) *ClassCreate {
+	cc.mutation.SetCode(s)
+	return cc
+}
+
+// SetDescription sets the "description" field.
+func (cc *ClassCreate) SetDescription(s string) *ClassCreate {
+	cc.mutation.SetDescription(s)
+	return cc
+}
+
+// SetType sets the "type" field.
+func (cc *ClassCreate) SetType(s string) *ClassCreate {
+	cc.mutation.SetType(s)
+	return cc
 }
 
 // SetMajorID sets the "major" edge to the Major entity by ID.
@@ -188,6 +213,18 @@ func (cc *ClassCreate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (cc *ClassCreate) check() error {
+	if _, ok := cc.mutation.Name(); !ok {
+		return &ValidationError{Name: "name", err: errors.New(`domain: missing required field "Class.name"`)}
+	}
+	if _, ok := cc.mutation.Code(); !ok {
+		return &ValidationError{Name: "code", err: errors.New(`domain: missing required field "Class.code"`)}
+	}
+	if _, ok := cc.mutation.Description(); !ok {
+		return &ValidationError{Name: "description", err: errors.New(`domain: missing required field "Class.description"`)}
+	}
+	if _, ok := cc.mutation.GetType(); !ok {
+		return &ValidationError{Name: "type", err: errors.New(`domain: missing required field "Class.type"`)}
+	}
 	return nil
 }
 
@@ -214,6 +251,22 @@ func (cc *ClassCreate) createSpec() (*Class, *sqlgraph.CreateSpec) {
 		_node = &Class{config: cc.config}
 		_spec = sqlgraph.NewCreateSpec(class.Table, sqlgraph.NewFieldSpec(class.FieldID, field.TypeInt))
 	)
+	if value, ok := cc.mutation.Name(); ok {
+		_spec.SetField(class.FieldName, field.TypeString, value)
+		_node.Name = value
+	}
+	if value, ok := cc.mutation.Code(); ok {
+		_spec.SetField(class.FieldCode, field.TypeString, value)
+		_node.Code = value
+	}
+	if value, ok := cc.mutation.Description(); ok {
+		_spec.SetField(class.FieldDescription, field.TypeString, value)
+		_node.Description = value
+	}
+	if value, ok := cc.mutation.GetType(); ok {
+		_spec.SetField(class.FieldType, field.TypeString, value)
+		_node.Type = value
+	}
 	if nodes := cc.mutation.MajorIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,

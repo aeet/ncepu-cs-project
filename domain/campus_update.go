@@ -28,6 +28,18 @@ func (cu *CampusUpdate) Where(ps ...predicate.Campus) *CampusUpdate {
 	return cu
 }
 
+// SetName sets the "name" field.
+func (cu *CampusUpdate) SetName(s string) *CampusUpdate {
+	cu.mutation.SetName(s)
+	return cu
+}
+
+// SetAddress sets the "address" field.
+func (cu *CampusUpdate) SetAddress(s string) *CampusUpdate {
+	cu.mutation.SetAddress(s)
+	return cu
+}
+
 // SetClassID sets the "class" edge to the Class entity by ID.
 func (cu *CampusUpdate) SetClassID(id int) *CampusUpdate {
 	cu.mutation.SetClassID(id)
@@ -94,6 +106,12 @@ func (cu *CampusUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
+	if value, ok := cu.mutation.Name(); ok {
+		_spec.SetField(campus.FieldName, field.TypeString, value)
+	}
+	if value, ok := cu.mutation.Address(); ok {
+		_spec.SetField(campus.FieldAddress, field.TypeString, value)
+	}
 	if cu.mutation.ClassCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2O,
@@ -141,6 +159,18 @@ type CampusUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *CampusMutation
+}
+
+// SetName sets the "name" field.
+func (cuo *CampusUpdateOne) SetName(s string) *CampusUpdateOne {
+	cuo.mutation.SetName(s)
+	return cuo
+}
+
+// SetAddress sets the "address" field.
+func (cuo *CampusUpdateOne) SetAddress(s string) *CampusUpdateOne {
+	cuo.mutation.SetAddress(s)
+	return cuo
 }
 
 // SetClassID sets the "class" edge to the Class entity by ID.
@@ -238,6 +268,12 @@ func (cuo *CampusUpdateOne) sqlSave(ctx context.Context) (_node *Campus, err err
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := cuo.mutation.Name(); ok {
+		_spec.SetField(campus.FieldName, field.TypeString, value)
+	}
+	if value, ok := cuo.mutation.Address(); ok {
+		_spec.SetField(campus.FieldAddress, field.TypeString, value)
 	}
 	if cuo.mutation.ClassCleared() {
 		edge := &sqlgraph.EdgeSpec{

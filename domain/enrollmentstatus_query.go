@@ -294,6 +294,18 @@ func (esq *EnrollmentStatusQuery) WithStudent(opts ...func(*StudentQuery)) *Enro
 
 // GroupBy is used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
+//
+// Example:
+//
+//	var v []struct {
+//		Name string `json:"name,omitempty"`
+//		Count int `json:"count,omitempty"`
+//	}
+//
+//	client.EnrollmentStatus.Query().
+//		GroupBy(enrollmentstatus.FieldName).
+//		Aggregate(domain.Count()).
+//		Scan(ctx, &v)
 func (esq *EnrollmentStatusQuery) GroupBy(field string, fields ...string) *EnrollmentStatusGroupBy {
 	esq.ctx.Fields = append([]string{field}, fields...)
 	grbuild := &EnrollmentStatusGroupBy{build: esq}
@@ -305,6 +317,16 @@ func (esq *EnrollmentStatusQuery) GroupBy(field string, fields ...string) *Enrol
 
 // Select allows the selection one or more fields/columns for the given query,
 // instead of selecting all fields in the entity.
+//
+// Example:
+//
+//	var v []struct {
+//		Name string `json:"name,omitempty"`
+//	}
+//
+//	client.EnrollmentStatus.Query().
+//		Select(enrollmentstatus.FieldName).
+//		Scan(ctx, &v)
 func (esq *EnrollmentStatusQuery) Select(fields ...string) *EnrollmentStatusSelect {
 	esq.ctx.Fields = append(esq.ctx.Fields, fields...)
 	sbuild := &EnrollmentStatusSelect{EnrollmentStatusQuery: esq}

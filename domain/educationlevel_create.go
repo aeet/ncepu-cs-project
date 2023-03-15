@@ -4,6 +4,7 @@ package domain
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -17,6 +18,12 @@ type EducationLevelCreate struct {
 	config
 	mutation *EducationLevelMutation
 	hooks    []Hook
+}
+
+// SetName sets the "name" field.
+func (elc *EducationLevelCreate) SetName(s string) *EducationLevelCreate {
+	elc.mutation.SetName(s)
+	return elc
 }
 
 // SetStudentID sets the "student" edge to the Student entity by ID.
@@ -72,6 +79,9 @@ func (elc *EducationLevelCreate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (elc *EducationLevelCreate) check() error {
+	if _, ok := elc.mutation.Name(); !ok {
+		return &ValidationError{Name: "name", err: errors.New(`domain: missing required field "EducationLevel.name"`)}
+	}
 	return nil
 }
 
@@ -98,6 +108,10 @@ func (elc *EducationLevelCreate) createSpec() (*EducationLevel, *sqlgraph.Create
 		_node = &EducationLevel{config: elc.config}
 		_spec = sqlgraph.NewCreateSpec(educationlevel.Table, sqlgraph.NewFieldSpec(educationlevel.FieldID, field.TypeInt))
 	)
+	if value, ok := elc.mutation.Name(); ok {
+		_spec.SetField(educationlevel.FieldName, field.TypeString, value)
+		_node.Name = value
+	}
 	if nodes := elc.mutation.StudentIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,

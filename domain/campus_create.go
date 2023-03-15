@@ -4,6 +4,7 @@ package domain
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -17,6 +18,18 @@ type CampusCreate struct {
 	config
 	mutation *CampusMutation
 	hooks    []Hook
+}
+
+// SetName sets the "name" field.
+func (cc *CampusCreate) SetName(s string) *CampusCreate {
+	cc.mutation.SetName(s)
+	return cc
+}
+
+// SetAddress sets the "address" field.
+func (cc *CampusCreate) SetAddress(s string) *CampusCreate {
+	cc.mutation.SetAddress(s)
+	return cc
 }
 
 // SetClassID sets the "class" edge to the Class entity by ID.
@@ -72,6 +85,12 @@ func (cc *CampusCreate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (cc *CampusCreate) check() error {
+	if _, ok := cc.mutation.Name(); !ok {
+		return &ValidationError{Name: "name", err: errors.New(`domain: missing required field "Campus.name"`)}
+	}
+	if _, ok := cc.mutation.Address(); !ok {
+		return &ValidationError{Name: "address", err: errors.New(`domain: missing required field "Campus.address"`)}
+	}
 	return nil
 }
 
@@ -98,6 +117,14 @@ func (cc *CampusCreate) createSpec() (*Campus, *sqlgraph.CreateSpec) {
 		_node = &Campus{config: cc.config}
 		_spec = sqlgraph.NewCreateSpec(campus.Table, sqlgraph.NewFieldSpec(campus.FieldID, field.TypeInt))
 	)
+	if value, ok := cc.mutation.Name(); ok {
+		_spec.SetField(campus.FieldName, field.TypeString, value)
+		_node.Name = value
+	}
+	if value, ok := cc.mutation.Address(); ok {
+		_spec.SetField(campus.FieldAddress, field.TypeString, value)
+		_node.Address = value
+	}
 	if nodes := cc.mutation.ClassIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2O,

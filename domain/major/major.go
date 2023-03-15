@@ -13,6 +13,14 @@ const (
 	FieldCode = "code"
 	// FieldDescription holds the string denoting the description field in the database.
 	FieldDescription = "description"
+	// FieldSpecialType holds the string denoting the special_type field in the database.
+	FieldSpecialType = "special_type"
+	// FieldEnrollmentType holds the string denoting the enrollment_type field in the database.
+	FieldEnrollmentType = "enrollment_type"
+	// FieldIsMajorCategory holds the string denoting the is_major_category field in the database.
+	FieldIsMajorCategory = "is_major_category"
+	// FieldMajorCategory holds the string denoting the major_category field in the database.
+	FieldMajorCategory = "major_category"
 	// EdgeDepartment holds the string denoting the department edge name in mutations.
 	EdgeDepartment = "department"
 	// EdgeStudent holds the string denoting the student edge name in mutations.
@@ -50,6 +58,10 @@ var Columns = []string{
 	FieldName,
 	FieldCode,
 	FieldDescription,
+	FieldSpecialType,
+	FieldEnrollmentType,
+	FieldIsMajorCategory,
+	FieldMajorCategory,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the "majors"

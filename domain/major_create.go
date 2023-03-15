@@ -40,6 +40,30 @@ func (mc *MajorCreate) SetDescription(s string) *MajorCreate {
 	return mc
 }
 
+// SetSpecialType sets the "special_type" field.
+func (mc *MajorCreate) SetSpecialType(s string) *MajorCreate {
+	mc.mutation.SetSpecialType(s)
+	return mc
+}
+
+// SetEnrollmentType sets the "enrollment_type" field.
+func (mc *MajorCreate) SetEnrollmentType(s string) *MajorCreate {
+	mc.mutation.SetEnrollmentType(s)
+	return mc
+}
+
+// SetIsMajorCategory sets the "is_major_category" field.
+func (mc *MajorCreate) SetIsMajorCategory(b bool) *MajorCreate {
+	mc.mutation.SetIsMajorCategory(b)
+	return mc
+}
+
+// SetMajorCategory sets the "major_category" field.
+func (mc *MajorCreate) SetMajorCategory(s string) *MajorCreate {
+	mc.mutation.SetMajorCategory(s)
+	return mc
+}
+
 // SetDepartmentID sets the "department" edge to the Department entity by ID.
 func (mc *MajorCreate) SetDepartmentID(id int) *MajorCreate {
 	mc.mutation.SetDepartmentID(id)
@@ -132,6 +156,18 @@ func (mc *MajorCreate) check() error {
 	if _, ok := mc.mutation.Description(); !ok {
 		return &ValidationError{Name: "description", err: errors.New(`domain: missing required field "Major.description"`)}
 	}
+	if _, ok := mc.mutation.SpecialType(); !ok {
+		return &ValidationError{Name: "special_type", err: errors.New(`domain: missing required field "Major.special_type"`)}
+	}
+	if _, ok := mc.mutation.EnrollmentType(); !ok {
+		return &ValidationError{Name: "enrollment_type", err: errors.New(`domain: missing required field "Major.enrollment_type"`)}
+	}
+	if _, ok := mc.mutation.IsMajorCategory(); !ok {
+		return &ValidationError{Name: "is_major_category", err: errors.New(`domain: missing required field "Major.is_major_category"`)}
+	}
+	if _, ok := mc.mutation.MajorCategory(); !ok {
+		return &ValidationError{Name: "major_category", err: errors.New(`domain: missing required field "Major.major_category"`)}
+	}
 	return nil
 }
 
@@ -169,6 +205,22 @@ func (mc *MajorCreate) createSpec() (*Major, *sqlgraph.CreateSpec) {
 	if value, ok := mc.mutation.Description(); ok {
 		_spec.SetField(major.FieldDescription, field.TypeString, value)
 		_node.Description = value
+	}
+	if value, ok := mc.mutation.SpecialType(); ok {
+		_spec.SetField(major.FieldSpecialType, field.TypeString, value)
+		_node.SpecialType = value
+	}
+	if value, ok := mc.mutation.EnrollmentType(); ok {
+		_spec.SetField(major.FieldEnrollmentType, field.TypeString, value)
+		_node.EnrollmentType = value
+	}
+	if value, ok := mc.mutation.IsMajorCategory(); ok {
+		_spec.SetField(major.FieldIsMajorCategory, field.TypeBool, value)
+		_node.IsMajorCategory = value
+	}
+	if value, ok := mc.mutation.MajorCategory(); ok {
+		_spec.SetField(major.FieldMajorCategory, field.TypeString, value)
+		_node.MajorCategory = value
 	}
 	if nodes := mc.mutation.DepartmentIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

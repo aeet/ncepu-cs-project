@@ -28,6 +28,12 @@ func (mdu *MajorDirectionUpdate) Where(ps ...predicate.MajorDirection) *MajorDir
 	return mdu
 }
 
+// SetName sets the "name" field.
+func (mdu *MajorDirectionUpdate) SetName(s string) *MajorDirectionUpdate {
+	mdu.mutation.SetName(s)
+	return mdu
+}
+
 // SetClassID sets the "class" edge to the Class entity by ID.
 func (mdu *MajorDirectionUpdate) SetClassID(id int) *MajorDirectionUpdate {
 	mdu.mutation.SetClassID(id)
@@ -94,6 +100,9 @@ func (mdu *MajorDirectionUpdate) sqlSave(ctx context.Context) (n int, err error)
 			}
 		}
 	}
+	if value, ok := mdu.mutation.Name(); ok {
+		_spec.SetField(majordirection.FieldName, field.TypeString, value)
+	}
 	if mdu.mutation.ClassCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2O,
@@ -141,6 +150,12 @@ type MajorDirectionUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *MajorDirectionMutation
+}
+
+// SetName sets the "name" field.
+func (mduo *MajorDirectionUpdateOne) SetName(s string) *MajorDirectionUpdateOne {
+	mduo.mutation.SetName(s)
+	return mduo
 }
 
 // SetClassID sets the "class" edge to the Class entity by ID.
@@ -238,6 +253,9 @@ func (mduo *MajorDirectionUpdateOne) sqlSave(ctx context.Context) (_node *MajorD
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := mduo.mutation.Name(); ok {
+		_spec.SetField(majordirection.FieldName, field.TypeString, value)
 	}
 	if mduo.mutation.ClassCleared() {
 		edge := &sqlgraph.EdgeSpec{

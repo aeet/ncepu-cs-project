@@ -28,6 +28,8 @@ var (
 	// CampusColumns holds the columns for the "campus" table.
 	CampusColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "name", Type: field.TypeString},
+		{Name: "address", Type: field.TypeString},
 	}
 	// CampusTable holds the schema information for the "campus" table.
 	CampusTable = &schema.Table{
@@ -38,6 +40,16 @@ var (
 	// CertificatesColumns holds the columns for the "certificates" table.
 	CertificatesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "name", Type: field.TypeString, Unique: true},
+		{Name: "code", Type: field.TypeString, Unique: true},
+		{Name: "description", Type: field.TypeString},
+		{Name: "department", Type: field.TypeString},
+		{Name: "issue_date", Type: field.TypeTime},
+		{Name: "certificate_type", Type: field.TypeString},
+		{Name: "certificate_level", Type: field.TypeString},
+		{Name: "certificate_type2", Type: field.TypeString},
+		{Name: "award_category", Type: field.TypeString},
+		{Name: "certificate_image", Type: field.TypeBytes},
 		{Name: "certificate_student", Type: field.TypeInt, Nullable: true},
 	}
 	// CertificatesTable holds the schema information for the "certificates" table.
@@ -48,7 +60,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "certificates_students_student",
-				Columns:    []*schema.Column{CertificatesColumns[1]},
+				Columns:    []*schema.Column{CertificatesColumns[11]},
 				RefColumns: []*schema.Column{StudentsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -57,6 +69,10 @@ var (
 	// ClassesColumns holds the columns for the "classes" table.
 	ClassesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "name", Type: field.TypeString},
+		{Name: "code", Type: field.TypeString},
+		{Name: "description", Type: field.TypeString},
+		{Name: "type", Type: field.TypeString},
 		{Name: "campus_class", Type: field.TypeInt, Unique: true, Nullable: true},
 		{Name: "class_major", Type: field.TypeInt, Nullable: true},
 		{Name: "class_department", Type: field.TypeInt, Nullable: true},
@@ -72,37 +88,37 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "classes_campus_class",
-				Columns:    []*schema.Column{ClassesColumns[1]},
+				Columns:    []*schema.Column{ClassesColumns[5]},
 				RefColumns: []*schema.Column{CampusColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "classes_majors_major",
-				Columns:    []*schema.Column{ClassesColumns[2]},
+				Columns:    []*schema.Column{ClassesColumns[6]},
 				RefColumns: []*schema.Column{MajorsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "classes_departments_department",
-				Columns:    []*schema.Column{ClassesColumns[3]},
+				Columns:    []*schema.Column{ClassesColumns[7]},
 				RefColumns: []*schema.Column{DepartmentsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "classes_class_leaders_class",
-				Columns:    []*schema.Column{ClassesColumns[4]},
+				Columns:    []*schema.Column{ClassesColumns[8]},
 				RefColumns: []*schema.Column{ClassLeadersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "classes_major_directions_class",
-				Columns:    []*schema.Column{ClassesColumns[5]},
+				Columns:    []*schema.Column{ClassesColumns[9]},
 				RefColumns: []*schema.Column{MajorDirectionsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "classes_tutors_class",
-				Columns:    []*schema.Column{ClassesColumns[6]},
+				Columns:    []*schema.Column{ClassesColumns[10]},
 				RefColumns: []*schema.Column{TutorsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -134,6 +150,7 @@ var (
 	// EducationLevelsColumns holds the columns for the "education_levels" table.
 	EducationLevelsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "name", Type: field.TypeString, Unique: true},
 		{Name: "education_level_student", Type: field.TypeInt, Nullable: true},
 	}
 	// EducationLevelsTable holds the schema information for the "education_levels" table.
@@ -144,7 +161,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "education_levels_students_student",
-				Columns:    []*schema.Column{EducationLevelsColumns[1]},
+				Columns:    []*schema.Column{EducationLevelsColumns[2]},
 				RefColumns: []*schema.Column{StudentsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -153,6 +170,7 @@ var (
 	// EnrollmentStatusColumns holds the columns for the "enrollment_status" table.
 	EnrollmentStatusColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "name", Type: field.TypeString, Unique: true},
 		{Name: "enrollment_status_student", Type: field.TypeInt, Nullable: true},
 	}
 	// EnrollmentStatusTable holds the schema information for the "enrollment_status" table.
@@ -163,7 +181,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "enrollment_status_students_student",
-				Columns:    []*schema.Column{EnrollmentStatusColumns[1]},
+				Columns:    []*schema.Column{EnrollmentStatusColumns[2]},
 				RefColumns: []*schema.Column{StudentsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -172,6 +190,15 @@ var (
 	// FamilyInfosColumns holds the columns for the "family_infos" table.
 	FamilyInfosColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "name", Type: field.TypeString},
+		{Name: "relationship", Type: field.TypeString},
+		{Name: "id_card", Type: field.TypeString},
+		{Name: "age", Type: field.TypeString},
+		{Name: "occupation", Type: field.TypeString},
+		{Name: "post", Type: field.TypeString},
+		{Name: "work_unit", Type: field.TypeString},
+		{Name: "contact_number", Type: field.TypeString},
+		{Name: "health", Type: field.TypeString},
 		{Name: "family_info_student", Type: field.TypeInt, Nullable: true},
 	}
 	// FamilyInfosTable holds the schema information for the "family_infos" table.
@@ -182,7 +209,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "family_infos_students_student",
-				Columns:    []*schema.Column{FamilyInfosColumns[1]},
+				Columns:    []*schema.Column{FamilyInfosColumns[10]},
 				RefColumns: []*schema.Column{StudentsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -194,6 +221,10 @@ var (
 		{Name: "name", Type: field.TypeString, Unique: true},
 		{Name: "code", Type: field.TypeString, Unique: true},
 		{Name: "description", Type: field.TypeString},
+		{Name: "special_type", Type: field.TypeString},
+		{Name: "enrollment_type", Type: field.TypeString},
+		{Name: "is_major_category", Type: field.TypeBool},
+		{Name: "major_category", Type: field.TypeString},
 		{Name: "major_department", Type: field.TypeInt, Nullable: true},
 	}
 	// MajorsTable holds the schema information for the "majors" table.
@@ -204,7 +235,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "majors_departments_department",
-				Columns:    []*schema.Column{MajorsColumns[4]},
+				Columns:    []*schema.Column{MajorsColumns[8]},
 				RefColumns: []*schema.Column{DepartmentsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -213,6 +244,7 @@ var (
 	// MajorDirectionsColumns holds the columns for the "major_directions" table.
 	MajorDirectionsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "name", Type: field.TypeString, Unique: true},
 	}
 	// MajorDirectionsTable holds the schema information for the "major_directions" table.
 	MajorDirectionsTable = &schema.Table{
@@ -223,6 +255,11 @@ var (
 	// PracticalExperiencesColumns holds the columns for the "practical_experiences" table.
 	PracticalExperiencesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "name", Type: field.TypeString},
+		{Name: "unit", Type: field.TypeString},
+		{Name: "start_time", Type: field.TypeTime},
+		{Name: "end_time", Type: field.TypeTime},
+		{Name: "describe", Type: field.TypeString},
 		{Name: "practical_experience_student", Type: field.TypeInt, Nullable: true},
 	}
 	// PracticalExperiencesTable holds the schema information for the "practical_experiences" table.
@@ -233,7 +270,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "practical_experiences_students_student",
-				Columns:    []*schema.Column{PracticalExperiencesColumns[1]},
+				Columns:    []*schema.Column{PracticalExperiencesColumns[6]},
 				RefColumns: []*schema.Column{StudentsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},

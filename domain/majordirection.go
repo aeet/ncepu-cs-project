@@ -13,9 +13,11 @@ import (
 
 // MajorDirection is the model entity for the MajorDirection schema.
 type MajorDirection struct {
-	config
+	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// 专业方向名称
+	Name string `json:"name,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the MajorDirectionQuery when eager-loading is set.
 	Edges MajorDirectionEdges `json:"edges"`
@@ -50,6 +52,8 @@ func (*MajorDirection) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case majordirection.FieldID:
 			values[i] = new(sql.NullInt64)
+		case majordirection.FieldName:
+			values[i] = new(sql.NullString)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type MajorDirection", columns[i])
 		}
@@ -71,6 +75,12 @@ func (md *MajorDirection) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			md.ID = int(value.Int64)
+		case majordirection.FieldName:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field name", values[i])
+			} else if value.Valid {
+				md.Name = value.String
+			}
 		}
 	}
 	return nil
@@ -103,7 +113,9 @@ func (md *MajorDirection) Unwrap() *MajorDirection {
 func (md *MajorDirection) String() string {
 	var builder strings.Builder
 	builder.WriteString("MajorDirection(")
-	builder.WriteString(fmt.Sprintf("id=%v", md.ID))
+	builder.WriteString(fmt.Sprintf("id=%v, ", md.ID))
+	builder.WriteString("name=")
+	builder.WriteString(md.Name)
 	builder.WriteByte(')')
 	return builder.String()
 }
