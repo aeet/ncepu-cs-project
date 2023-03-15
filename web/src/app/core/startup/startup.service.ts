@@ -70,7 +70,7 @@ export class StartupService {
               ]
             },
             {
-              text: '角色导航',
+              text: '基础信息管理',
               group: true,
               children: [
                 {
@@ -80,6 +80,22 @@ export class StartupService {
                     {
                       text: '角色列表',
                       link: '/role/list'
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              text: '学工信息管理',
+              group: true,
+              children: [
+                {
+                  text: '校区管理',
+                  icon: { type: 'icon', value: 'appstore' },
+                  children: [
+                    {
+                      text: '校区列表',
+                      link: '/campus/list'
                     }
                   ]
                 }
