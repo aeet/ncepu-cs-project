@@ -6,6 +6,7 @@ import (
 
 	"github.com/devcui/ncepu-cs-project/domain"
 	"github.com/devcui/ncepu-cs-project/domain/class"
+	"github.com/devcui/ncepu-cs-project/domain/major"
 )
 
 // 班级
@@ -30,14 +31,23 @@ func ClassDelete(id string) error {
 
 func ClassUpdate(d domain.Class) error {
 	_, err := HandleByClient(func(client *domain.Client) (interface{}, error) {
-		return client.Class.Update().Where(class.ID(d.ID)).SetName(d.Name).SetCode(d.Code).SetDescription(d.Description).SetType(d.Type).Save(context.Background())
+		a := client.Class.Update().Where(class.ID(d.ID)).SetName(d.Name).SetCode(d.Code).SetDescription(d.Description).SetType(d.Type)
+		if d.Edges.Major != nil {
+			a.SetMajorID(d.Edges.Major.ID)
+			major, _ := client.Major.Query().Where(major.ID(d.Edges.Major.ID)).WithDepartment().First(context.Background())
+			if major != nil && major.Edges.Department != nil {
+				a.SetDepartmentID(major.Edges.Department.ID)
+			}
+			return a.Save(context.Background())
+		}
+		return a.Save(context.Background())
 	})
 	return err
 }
 
 func ClassQuery() (interface{}, error) {
 	res, err := HandleByClient(func(client *domain.Client) (interface{}, error) {
-		return client.Class.Query().All(context.Background())
+		return client.Class.Query().WithMajor().WithDepartment().All(context.Background())
 	})
 	if err != nil {
 		return nil, err
