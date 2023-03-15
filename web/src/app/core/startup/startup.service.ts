@@ -117,6 +117,7 @@ export class StartupService {
                       text: '专业列表',
                       link: '/major/list'
                     }
+
                   ]
                 },
                 {

@@ -1,16 +1,13 @@
 import { NgModule, Type } from '@angular/core';
 import { SharedModule } from '@shared';
-import { MajorRoutingModule } from './major-routing.module';
-import { MajorListComponent } from './list/list.component';
 
-const COMPONENTS: Type<void>[] = [
-  MajorListComponent];
+import { MajorListComponent } from './list/list.component';
+import { MajorRoutingModule } from './major-routing.module';
+
+const COMPONENTS: Array<Type<void>> = [MajorListComponent];
 
 @NgModule({
-  imports: [
-    SharedModule,
-    MajorRoutingModule
-  ],
-  declarations: COMPONENTS,
+  imports: [SharedModule, MajorRoutingModule],
+  declarations: COMPONENTS
 })
-export class MajorModule { }
+export class MajorModule {}

@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { STColumn } from '@yelon/abc/st';
+import { STColumn, STColumnButton } from '@yelon/abc/st';
 import { SFSchema } from '@yelon/form';
 
 import { SimpleService } from './simple.service';
@@ -23,6 +23,7 @@ export class SimpleComponent implements OnInit {
   @Input() title: string = '';
   @Input() path: string = '';
   @Input() columns: STColumn[] = [];
+  @Input() buttons: STColumnButton[] = [];
 
   data: [] = [];
   loading: boolean = false;
@@ -38,7 +39,7 @@ export class SimpleComponent implements OnInit {
         ...this.columns,
         {
           title: '',
-          buttons: [
+          buttons: this.buttons.concat([
             {
               text: '编辑',
               click: role => {
@@ -51,7 +52,7 @@ export class SimpleComponent implements OnInit {
                 this.delete(role.id);
               }
             }
-          ]
+          ])
         }
       ];
     }
