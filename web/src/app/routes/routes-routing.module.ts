@@ -17,8 +17,13 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent, data: { title: '仪表盘' } },
-      { path: 'exception', loadChildren: () => import('./exception/exception.module').then(m => m.ExceptionModule) }
-    ,  { path: 'role', loadChildren: () => import('./role/role.module').then((m) => m.RoleModule) },  { path: 'campus', loadChildren: () => import('./campus/campus.module').then((m) => m.CampusModule) },  { path: 'department', loadChildren: () => import('./department/department.module').then((m) => m.DepartmentModule) },  { path: 'major', loadChildren: () => import('./major/major.module').then((m) => m.MajorModule) },  { path: 'class', loadChildren: () => import('./class/class.module').then((m) => m.ClassModule) }]
+      { path: 'exception', loadChildren: () => import('./exception/exception.module').then(m => m.ExceptionModule) },
+      { path: 'role', loadChildren: () => import('./role/role.module').then(m => m.RoleModule) },
+      { path: 'campus', loadChildren: () => import('./campus/campus.module').then(m => m.CampusModule) },
+      { path: 'department', loadChildren: () => import('./department/department.module').then(m => m.DepartmentModule) },
+      { path: 'major', loadChildren: () => import('./major/major.module').then(m => m.MajorModule) },
+      { path: 'class', loadChildren: () => import('./class/class.module').then(m => m.ClassModule) }
+    ]
   },
   {
     path: 'passport',

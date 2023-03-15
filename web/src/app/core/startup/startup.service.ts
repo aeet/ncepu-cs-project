@@ -98,6 +98,36 @@ export class StartupService {
                       link: '/campus/list'
                     }
                   ]
+                },
+                {
+                  text: '系部管理',
+                  icon: { type: 'icon', value: 'appstore' },
+                  children: [
+                    {
+                      text: '系部列表',
+                      link: '/department/list'
+                    }
+                  ]
+                },
+                {
+                  text: '专业管理',
+                  icon: { type: 'icon', value: 'appstore' },
+                  children: [
+                    {
+                      text: '专业列表',
+                      link: '/major/list'
+                    }
+                  ]
+                },
+                {
+                  text: '班级管理',
+                  icon: { type: 'icon', value: 'appstore' },
+                  children: [
+                    {
+                      text: '班级列表',
+                      link: '/class/list'
+                    }
+                  ]
                 }
               ]
             }
