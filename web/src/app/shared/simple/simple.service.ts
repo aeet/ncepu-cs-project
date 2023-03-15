@@ -20,6 +20,7 @@ export class SimpleService<T extends Simple> implements OnDestroy {
   constructor(private http: _HttpClient, private modal: NzModalService) {}
 
   init(t: T) {
+    this.t = {} as T;
     this.t = t;
   }
 

@@ -12,7 +12,7 @@ import (
 
 func MajorAdd(d domain.Major) error {
 	_, err := HandleByClient(func(client *domain.Client) (interface{}, error) {
-		return client.Major.Create().SetMajorCategory(d.MajorCategory).SetIsMajorCategory(d.IsMajorCategory).SetEnrollmentType(d.EnrollmentType).SetSpecialType(d.SpecialType).SetName(d.Name).SetCode(d.Code).SetDescription(d.Description).Save(context.Background())
+		return client.Major.Create().SetDepartment(d.Edges.Department).SetMajorCategory(d.MajorCategory).SetIsMajorCategory(d.IsMajorCategory).SetEnrollmentType(d.EnrollmentType).SetSpecialType(d.SpecialType).SetName(d.Name).SetCode(d.Code).SetDescription(d.Description).Save(context.Background())
 	})
 	return err
 }

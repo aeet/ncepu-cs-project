@@ -23,6 +23,7 @@ export class SimpleComponent implements OnInit {
   @Input() title: string = '';
   @Input() path: string = '';
   @Input() columns: STColumn[] = [];
+
   data: [] = [];
   loading: boolean = false;
 
@@ -30,27 +31,30 @@ export class SimpleComponent implements OnInit {
 
   ngOnInit(): void {
     this.service.init({ title: this.title, schema: this.schema, path: this.path });
-    this.columns = [
-      ...this.columns,
-      {
-        title: '',
-        buttons: [
-          {
-            text: '编辑',
-            click: role => {
-              this.update(role);
-            }
-          },
-          {
-            text: '删除',
-            click: role => {
-              this.delete(role.id);
-            }
-          }
-        ]
-      }
-    ];
     this.query();
+    const a = this.columns.filter(col => col.buttons);
+    if (a.length === 0) {
+      this.columns = [
+        ...this.columns,
+        {
+          title: '',
+          buttons: [
+            {
+              text: '编辑',
+              click: role => {
+                this.update(role);
+              }
+            },
+            {
+              text: '删除',
+              click: role => {
+                this.delete(role.id);
+              }
+            }
+          ]
+        }
+      ];
+    }
   }
 
   query(): void {
