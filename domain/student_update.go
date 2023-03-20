@@ -38,6 +38,43 @@ func (su *StudentUpdate) Where(ps ...predicate.Student) *StudentUpdate {
 	return su
 }
 
+// SetName sets the "name" field.
+func (su *StudentUpdate) SetName(s string) *StudentUpdate {
+	su.mutation.SetName(s)
+	return su
+}
+
+// SetAge sets the "age" field.
+func (su *StudentUpdate) SetAge(i int) *StudentUpdate {
+	su.mutation.ResetAge()
+	su.mutation.SetAge(i)
+	return su
+}
+
+// AddAge adds i to the "age" field.
+func (su *StudentUpdate) AddAge(i int) *StudentUpdate {
+	su.mutation.AddAge(i)
+	return su
+}
+
+// SetSex sets the "sex" field.
+func (su *StudentUpdate) SetSex(s string) *StudentUpdate {
+	su.mutation.SetSex(s)
+	return su
+}
+
+// SetCode sets the "code" field.
+func (su *StudentUpdate) SetCode(s string) *StudentUpdate {
+	su.mutation.SetCode(s)
+	return su
+}
+
+// SetAvatar sets the "avatar" field.
+func (su *StudentUpdate) SetAvatar(b []byte) *StudentUpdate {
+	su.mutation.SetAvatar(b)
+	return su
+}
+
 // SetUserID sets the "user" edge to the User entity by ID.
 func (su *StudentUpdate) SetUserID(id int) *StudentUpdate {
 	su.mutation.SetUserID(id)
@@ -408,6 +445,24 @@ func (su *StudentUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := su.mutation.Name(); ok {
+		_spec.SetField(student.FieldName, field.TypeString, value)
+	}
+	if value, ok := su.mutation.Age(); ok {
+		_spec.SetField(student.FieldAge, field.TypeInt, value)
+	}
+	if value, ok := su.mutation.AddedAge(); ok {
+		_spec.AddField(student.FieldAge, field.TypeInt, value)
+	}
+	if value, ok := su.mutation.Sex(); ok {
+		_spec.SetField(student.FieldSex, field.TypeString, value)
+	}
+	if value, ok := su.mutation.Code(); ok {
+		_spec.SetField(student.FieldCode, field.TypeString, value)
+	}
+	if value, ok := su.mutation.Avatar(); ok {
+		_spec.SetField(student.FieldAvatar, field.TypeBytes, value)
 	}
 	if su.mutation.UserCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -828,6 +883,43 @@ type StudentUpdateOne struct {
 	mutation *StudentMutation
 }
 
+// SetName sets the "name" field.
+func (suo *StudentUpdateOne) SetName(s string) *StudentUpdateOne {
+	suo.mutation.SetName(s)
+	return suo
+}
+
+// SetAge sets the "age" field.
+func (suo *StudentUpdateOne) SetAge(i int) *StudentUpdateOne {
+	suo.mutation.ResetAge()
+	suo.mutation.SetAge(i)
+	return suo
+}
+
+// AddAge adds i to the "age" field.
+func (suo *StudentUpdateOne) AddAge(i int) *StudentUpdateOne {
+	suo.mutation.AddAge(i)
+	return suo
+}
+
+// SetSex sets the "sex" field.
+func (suo *StudentUpdateOne) SetSex(s string) *StudentUpdateOne {
+	suo.mutation.SetSex(s)
+	return suo
+}
+
+// SetCode sets the "code" field.
+func (suo *StudentUpdateOne) SetCode(s string) *StudentUpdateOne {
+	suo.mutation.SetCode(s)
+	return suo
+}
+
+// SetAvatar sets the "avatar" field.
+func (suo *StudentUpdateOne) SetAvatar(b []byte) *StudentUpdateOne {
+	suo.mutation.SetAvatar(b)
+	return suo
+}
+
 // SetUserID sets the "user" edge to the User entity by ID.
 func (suo *StudentUpdateOne) SetUserID(id int) *StudentUpdateOne {
 	suo.mutation.SetUserID(id)
@@ -1228,6 +1320,24 @@ func (suo *StudentUpdateOne) sqlSave(ctx context.Context) (_node *Student, err e
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := suo.mutation.Name(); ok {
+		_spec.SetField(student.FieldName, field.TypeString, value)
+	}
+	if value, ok := suo.mutation.Age(); ok {
+		_spec.SetField(student.FieldAge, field.TypeInt, value)
+	}
+	if value, ok := suo.mutation.AddedAge(); ok {
+		_spec.AddField(student.FieldAge, field.TypeInt, value)
+	}
+	if value, ok := suo.mutation.Sex(); ok {
+		_spec.SetField(student.FieldSex, field.TypeString, value)
+	}
+	if value, ok := suo.mutation.Code(); ok {
+		_spec.SetField(student.FieldCode, field.TypeString, value)
+	}
+	if value, ok := suo.mutation.Avatar(); ok {
+		_spec.SetField(student.FieldAvatar, field.TypeBytes, value)
 	}
 	if suo.mutation.UserCleared() {
 		edge := &sqlgraph.EdgeSpec{

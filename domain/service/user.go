@@ -29,3 +29,45 @@ func UserByID(id int) (data *domain.User, err error) {
 	client.Close()
 	return
 }
+
+func UserAdd(s domain.User) error {
+	_, err := HandleByClient(func(client *domain.Client) (interface{}, error) {
+		return client.User.Create().
+			SetAccount(s.Account).
+			SetPasswd(s.Passwd).
+			SetAvatar(*s.Avatar).
+			SetEmail(s.Email).
+			SetUsername(s.Username).Save(context.Background())
+	})
+	return err
+}
+
+func UserDelete(id int) error {
+	_, err := HandleByClient(func(client *domain.Client) (interface{}, error) {
+		return client.User.Delete().Where(user.ID(id)).Exec(context.Background())
+	})
+	return err
+}
+
+func UserUpdate(s domain.User) error {
+	_, err := HandleByClient(func(client *domain.Client) (interface{}, error) {
+		return client.User.Update().
+			Where(user.ID(s.ID)).
+			SetAccount(s.Account).
+			SetPasswd(s.Passwd).
+			SetAvatar(*s.Avatar).
+			SetEmail(s.Email).
+			SetUsername(s.Username).Save(context.Background())
+	})
+	return err
+}
+
+func UserQuery() (interface{}, error) {
+	res, err := HandleByClient(func(client *domain.Client) (interface{}, error) {
+		return client.User.Query().All(context.Background())
+	})
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}

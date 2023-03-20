@@ -7,6 +7,16 @@ const (
 	Label = "student"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldName holds the string denoting the name field in the database.
+	FieldName = "name"
+	// FieldAge holds the string denoting the age field in the database.
+	FieldAge = "age"
+	// FieldSex holds the string denoting the sex field in the database.
+	FieldSex = "sex"
+	// FieldCode holds the string denoting the code field in the database.
+	FieldCode = "code"
+	// FieldAvatar holds the string denoting the avatar field in the database.
+	FieldAvatar = "avatar"
 	// EdgeUser holds the string denoting the user edge name in mutations.
 	EdgeUser = "user"
 	// EdgeDepartment holds the string denoting the department edge name in mutations.
@@ -113,6 +123,11 @@ const (
 // Columns holds all SQL columns for student fields.
 var Columns = []string{
 	FieldID,
+	FieldName,
+	FieldAge,
+	FieldSex,
+	FieldCode,
+	FieldAvatar,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the "students"

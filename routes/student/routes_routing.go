@@ -12,5 +12,24 @@ func Setup(api *echo.Group) {
 }
 
 func routes(api *echo.Group) {
-	api.GET("/list", StudentHandler)
+	// certificate
+	api.POST("/certificate", CertificateAddHandler)
+	api.GET("/certificate", CertificateListHandler)
+	api.DELETE("/certificate/:id", CertificateDeleteHandler)
+	api.PUT("/certificate", CertificateUpdateHandler)
+	// family
+	api.POST("/family", FamilyAddHandler)
+	api.GET("/family", FamilyListHandler)
+	api.DELETE("/family/:id", FamilyDeleteHandler)
+	api.PUT("/family", FamilyUpdateHandler)
+	// practical
+	api.POST("/practical", PracticalAddHandler)
+	api.GET("/practical", PracticalListHandler)
+	api.DELETE("/practical/:id", PracticalDeleteHandler)
+	api.PUT("/practical", PracticalUpdateHandler)
+	// student
+	api.POST("", StudentAddHandler)
+	api.GET("", StudentListHandler)
+	api.DELETE(":id", StudentDeleteHandler)
+	api.PUT("", StudentUpdateHandler)
 }

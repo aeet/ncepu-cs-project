@@ -1,13 +1,11 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable, Inject } from '@angular/core';
-import { Router } from '@angular/router';
 import { UserService } from '@shared';
 import { ACLService } from '@yelon/acl';
 import { YA_SERVICE_TOKEN, ITokenService } from '@yelon/auth';
 import { YUNZAI_I18N_TOKEN, MenuService, SettingsService, TitleService } from '@yelon/theme';
 import type { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconService } from 'ng-zorro-antd/icon';
-import { Observable, zip, of, catchError, map, mergeMap } from 'rxjs';
+import { Observable, of, map, mergeMap } from 'rxjs';
 
 import { ICONS } from '../../../style-icons';
 import { ICONS_AUTO } from '../../../style-icons-auto';
@@ -74,14 +72,12 @@ export class StartupService {
               group: true,
               children: [
                 {
-                  text: '角色管理',
-                  icon: { type: 'icon', value: 'appstore' },
-                  children: [
-                    {
-                      text: '角色列表',
-                      link: '/role/list'
-                    }
-                  ]
+                  text: '用户列表',
+                  link: '/user/list'
+                },
+                {
+                  text: '角色列表',
+                  link: '/role/list'
                 }
               ]
             },
@@ -90,45 +86,24 @@ export class StartupService {
               group: true,
               children: [
                 {
-                  text: '校区管理',
-                  icon: { type: 'icon', value: 'appstore' },
-                  children: [
-                    {
-                      text: '校区列表',
-                      link: '/campus/list'
-                    }
-                  ]
+                  text: '校区列表',
+                  link: '/campus/list'
                 },
                 {
-                  text: '系部管理',
-                  icon: { type: 'icon', value: 'appstore' },
-                  children: [
-                    {
-                      text: '系部列表',
-                      link: '/department/list'
-                    }
-                  ]
+                  text: '系部列表',
+                  link: '/department/list'
                 },
                 {
-                  text: '专业管理',
-                  icon: { type: 'icon', value: 'appstore' },
-                  children: [
-                    {
-                      text: '专业列表',
-                      link: '/major/list'
-                    }
-
-                  ]
+                  text: '专业列表',
+                  link: '/major/list'
                 },
                 {
-                  text: '班级管理',
-                  icon: { type: 'icon', value: 'appstore' },
-                  children: [
-                    {
-                      text: '班级列表',
-                      link: '/class/list'
-                    }
-                  ]
+                  text: '班级列表',
+                  link: '/class/list'
+                },
+                {
+                  text: '学生列表',
+                  link: '/student/list'
                 }
               ]
             }

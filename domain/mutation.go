@@ -8877,6 +8877,12 @@ type StudentMutation struct {
 	op                          Op
 	typ                         string
 	id                          *int
+	name                        *string
+	age                         *int
+	addage                      *int
+	sex                         *string
+	code                        *string
+	avatar                      *[]byte
 	clearedFields               map[string]struct{}
 	user                        *int
 	cleareduser                 bool
@@ -9006,6 +9012,206 @@ func (m *StudentMutation) IDs(ctx context.Context) ([]int, error) {
 	default:
 		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
 	}
+}
+
+// SetName sets the "name" field.
+func (m *StudentMutation) SetName(s string) {
+	m.name = &s
+}
+
+// Name returns the value of the "name" field in the mutation.
+func (m *StudentMutation) Name() (r string, exists bool) {
+	v := m.name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldName returns the old "name" field's value of the Student entity.
+// If the Student object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *StudentMutation) OldName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldName: %w", err)
+	}
+	return oldValue.Name, nil
+}
+
+// ResetName resets all changes to the "name" field.
+func (m *StudentMutation) ResetName() {
+	m.name = nil
+}
+
+// SetAge sets the "age" field.
+func (m *StudentMutation) SetAge(i int) {
+	m.age = &i
+	m.addage = nil
+}
+
+// Age returns the value of the "age" field in the mutation.
+func (m *StudentMutation) Age() (r int, exists bool) {
+	v := m.age
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAge returns the old "age" field's value of the Student entity.
+// If the Student object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *StudentMutation) OldAge(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAge is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAge requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAge: %w", err)
+	}
+	return oldValue.Age, nil
+}
+
+// AddAge adds i to the "age" field.
+func (m *StudentMutation) AddAge(i int) {
+	if m.addage != nil {
+		*m.addage += i
+	} else {
+		m.addage = &i
+	}
+}
+
+// AddedAge returns the value that was added to the "age" field in this mutation.
+func (m *StudentMutation) AddedAge() (r int, exists bool) {
+	v := m.addage
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetAge resets all changes to the "age" field.
+func (m *StudentMutation) ResetAge() {
+	m.age = nil
+	m.addage = nil
+}
+
+// SetSex sets the "sex" field.
+func (m *StudentMutation) SetSex(s string) {
+	m.sex = &s
+}
+
+// Sex returns the value of the "sex" field in the mutation.
+func (m *StudentMutation) Sex() (r string, exists bool) {
+	v := m.sex
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSex returns the old "sex" field's value of the Student entity.
+// If the Student object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *StudentMutation) OldSex(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSex is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSex requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSex: %w", err)
+	}
+	return oldValue.Sex, nil
+}
+
+// ResetSex resets all changes to the "sex" field.
+func (m *StudentMutation) ResetSex() {
+	m.sex = nil
+}
+
+// SetCode sets the "code" field.
+func (m *StudentMutation) SetCode(s string) {
+	m.code = &s
+}
+
+// Code returns the value of the "code" field in the mutation.
+func (m *StudentMutation) Code() (r string, exists bool) {
+	v := m.code
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCode returns the old "code" field's value of the Student entity.
+// If the Student object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *StudentMutation) OldCode(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCode is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCode requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCode: %w", err)
+	}
+	return oldValue.Code, nil
+}
+
+// ResetCode resets all changes to the "code" field.
+func (m *StudentMutation) ResetCode() {
+	m.code = nil
+}
+
+// SetAvatar sets the "avatar" field.
+func (m *StudentMutation) SetAvatar(b []byte) {
+	m.avatar = &b
+}
+
+// Avatar returns the value of the "avatar" field in the mutation.
+func (m *StudentMutation) Avatar() (r []byte, exists bool) {
+	v := m.avatar
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAvatar returns the old "avatar" field's value of the Student entity.
+// If the Student object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *StudentMutation) OldAvatar(ctx context.Context) (v []byte, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAvatar is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAvatar requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAvatar: %w", err)
+	}
+	return oldValue.Avatar, nil
+}
+
+// ResetAvatar resets all changes to the "avatar" field.
+func (m *StudentMutation) ResetAvatar() {
+	m.avatar = nil
 }
 
 // SetUserID sets the "user" edge to the User entity by id.
@@ -9546,7 +9752,22 @@ func (m *StudentMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *StudentMutation) Fields() []string {
-	fields := make([]string, 0, 0)
+	fields := make([]string, 0, 5)
+	if m.name != nil {
+		fields = append(fields, student.FieldName)
+	}
+	if m.age != nil {
+		fields = append(fields, student.FieldAge)
+	}
+	if m.sex != nil {
+		fields = append(fields, student.FieldSex)
+	}
+	if m.code != nil {
+		fields = append(fields, student.FieldCode)
+	}
+	if m.avatar != nil {
+		fields = append(fields, student.FieldAvatar)
+	}
 	return fields
 }
 
@@ -9554,6 +9775,18 @@ func (m *StudentMutation) Fields() []string {
 // return value indicates that this field was not set, or was not defined in the
 // schema.
 func (m *StudentMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case student.FieldName:
+		return m.Name()
+	case student.FieldAge:
+		return m.Age()
+	case student.FieldSex:
+		return m.Sex()
+	case student.FieldCode:
+		return m.Code()
+	case student.FieldAvatar:
+		return m.Avatar()
+	}
 	return nil, false
 }
 
@@ -9561,6 +9794,18 @@ func (m *StudentMutation) Field(name string) (ent.Value, bool) {
 // returned if the mutation operation is not UpdateOne, or the query to the
 // database failed.
 func (m *StudentMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case student.FieldName:
+		return m.OldName(ctx)
+	case student.FieldAge:
+		return m.OldAge(ctx)
+	case student.FieldSex:
+		return m.OldSex(ctx)
+	case student.FieldCode:
+		return m.OldCode(ctx)
+	case student.FieldAvatar:
+		return m.OldAvatar(ctx)
+	}
 	return nil, fmt.Errorf("unknown Student field %s", name)
 }
 
@@ -9569,6 +9814,41 @@ func (m *StudentMutation) OldField(ctx context.Context, name string) (ent.Value,
 // type.
 func (m *StudentMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case student.FieldName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetName(v)
+		return nil
+	case student.FieldAge:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAge(v)
+		return nil
+	case student.FieldSex:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSex(v)
+		return nil
+	case student.FieldCode:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCode(v)
+		return nil
+	case student.FieldAvatar:
+		v, ok := value.([]byte)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAvatar(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Student field %s", name)
 }
@@ -9576,13 +9856,21 @@ func (m *StudentMutation) SetField(name string, value ent.Value) error {
 // AddedFields returns all numeric fields that were incremented/decremented during
 // this mutation.
 func (m *StudentMutation) AddedFields() []string {
-	return nil
+	var fields []string
+	if m.addage != nil {
+		fields = append(fields, student.FieldAge)
+	}
+	return fields
 }
 
 // AddedField returns the numeric value that was incremented/decremented on a field
 // with the given name. The second boolean return value indicates that this field
 // was not set, or was not defined in the schema.
 func (m *StudentMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case student.FieldAge:
+		return m.AddedAge()
+	}
 	return nil, false
 }
 
@@ -9590,6 +9878,15 @@ func (m *StudentMutation) AddedField(name string) (ent.Value, bool) {
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
 func (m *StudentMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case student.FieldAge:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddAge(v)
+		return nil
+	}
 	return fmt.Errorf("unknown Student numeric field %s", name)
 }
 
@@ -9615,6 +9912,23 @@ func (m *StudentMutation) ClearField(name string) error {
 // ResetField resets all changes in the mutation for the field with the given name.
 // It returns an error if the field is not defined in the schema.
 func (m *StudentMutation) ResetField(name string) error {
+	switch name {
+	case student.FieldName:
+		m.ResetName()
+		return nil
+	case student.FieldAge:
+		m.ResetAge()
+		return nil
+	case student.FieldSex:
+		m.ResetSex()
+		return nil
+	case student.FieldCode:
+		m.ResetCode()
+		return nil
+	case student.FieldAvatar:
+		m.ResetAvatar()
+		return nil
+	}
 	return fmt.Errorf("unknown Student field %s", name)
 }
 

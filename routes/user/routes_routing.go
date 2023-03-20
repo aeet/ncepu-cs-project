@@ -13,4 +13,8 @@ func Setup(api *echo.Group) {
 
 func routes(api *echo.Group) {
 	api.GET("", UserHandler)
+	api.GET("/query", UserQuery)
+	api.POST("", UserAdd)
+	api.PUT("", UserUpdate)
+	api.DELETE(":id", UserDelete)
 }

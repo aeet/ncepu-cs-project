@@ -4,6 +4,7 @@ package domain
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -27,6 +28,36 @@ type StudentCreate struct {
 	config
 	mutation *StudentMutation
 	hooks    []Hook
+}
+
+// SetName sets the "name" field.
+func (sc *StudentCreate) SetName(s string) *StudentCreate {
+	sc.mutation.SetName(s)
+	return sc
+}
+
+// SetAge sets the "age" field.
+func (sc *StudentCreate) SetAge(i int) *StudentCreate {
+	sc.mutation.SetAge(i)
+	return sc
+}
+
+// SetSex sets the "sex" field.
+func (sc *StudentCreate) SetSex(s string) *StudentCreate {
+	sc.mutation.SetSex(s)
+	return sc
+}
+
+// SetCode sets the "code" field.
+func (sc *StudentCreate) SetCode(s string) *StudentCreate {
+	sc.mutation.SetCode(s)
+	return sc
+}
+
+// SetAvatar sets the "avatar" field.
+func (sc *StudentCreate) SetAvatar(b []byte) *StudentCreate {
+	sc.mutation.SetAvatar(b)
+	return sc
 }
 
 // SetUserID sets the "user" edge to the User entity by ID.
@@ -252,6 +283,21 @@ func (sc *StudentCreate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (sc *StudentCreate) check() error {
+	if _, ok := sc.mutation.Name(); !ok {
+		return &ValidationError{Name: "name", err: errors.New(`domain: missing required field "Student.name"`)}
+	}
+	if _, ok := sc.mutation.Age(); !ok {
+		return &ValidationError{Name: "age", err: errors.New(`domain: missing required field "Student.age"`)}
+	}
+	if _, ok := sc.mutation.Sex(); !ok {
+		return &ValidationError{Name: "sex", err: errors.New(`domain: missing required field "Student.sex"`)}
+	}
+	if _, ok := sc.mutation.Code(); !ok {
+		return &ValidationError{Name: "code", err: errors.New(`domain: missing required field "Student.code"`)}
+	}
+	if _, ok := sc.mutation.Avatar(); !ok {
+		return &ValidationError{Name: "avatar", err: errors.New(`domain: missing required field "Student.avatar"`)}
+	}
 	return nil
 }
 
@@ -278,6 +324,26 @@ func (sc *StudentCreate) createSpec() (*Student, *sqlgraph.CreateSpec) {
 		_node = &Student{config: sc.config}
 		_spec = sqlgraph.NewCreateSpec(student.Table, sqlgraph.NewFieldSpec(student.FieldID, field.TypeInt))
 	)
+	if value, ok := sc.mutation.Name(); ok {
+		_spec.SetField(student.FieldName, field.TypeString, value)
+		_node.Name = value
+	}
+	if value, ok := sc.mutation.Age(); ok {
+		_spec.SetField(student.FieldAge, field.TypeInt, value)
+		_node.Age = value
+	}
+	if value, ok := sc.mutation.Sex(); ok {
+		_spec.SetField(student.FieldSex, field.TypeString, value)
+		_node.Sex = value
+	}
+	if value, ok := sc.mutation.Code(); ok {
+		_spec.SetField(student.FieldCode, field.TypeString, value)
+		_node.Code = value
+	}
+	if value, ok := sc.mutation.Avatar(); ok {
+		_spec.SetField(student.FieldAvatar, field.TypeBytes, value)
+		_node.Avatar = value
+	}
 	if nodes := sc.mutation.UserIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2O,

@@ -303,6 +303,11 @@ var (
 	// StudentsColumns holds the columns for the "students" table.
 	StudentsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "name", Type: field.TypeString},
+		{Name: "age", Type: field.TypeInt},
+		{Name: "sex", Type: field.TypeString},
+		{Name: "code", Type: field.TypeString},
+		{Name: "avatar", Type: field.TypeBytes},
 		{Name: "class_leader_student", Type: field.TypeInt, Unique: true, Nullable: true},
 		{Name: "student_department", Type: field.TypeInt, Nullable: true},
 		{Name: "student_major", Type: field.TypeInt, Nullable: true},
@@ -317,31 +322,31 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "students_class_leaders_student",
-				Columns:    []*schema.Column{StudentsColumns[1]},
+				Columns:    []*schema.Column{StudentsColumns[6]},
 				RefColumns: []*schema.Column{ClassLeadersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "students_departments_department",
-				Columns:    []*schema.Column{StudentsColumns[2]},
+				Columns:    []*schema.Column{StudentsColumns[7]},
 				RefColumns: []*schema.Column{DepartmentsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "students_majors_major",
-				Columns:    []*schema.Column{StudentsColumns[3]},
+				Columns:    []*schema.Column{StudentsColumns[8]},
 				RefColumns: []*schema.Column{MajorsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "students_classes_class",
-				Columns:    []*schema.Column{StudentsColumns[4]},
+				Columns:    []*schema.Column{StudentsColumns[9]},
 				RefColumns: []*schema.Column{ClassesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "students_tutors_student",
-				Columns:    []*schema.Column{StudentsColumns[5]},
+				Columns:    []*schema.Column{StudentsColumns[10]},
 				RefColumns: []*schema.Column{TutorsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},

@@ -3,6 +3,7 @@ package schema
 import (
 	"entgo.io/ent"
 	"entgo.io/ent/schema/edge"
+	"entgo.io/ent/schema/field"
 )
 
 type Student struct {
@@ -10,7 +11,13 @@ type Student struct {
 }
 
 func (Student) Fields() []ent.Field {
-	return []ent.Field{}
+	return []ent.Field{
+		field.String("name").Comment("姓名"),
+		field.Int("age").Comment("年龄"),
+		field.String("sex").Comment("性别"),
+		field.String("code").Comment("学号"),
+		field.Bytes("avatar").Comment("头像"),
+	}
 }
 
 func (Student) Edges() []ent.Edge {

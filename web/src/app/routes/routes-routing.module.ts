@@ -22,7 +22,9 @@ const routes: Routes = [
       { path: 'campus', loadChildren: () => import('./campus/campus.module').then(m => m.CampusModule) },
       { path: 'department', loadChildren: () => import('./department/department.module').then(m => m.DepartmentModule) },
       { path: 'major', loadChildren: () => import('./major/major.module').then(m => m.MajorModule) },
-      { path: 'class', loadChildren: () => import('./class/class.module').then(m => m.ClassModule) }
+      { path: 'class', loadChildren: () => import('./class/class.module').then(m => m.ClassModule) },
+      { path: 'user', loadChildren: () => import('./user/user.module').then(m => m.UserModule) },
+      { path: 'student', loadChildren: () => import('./student/student.module').then(m => m.StudentModule) }
     ]
   },
   {

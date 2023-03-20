@@ -53,6 +53,306 @@ func IDLTE(id int) predicate.Student {
 	return predicate.Student(sql.FieldLTE(FieldID, id))
 }
 
+// Name applies equality check predicate on the "name" field. It's identical to NameEQ.
+func Name(v string) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldName, v))
+}
+
+// Age applies equality check predicate on the "age" field. It's identical to AgeEQ.
+func Age(v int) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldAge, v))
+}
+
+// Sex applies equality check predicate on the "sex" field. It's identical to SexEQ.
+func Sex(v string) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldSex, v))
+}
+
+// Code applies equality check predicate on the "code" field. It's identical to CodeEQ.
+func Code(v string) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldCode, v))
+}
+
+// Avatar applies equality check predicate on the "avatar" field. It's identical to AvatarEQ.
+func Avatar(v []byte) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldAvatar, v))
+}
+
+// NameEQ applies the EQ predicate on the "name" field.
+func NameEQ(v string) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldName, v))
+}
+
+// NameNEQ applies the NEQ predicate on the "name" field.
+func NameNEQ(v string) predicate.Student {
+	return predicate.Student(sql.FieldNEQ(FieldName, v))
+}
+
+// NameIn applies the In predicate on the "name" field.
+func NameIn(vs ...string) predicate.Student {
+	return predicate.Student(sql.FieldIn(FieldName, vs...))
+}
+
+// NameNotIn applies the NotIn predicate on the "name" field.
+func NameNotIn(vs ...string) predicate.Student {
+	return predicate.Student(sql.FieldNotIn(FieldName, vs...))
+}
+
+// NameGT applies the GT predicate on the "name" field.
+func NameGT(v string) predicate.Student {
+	return predicate.Student(sql.FieldGT(FieldName, v))
+}
+
+// NameGTE applies the GTE predicate on the "name" field.
+func NameGTE(v string) predicate.Student {
+	return predicate.Student(sql.FieldGTE(FieldName, v))
+}
+
+// NameLT applies the LT predicate on the "name" field.
+func NameLT(v string) predicate.Student {
+	return predicate.Student(sql.FieldLT(FieldName, v))
+}
+
+// NameLTE applies the LTE predicate on the "name" field.
+func NameLTE(v string) predicate.Student {
+	return predicate.Student(sql.FieldLTE(FieldName, v))
+}
+
+// NameContains applies the Contains predicate on the "name" field.
+func NameContains(v string) predicate.Student {
+	return predicate.Student(sql.FieldContains(FieldName, v))
+}
+
+// NameHasPrefix applies the HasPrefix predicate on the "name" field.
+func NameHasPrefix(v string) predicate.Student {
+	return predicate.Student(sql.FieldHasPrefix(FieldName, v))
+}
+
+// NameHasSuffix applies the HasSuffix predicate on the "name" field.
+func NameHasSuffix(v string) predicate.Student {
+	return predicate.Student(sql.FieldHasSuffix(FieldName, v))
+}
+
+// NameEqualFold applies the EqualFold predicate on the "name" field.
+func NameEqualFold(v string) predicate.Student {
+	return predicate.Student(sql.FieldEqualFold(FieldName, v))
+}
+
+// NameContainsFold applies the ContainsFold predicate on the "name" field.
+func NameContainsFold(v string) predicate.Student {
+	return predicate.Student(sql.FieldContainsFold(FieldName, v))
+}
+
+// AgeEQ applies the EQ predicate on the "age" field.
+func AgeEQ(v int) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldAge, v))
+}
+
+// AgeNEQ applies the NEQ predicate on the "age" field.
+func AgeNEQ(v int) predicate.Student {
+	return predicate.Student(sql.FieldNEQ(FieldAge, v))
+}
+
+// AgeIn applies the In predicate on the "age" field.
+func AgeIn(vs ...int) predicate.Student {
+	return predicate.Student(sql.FieldIn(FieldAge, vs...))
+}
+
+// AgeNotIn applies the NotIn predicate on the "age" field.
+func AgeNotIn(vs ...int) predicate.Student {
+	return predicate.Student(sql.FieldNotIn(FieldAge, vs...))
+}
+
+// AgeGT applies the GT predicate on the "age" field.
+func AgeGT(v int) predicate.Student {
+	return predicate.Student(sql.FieldGT(FieldAge, v))
+}
+
+// AgeGTE applies the GTE predicate on the "age" field.
+func AgeGTE(v int) predicate.Student {
+	return predicate.Student(sql.FieldGTE(FieldAge, v))
+}
+
+// AgeLT applies the LT predicate on the "age" field.
+func AgeLT(v int) predicate.Student {
+	return predicate.Student(sql.FieldLT(FieldAge, v))
+}
+
+// AgeLTE applies the LTE predicate on the "age" field.
+func AgeLTE(v int) predicate.Student {
+	return predicate.Student(sql.FieldLTE(FieldAge, v))
+}
+
+// SexEQ applies the EQ predicate on the "sex" field.
+func SexEQ(v string) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldSex, v))
+}
+
+// SexNEQ applies the NEQ predicate on the "sex" field.
+func SexNEQ(v string) predicate.Student {
+	return predicate.Student(sql.FieldNEQ(FieldSex, v))
+}
+
+// SexIn applies the In predicate on the "sex" field.
+func SexIn(vs ...string) predicate.Student {
+	return predicate.Student(sql.FieldIn(FieldSex, vs...))
+}
+
+// SexNotIn applies the NotIn predicate on the "sex" field.
+func SexNotIn(vs ...string) predicate.Student {
+	return predicate.Student(sql.FieldNotIn(FieldSex, vs...))
+}
+
+// SexGT applies the GT predicate on the "sex" field.
+func SexGT(v string) predicate.Student {
+	return predicate.Student(sql.FieldGT(FieldSex, v))
+}
+
+// SexGTE applies the GTE predicate on the "sex" field.
+func SexGTE(v string) predicate.Student {
+	return predicate.Student(sql.FieldGTE(FieldSex, v))
+}
+
+// SexLT applies the LT predicate on the "sex" field.
+func SexLT(v string) predicate.Student {
+	return predicate.Student(sql.FieldLT(FieldSex, v))
+}
+
+// SexLTE applies the LTE predicate on the "sex" field.
+func SexLTE(v string) predicate.Student {
+	return predicate.Student(sql.FieldLTE(FieldSex, v))
+}
+
+// SexContains applies the Contains predicate on the "sex" field.
+func SexContains(v string) predicate.Student {
+	return predicate.Student(sql.FieldContains(FieldSex, v))
+}
+
+// SexHasPrefix applies the HasPrefix predicate on the "sex" field.
+func SexHasPrefix(v string) predicate.Student {
+	return predicate.Student(sql.FieldHasPrefix(FieldSex, v))
+}
+
+// SexHasSuffix applies the HasSuffix predicate on the "sex" field.
+func SexHasSuffix(v string) predicate.Student {
+	return predicate.Student(sql.FieldHasSuffix(FieldSex, v))
+}
+
+// SexEqualFold applies the EqualFold predicate on the "sex" field.
+func SexEqualFold(v string) predicate.Student {
+	return predicate.Student(sql.FieldEqualFold(FieldSex, v))
+}
+
+// SexContainsFold applies the ContainsFold predicate on the "sex" field.
+func SexContainsFold(v string) predicate.Student {
+	return predicate.Student(sql.FieldContainsFold(FieldSex, v))
+}
+
+// CodeEQ applies the EQ predicate on the "code" field.
+func CodeEQ(v string) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldCode, v))
+}
+
+// CodeNEQ applies the NEQ predicate on the "code" field.
+func CodeNEQ(v string) predicate.Student {
+	return predicate.Student(sql.FieldNEQ(FieldCode, v))
+}
+
+// CodeIn applies the In predicate on the "code" field.
+func CodeIn(vs ...string) predicate.Student {
+	return predicate.Student(sql.FieldIn(FieldCode, vs...))
+}
+
+// CodeNotIn applies the NotIn predicate on the "code" field.
+func CodeNotIn(vs ...string) predicate.Student {
+	return predicate.Student(sql.FieldNotIn(FieldCode, vs...))
+}
+
+// CodeGT applies the GT predicate on the "code" field.
+func CodeGT(v string) predicate.Student {
+	return predicate.Student(sql.FieldGT(FieldCode, v))
+}
+
+// CodeGTE applies the GTE predicate on the "code" field.
+func CodeGTE(v string) predicate.Student {
+	return predicate.Student(sql.FieldGTE(FieldCode, v))
+}
+
+// CodeLT applies the LT predicate on the "code" field.
+func CodeLT(v string) predicate.Student {
+	return predicate.Student(sql.FieldLT(FieldCode, v))
+}
+
+// CodeLTE applies the LTE predicate on the "code" field.
+func CodeLTE(v string) predicate.Student {
+	return predicate.Student(sql.FieldLTE(FieldCode, v))
+}
+
+// CodeContains applies the Contains predicate on the "code" field.
+func CodeContains(v string) predicate.Student {
+	return predicate.Student(sql.FieldContains(FieldCode, v))
+}
+
+// CodeHasPrefix applies the HasPrefix predicate on the "code" field.
+func CodeHasPrefix(v string) predicate.Student {
+	return predicate.Student(sql.FieldHasPrefix(FieldCode, v))
+}
+
+// CodeHasSuffix applies the HasSuffix predicate on the "code" field.
+func CodeHasSuffix(v string) predicate.Student {
+	return predicate.Student(sql.FieldHasSuffix(FieldCode, v))
+}
+
+// CodeEqualFold applies the EqualFold predicate on the "code" field.
+func CodeEqualFold(v string) predicate.Student {
+	return predicate.Student(sql.FieldEqualFold(FieldCode, v))
+}
+
+// CodeContainsFold applies the ContainsFold predicate on the "code" field.
+func CodeContainsFold(v string) predicate.Student {
+	return predicate.Student(sql.FieldContainsFold(FieldCode, v))
+}
+
+// AvatarEQ applies the EQ predicate on the "avatar" field.
+func AvatarEQ(v []byte) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldAvatar, v))
+}
+
+// AvatarNEQ applies the NEQ predicate on the "avatar" field.
+func AvatarNEQ(v []byte) predicate.Student {
+	return predicate.Student(sql.FieldNEQ(FieldAvatar, v))
+}
+
+// AvatarIn applies the In predicate on the "avatar" field.
+func AvatarIn(vs ...[]byte) predicate.Student {
+	return predicate.Student(sql.FieldIn(FieldAvatar, vs...))
+}
+
+// AvatarNotIn applies the NotIn predicate on the "avatar" field.
+func AvatarNotIn(vs ...[]byte) predicate.Student {
+	return predicate.Student(sql.FieldNotIn(FieldAvatar, vs...))
+}
+
+// AvatarGT applies the GT predicate on the "avatar" field.
+func AvatarGT(v []byte) predicate.Student {
+	return predicate.Student(sql.FieldGT(FieldAvatar, v))
+}
+
+// AvatarGTE applies the GTE predicate on the "avatar" field.
+func AvatarGTE(v []byte) predicate.Student {
+	return predicate.Student(sql.FieldGTE(FieldAvatar, v))
+}
+
+// AvatarLT applies the LT predicate on the "avatar" field.
+func AvatarLT(v []byte) predicate.Student {
+	return predicate.Student(sql.FieldLT(FieldAvatar, v))
+}
+
+// AvatarLTE applies the LTE predicate on the "avatar" field.
+func AvatarLTE(v []byte) predicate.Student {
+	return predicate.Student(sql.FieldLTE(FieldAvatar, v))
+}
+
 // HasUser applies the HasEdge predicate on the "user" edge.
 func HasUser() predicate.Student {
 	return predicate.Student(func(s *sql.Selector) {
