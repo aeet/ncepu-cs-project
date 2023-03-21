@@ -2,9 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { environment } from '@env/environment';
 import { OnReuseInit, ReuseHookOnReuseInitType } from '@yelon/abc/reuse-tab';
 import { STColumn, STColumnButton } from '@yelon/abc/st';
-import { SFComponent, SFDateWidgetSchema, SFSchema, SFValueChange } from '@yelon/form';
+import { SFComponent, SFDateWidgetSchema, SFSchema, SFSelectWidgetSchema, SFValueChange } from '@yelon/form';
 import { _HttpClient } from '@yelon/theme';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { map } from 'rxjs';
 import { SimpleComponent } from 'src/app/shared/simple/simple.component';
 import { SimpleService } from 'src/app/shared/simple/simple.service';
 import { UsersComponent } from 'src/app/shared/user/app-user-list.component';
@@ -339,6 +340,57 @@ export class StudentListComponent implements OnReuseInit {
               }
             };
             return this.http.post(`${environment['path']}/student/certificate`, value).toPromise();
+          }
+        });
+        ref.componentInstance?.formValueChange.subscribe((sfValueChange: SFValueChange) => {
+          value = sfValueChange.value;
+        });
+        ref.componentInstance?.refreshSchema(schema);
+        // hack: use reset to trigger formValueChange function
+        ref.componentInstance?.reset();
+      }
+    },
+    {
+      text: '关联班级',
+      click: s => {
+        let value: any = {};
+        const schema: SFSchema = {
+          properties: {
+            class: {
+              title: '班级',
+              type: 'string',
+              ui: {
+                widget: 'select',
+                asyncData: () =>
+                  this.http.get(`${environment['path']}/class`).pipe(
+                    map(response => {
+                      return response.body.map((item: any) => {
+                        return { label: item.name, value: item.id };
+                      });
+                    })
+                  )
+              }
+            } as SFSelectWidgetSchema
+          }
+        };
+        const ref = this.modal.create<SFComponent>({
+          nzTitle: '关联系部',
+          nzContent: SFComponent,
+          nzComponentParams: {
+            schema: { properties: {} },
+            formData: { department: s?.edges?.class?.id },
+            button: null
+          },
+          nzOnOk: () => {
+            value = {
+              ...s,
+              edges: {
+                class: {
+                  id: value['class']
+                }
+              }
+            };
+            return this.http.put(`${environment['path']}/student`, value).toPromise();
           }
         });
         ref.componentInstance?.formValueChange.subscribe((sfValueChange: SFValueChange) => {

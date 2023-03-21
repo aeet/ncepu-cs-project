@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/devcui/ncepu-cs-project/domain"
+	"github.com/devcui/ncepu-cs-project/domain/class"
 	"github.com/devcui/ncepu-cs-project/domain/student"
 )
 
@@ -52,8 +53,15 @@ func StudentDelete(id int) error {
 
 func StudentUpdate(s domain.Student) error {
 	_, err := HandleByClient(func(client *domain.Client) (interface{}, error) {
+		class, err := client.Class.Query().Where(class.ID(s.Edges.Class.ID)).WithMajor().WithDepartment().Only(context.Background())
+		if err != nil {
+			return nil, err
+		}
 		return client.Student.Update().
 			Where(student.ID(s.ID)).
+			SetNillableClassID(&class.ID).
+			SetNillableDepartmentID(&class.Edges.Department.ID).
+			SetNillableMajorID(&class.Edges.Major.ID).
 			SetAge(s.Age).
 			SetAvatar([]byte{}).
 			SetSex(s.Sex).
