@@ -57,13 +57,13 @@ export class StartupService {
           this.aclService.setFull(true);
           this.menuService.add([
             {
-              text: '主导航',
+              text: '查询',
               group: true,
               children: [
                 {
-                  text: '仪表板',
-                  link: '/dashboard',
-                  icon: { type: 'icon', value: 'appstore' }
+                  text: '学生查询',
+                  link: '/student/query',
+                  icon: { type: 'icon', value: 'book', theme: 'outline' }
                 }
               ]
             },
@@ -73,11 +73,15 @@ export class StartupService {
               children: [
                 {
                   text: '用户列表',
-                  link: '/user/list'
+                  link: '/user/list',
+
+                  icon: { type: 'icon', value: 'book', theme: 'outline' }
                 },
                 {
                   text: '角色列表',
-                  link: '/role/list'
+                  link: '/role/list',
+
+                  icon: { type: 'icon', value: 'book', theme: 'outline' }
                 }
               ]
             },
@@ -86,24 +90,32 @@ export class StartupService {
               group: true,
               children: [
                 {
-                  text: '校区列表',
-                  link: '/campus/list'
+                  text: '校区管理',
+                  link: '/campus/list',
+
+                  icon: { type: 'icon', value: 'book', theme: 'outline' }
                 },
                 {
-                  text: '系部列表',
-                  link: '/department/list'
+                  text: '系部管理',
+                  link: '/department/list',
+
+                  icon: { type: 'icon', value: 'book', theme: 'outline' }
                 },
                 {
-                  text: '专业列表',
-                  link: '/major/list'
+                  text: '专业管理',
+                  link: '/major/list',
+
+                  icon: { type: 'icon', value: 'book', theme: 'outline' }
                 },
                 {
-                  text: '班级列表',
-                  link: '/class/list'
+                  text: '班级管理',
+                  link: '/class/list',
+                  icon: { type: 'icon', value: 'book', theme: 'outline' }
                 },
                 {
-                  text: '学生列表',
-                  link: '/student/list'
+                  text: '学生管理',
+                  link: '/student/list',
+                  icon: { type: 'icon', value: 'book', theme: 'outline' }
                 }
               ]
             }

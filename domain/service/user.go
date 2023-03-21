@@ -59,7 +59,7 @@ func UserUpdate(s domain.User) error {
 
 func UserQuery() (interface{}, error) {
 	res, err := HandleByClient(func(client *domain.Client) (interface{}, error) {
-		return client.User.Query().All(context.Background())
+		return client.User.Query().WithResource().WithStudent().WithRole().All(context.Background())
 	})
 	if err != nil {
 		return nil, err

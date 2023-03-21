@@ -4,7 +4,11 @@ import (
 	"context"
 
 	"github.com/devcui/ncepu-cs-project/domain"
+	"github.com/devcui/ncepu-cs-project/domain/certificate"
 	"github.com/devcui/ncepu-cs-project/domain/class"
+	"github.com/devcui/ncepu-cs-project/domain/familyinfo"
+	"github.com/devcui/ncepu-cs-project/domain/practicalexperience"
+	"github.com/devcui/ncepu-cs-project/domain/predicate"
 	"github.com/devcui/ncepu-cs-project/domain/student"
 )
 
@@ -46,7 +50,37 @@ func StudentBatchAdd(us []domain.User) error {
 
 func StudentDelete(id int) error {
 	_, err := HandleByClient(func(client *domain.Client) (interface{}, error) {
-		return client.Student.Delete().Where(student.ID(id)).Exec(context.Background())
+		ctx := context.Background()
+		tx, _ := client.Tx(ctx)
+		stu, e := tx.Student.Query().Where(student.ID(id)).WithCertificate().WithFamilyInfo().WithPracticalExperience().First(context.Background())
+		if e != nil {
+			tx.Rollback()
+			return nil, e
+		}
+		//
+		familyDeletes := []predicate.FamilyInfo{}
+		for _, fi := range stu.Edges.FamilyInfo {
+			familyDeletes = append(familyDeletes, familyinfo.ID(fi.ID))
+		}
+		tx.FamilyInfo.Delete().Where(familyDeletes...).Exec(ctx)
+		//
+		certificates := []predicate.Certificate{}
+		for _, fi := range stu.Edges.Certificate {
+			certificates = append(certificates, certificate.ID(fi.ID))
+		}
+		tx.Certificate.Delete().Where(certificates...).Exec(ctx)
+		//
+		practicalExperience := []predicate.PracticalExperience{}
+		for _, fi := range stu.Edges.PracticalExperience {
+			practicalExperience = append(practicalExperience, practicalexperience.ID(fi.ID))
+		}
+		tx.PracticalExperience.Delete().Where(practicalExperience...).Exec(ctx)
+		//
+		_, e = tx.Student.Delete().Where(student.ID(id)).Exec(ctx)
+		if e != nil {
+			tx.Rollback()
+		}
+		return nil, tx.Commit()
 	})
 	return err
 }
