@@ -6,7 +6,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -34,14 +33,14 @@ func (pec *PracticalExperienceCreate) SetUnit(s string) *PracticalExperienceCrea
 }
 
 // SetStartTime sets the "start_time" field.
-func (pec *PracticalExperienceCreate) SetStartTime(t time.Time) *PracticalExperienceCreate {
-	pec.mutation.SetStartTime(t)
+func (pec *PracticalExperienceCreate) SetStartTime(s string) *PracticalExperienceCreate {
+	pec.mutation.SetStartTime(s)
 	return pec
 }
 
 // SetEndTime sets the "end_time" field.
-func (pec *PracticalExperienceCreate) SetEndTime(t time.Time) *PracticalExperienceCreate {
-	pec.mutation.SetEndTime(t)
+func (pec *PracticalExperienceCreate) SetEndTime(s string) *PracticalExperienceCreate {
+	pec.mutation.SetEndTime(s)
 	return pec
 }
 
@@ -154,11 +153,11 @@ func (pec *PracticalExperienceCreate) createSpec() (*PracticalExperience, *sqlgr
 		_node.Unit = value
 	}
 	if value, ok := pec.mutation.StartTime(); ok {
-		_spec.SetField(practicalexperience.FieldStartTime, field.TypeTime, value)
+		_spec.SetField(practicalexperience.FieldStartTime, field.TypeString, value)
 		_node.StartTime = value
 	}
 	if value, ok := pec.mutation.EndTime(); ok {
-		_spec.SetField(practicalexperience.FieldEndTime, field.TypeTime, value)
+		_spec.SetField(practicalexperience.FieldEndTime, field.TypeString, value)
 		_node.EndTime = value
 	}
 	if value, ok := pec.mutation.Describe(); ok {

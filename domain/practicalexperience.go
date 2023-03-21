@@ -5,7 +5,6 @@ package domain
 import (
 	"fmt"
 	"strings"
-	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"github.com/devcui/ncepu-cs-project/domain/practicalexperience"
@@ -22,9 +21,9 @@ type PracticalExperience struct {
 	// 实践单位
 	Unit string `json:"unit,omitempty"`
 	// 开始时间
-	StartTime time.Time `json:"start_time,omitempty"`
+	StartTime string `json:"start_time,omitempty"`
 	// 结束时间
-	EndTime time.Time `json:"end_time,omitempty"`
+	EndTime string `json:"end_time,omitempty"`
 	// 实践描述
 	Describe string `json:"describe,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -62,10 +61,8 @@ func (*PracticalExperience) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case practicalexperience.FieldID:
 			values[i] = new(sql.NullInt64)
-		case practicalexperience.FieldName, practicalexperience.FieldUnit, practicalexperience.FieldDescribe:
+		case practicalexperience.FieldName, practicalexperience.FieldUnit, practicalexperience.FieldStartTime, practicalexperience.FieldEndTime, practicalexperience.FieldDescribe:
 			values[i] = new(sql.NullString)
-		case practicalexperience.FieldStartTime, practicalexperience.FieldEndTime:
-			values[i] = new(sql.NullTime)
 		case practicalexperience.ForeignKeys[0]: // practical_experience_student
 			values[i] = new(sql.NullInt64)
 		default:
@@ -102,16 +99,16 @@ func (pe *PracticalExperience) assignValues(columns []string, values []any) erro
 				pe.Unit = value.String
 			}
 		case practicalexperience.FieldStartTime:
-			if value, ok := values[i].(*sql.NullTime); !ok {
+			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field start_time", values[i])
 			} else if value.Valid {
-				pe.StartTime = value.Time
+				pe.StartTime = value.String
 			}
 		case practicalexperience.FieldEndTime:
-			if value, ok := values[i].(*sql.NullTime); !ok {
+			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field end_time", values[i])
 			} else if value.Valid {
-				pe.EndTime = value.Time
+				pe.EndTime = value.String
 			}
 		case practicalexperience.FieldDescribe:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -166,10 +163,10 @@ func (pe *PracticalExperience) String() string {
 	builder.WriteString(pe.Unit)
 	builder.WriteString(", ")
 	builder.WriteString("start_time=")
-	builder.WriteString(pe.StartTime.Format(time.ANSIC))
+	builder.WriteString(pe.StartTime)
 	builder.WriteString(", ")
 	builder.WriteString("end_time=")
-	builder.WriteString(pe.EndTime.Format(time.ANSIC))
+	builder.WriteString(pe.EndTime)
 	builder.WriteString(", ")
 	builder.WriteString("describe=")
 	builder.WriteString(pe.Describe)

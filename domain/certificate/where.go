@@ -3,8 +3,6 @@
 package certificate
 
 import (
-	"time"
-
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/devcui/ncepu-cs-project/domain/predicate"
@@ -76,7 +74,7 @@ func Department(v string) predicate.Certificate {
 }
 
 // IssueDate applies equality check predicate on the "issue_date" field. It's identical to IssueDateEQ.
-func IssueDate(v time.Time) predicate.Certificate {
+func IssueDate(v string) predicate.Certificate {
 	return predicate.Certificate(sql.FieldEQ(FieldIssueDate, v))
 }
 
@@ -366,43 +364,68 @@ func DepartmentContainsFold(v string) predicate.Certificate {
 }
 
 // IssueDateEQ applies the EQ predicate on the "issue_date" field.
-func IssueDateEQ(v time.Time) predicate.Certificate {
+func IssueDateEQ(v string) predicate.Certificate {
 	return predicate.Certificate(sql.FieldEQ(FieldIssueDate, v))
 }
 
 // IssueDateNEQ applies the NEQ predicate on the "issue_date" field.
-func IssueDateNEQ(v time.Time) predicate.Certificate {
+func IssueDateNEQ(v string) predicate.Certificate {
 	return predicate.Certificate(sql.FieldNEQ(FieldIssueDate, v))
 }
 
 // IssueDateIn applies the In predicate on the "issue_date" field.
-func IssueDateIn(vs ...time.Time) predicate.Certificate {
+func IssueDateIn(vs ...string) predicate.Certificate {
 	return predicate.Certificate(sql.FieldIn(FieldIssueDate, vs...))
 }
 
 // IssueDateNotIn applies the NotIn predicate on the "issue_date" field.
-func IssueDateNotIn(vs ...time.Time) predicate.Certificate {
+func IssueDateNotIn(vs ...string) predicate.Certificate {
 	return predicate.Certificate(sql.FieldNotIn(FieldIssueDate, vs...))
 }
 
 // IssueDateGT applies the GT predicate on the "issue_date" field.
-func IssueDateGT(v time.Time) predicate.Certificate {
+func IssueDateGT(v string) predicate.Certificate {
 	return predicate.Certificate(sql.FieldGT(FieldIssueDate, v))
 }
 
 // IssueDateGTE applies the GTE predicate on the "issue_date" field.
-func IssueDateGTE(v time.Time) predicate.Certificate {
+func IssueDateGTE(v string) predicate.Certificate {
 	return predicate.Certificate(sql.FieldGTE(FieldIssueDate, v))
 }
 
 // IssueDateLT applies the LT predicate on the "issue_date" field.
-func IssueDateLT(v time.Time) predicate.Certificate {
+func IssueDateLT(v string) predicate.Certificate {
 	return predicate.Certificate(sql.FieldLT(FieldIssueDate, v))
 }
 
 // IssueDateLTE applies the LTE predicate on the "issue_date" field.
-func IssueDateLTE(v time.Time) predicate.Certificate {
+func IssueDateLTE(v string) predicate.Certificate {
 	return predicate.Certificate(sql.FieldLTE(FieldIssueDate, v))
+}
+
+// IssueDateContains applies the Contains predicate on the "issue_date" field.
+func IssueDateContains(v string) predicate.Certificate {
+	return predicate.Certificate(sql.FieldContains(FieldIssueDate, v))
+}
+
+// IssueDateHasPrefix applies the HasPrefix predicate on the "issue_date" field.
+func IssueDateHasPrefix(v string) predicate.Certificate {
+	return predicate.Certificate(sql.FieldHasPrefix(FieldIssueDate, v))
+}
+
+// IssueDateHasSuffix applies the HasSuffix predicate on the "issue_date" field.
+func IssueDateHasSuffix(v string) predicate.Certificate {
+	return predicate.Certificate(sql.FieldHasSuffix(FieldIssueDate, v))
+}
+
+// IssueDateEqualFold applies the EqualFold predicate on the "issue_date" field.
+func IssueDateEqualFold(v string) predicate.Certificate {
+	return predicate.Certificate(sql.FieldEqualFold(FieldIssueDate, v))
+}
+
+// IssueDateContainsFold applies the ContainsFold predicate on the "issue_date" field.
+func IssueDateContainsFold(v string) predicate.Certificate {
+	return predicate.Certificate(sql.FieldContainsFold(FieldIssueDate, v))
 }
 
 // CertificateTypeEQ applies the EQ predicate on the "certificate_type" field.

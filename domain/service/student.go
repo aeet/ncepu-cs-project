@@ -66,7 +66,7 @@ func StudentUpdate(s domain.Student) error {
 
 func StudentQuery() (interface{}, error) {
 	res, err := HandleByClient(func(client *domain.Client) (interface{}, error) {
-		return client.Student.Query().All(context.Background())
+		return client.Student.Query().WithCertificate().WithFamilyInfo().WithPracticalExperience().All(context.Background())
 	})
 	if err != nil {
 		return nil, err

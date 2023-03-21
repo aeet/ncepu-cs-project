@@ -3,8 +3,6 @@
 package practicalexperience
 
 import (
-	"time"
-
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/devcui/ncepu-cs-project/domain/predicate"
@@ -66,12 +64,12 @@ func Unit(v string) predicate.PracticalExperience {
 }
 
 // StartTime applies equality check predicate on the "start_time" field. It's identical to StartTimeEQ.
-func StartTime(v time.Time) predicate.PracticalExperience {
+func StartTime(v string) predicate.PracticalExperience {
 	return predicate.PracticalExperience(sql.FieldEQ(FieldStartTime, v))
 }
 
 // EndTime applies equality check predicate on the "end_time" field. It's identical to EndTimeEQ.
-func EndTime(v time.Time) predicate.PracticalExperience {
+func EndTime(v string) predicate.PracticalExperience {
 	return predicate.PracticalExperience(sql.FieldEQ(FieldEndTime, v))
 }
 
@@ -211,83 +209,133 @@ func UnitContainsFold(v string) predicate.PracticalExperience {
 }
 
 // StartTimeEQ applies the EQ predicate on the "start_time" field.
-func StartTimeEQ(v time.Time) predicate.PracticalExperience {
+func StartTimeEQ(v string) predicate.PracticalExperience {
 	return predicate.PracticalExperience(sql.FieldEQ(FieldStartTime, v))
 }
 
 // StartTimeNEQ applies the NEQ predicate on the "start_time" field.
-func StartTimeNEQ(v time.Time) predicate.PracticalExperience {
+func StartTimeNEQ(v string) predicate.PracticalExperience {
 	return predicate.PracticalExperience(sql.FieldNEQ(FieldStartTime, v))
 }
 
 // StartTimeIn applies the In predicate on the "start_time" field.
-func StartTimeIn(vs ...time.Time) predicate.PracticalExperience {
+func StartTimeIn(vs ...string) predicate.PracticalExperience {
 	return predicate.PracticalExperience(sql.FieldIn(FieldStartTime, vs...))
 }
 
 // StartTimeNotIn applies the NotIn predicate on the "start_time" field.
-func StartTimeNotIn(vs ...time.Time) predicate.PracticalExperience {
+func StartTimeNotIn(vs ...string) predicate.PracticalExperience {
 	return predicate.PracticalExperience(sql.FieldNotIn(FieldStartTime, vs...))
 }
 
 // StartTimeGT applies the GT predicate on the "start_time" field.
-func StartTimeGT(v time.Time) predicate.PracticalExperience {
+func StartTimeGT(v string) predicate.PracticalExperience {
 	return predicate.PracticalExperience(sql.FieldGT(FieldStartTime, v))
 }
 
 // StartTimeGTE applies the GTE predicate on the "start_time" field.
-func StartTimeGTE(v time.Time) predicate.PracticalExperience {
+func StartTimeGTE(v string) predicate.PracticalExperience {
 	return predicate.PracticalExperience(sql.FieldGTE(FieldStartTime, v))
 }
 
 // StartTimeLT applies the LT predicate on the "start_time" field.
-func StartTimeLT(v time.Time) predicate.PracticalExperience {
+func StartTimeLT(v string) predicate.PracticalExperience {
 	return predicate.PracticalExperience(sql.FieldLT(FieldStartTime, v))
 }
 
 // StartTimeLTE applies the LTE predicate on the "start_time" field.
-func StartTimeLTE(v time.Time) predicate.PracticalExperience {
+func StartTimeLTE(v string) predicate.PracticalExperience {
 	return predicate.PracticalExperience(sql.FieldLTE(FieldStartTime, v))
 }
 
+// StartTimeContains applies the Contains predicate on the "start_time" field.
+func StartTimeContains(v string) predicate.PracticalExperience {
+	return predicate.PracticalExperience(sql.FieldContains(FieldStartTime, v))
+}
+
+// StartTimeHasPrefix applies the HasPrefix predicate on the "start_time" field.
+func StartTimeHasPrefix(v string) predicate.PracticalExperience {
+	return predicate.PracticalExperience(sql.FieldHasPrefix(FieldStartTime, v))
+}
+
+// StartTimeHasSuffix applies the HasSuffix predicate on the "start_time" field.
+func StartTimeHasSuffix(v string) predicate.PracticalExperience {
+	return predicate.PracticalExperience(sql.FieldHasSuffix(FieldStartTime, v))
+}
+
+// StartTimeEqualFold applies the EqualFold predicate on the "start_time" field.
+func StartTimeEqualFold(v string) predicate.PracticalExperience {
+	return predicate.PracticalExperience(sql.FieldEqualFold(FieldStartTime, v))
+}
+
+// StartTimeContainsFold applies the ContainsFold predicate on the "start_time" field.
+func StartTimeContainsFold(v string) predicate.PracticalExperience {
+	return predicate.PracticalExperience(sql.FieldContainsFold(FieldStartTime, v))
+}
+
 // EndTimeEQ applies the EQ predicate on the "end_time" field.
-func EndTimeEQ(v time.Time) predicate.PracticalExperience {
+func EndTimeEQ(v string) predicate.PracticalExperience {
 	return predicate.PracticalExperience(sql.FieldEQ(FieldEndTime, v))
 }
 
 // EndTimeNEQ applies the NEQ predicate on the "end_time" field.
-func EndTimeNEQ(v time.Time) predicate.PracticalExperience {
+func EndTimeNEQ(v string) predicate.PracticalExperience {
 	return predicate.PracticalExperience(sql.FieldNEQ(FieldEndTime, v))
 }
 
 // EndTimeIn applies the In predicate on the "end_time" field.
-func EndTimeIn(vs ...time.Time) predicate.PracticalExperience {
+func EndTimeIn(vs ...string) predicate.PracticalExperience {
 	return predicate.PracticalExperience(sql.FieldIn(FieldEndTime, vs...))
 }
 
 // EndTimeNotIn applies the NotIn predicate on the "end_time" field.
-func EndTimeNotIn(vs ...time.Time) predicate.PracticalExperience {
+func EndTimeNotIn(vs ...string) predicate.PracticalExperience {
 	return predicate.PracticalExperience(sql.FieldNotIn(FieldEndTime, vs...))
 }
 
 // EndTimeGT applies the GT predicate on the "end_time" field.
-func EndTimeGT(v time.Time) predicate.PracticalExperience {
+func EndTimeGT(v string) predicate.PracticalExperience {
 	return predicate.PracticalExperience(sql.FieldGT(FieldEndTime, v))
 }
 
 // EndTimeGTE applies the GTE predicate on the "end_time" field.
-func EndTimeGTE(v time.Time) predicate.PracticalExperience {
+func EndTimeGTE(v string) predicate.PracticalExperience {
 	return predicate.PracticalExperience(sql.FieldGTE(FieldEndTime, v))
 }
 
 // EndTimeLT applies the LT predicate on the "end_time" field.
-func EndTimeLT(v time.Time) predicate.PracticalExperience {
+func EndTimeLT(v string) predicate.PracticalExperience {
 	return predicate.PracticalExperience(sql.FieldLT(FieldEndTime, v))
 }
 
 // EndTimeLTE applies the LTE predicate on the "end_time" field.
-func EndTimeLTE(v time.Time) predicate.PracticalExperience {
+func EndTimeLTE(v string) predicate.PracticalExperience {
 	return predicate.PracticalExperience(sql.FieldLTE(FieldEndTime, v))
+}
+
+// EndTimeContains applies the Contains predicate on the "end_time" field.
+func EndTimeContains(v string) predicate.PracticalExperience {
+	return predicate.PracticalExperience(sql.FieldContains(FieldEndTime, v))
+}
+
+// EndTimeHasPrefix applies the HasPrefix predicate on the "end_time" field.
+func EndTimeHasPrefix(v string) predicate.PracticalExperience {
+	return predicate.PracticalExperience(sql.FieldHasPrefix(FieldEndTime, v))
+}
+
+// EndTimeHasSuffix applies the HasSuffix predicate on the "end_time" field.
+func EndTimeHasSuffix(v string) predicate.PracticalExperience {
+	return predicate.PracticalExperience(sql.FieldHasSuffix(FieldEndTime, v))
+}
+
+// EndTimeEqualFold applies the EqualFold predicate on the "end_time" field.
+func EndTimeEqualFold(v string) predicate.PracticalExperience {
+	return predicate.PracticalExperience(sql.FieldEqualFold(FieldEndTime, v))
+}
+
+// EndTimeContainsFold applies the ContainsFold predicate on the "end_time" field.
+func EndTimeContainsFold(v string) predicate.PracticalExperience {
+	return predicate.PracticalExperience(sql.FieldContainsFold(FieldEndTime, v))
 }
 
 // DescribeEQ applies the EQ predicate on the "describe" field.

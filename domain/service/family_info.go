@@ -11,6 +11,7 @@ func FamilyAdd(s domain.FamilyInfo) error {
 	_, err := HandleByClient(func(client *domain.Client) (interface{}, error) {
 		return client.FamilyInfo.Create().
 			SetStudentID(s.Edges.Student.ID).
+			SetOccupation(s.Occupation).
 			SetAge(s.Age).
 			SetName(s.Name).
 			SetHealth(s.Health).
@@ -18,7 +19,7 @@ func FamilyAdd(s domain.FamilyInfo) error {
 			SetWorkUnit(s.WorkUnit).
 			SetContactNumber(s.ContactNumber).
 			SetPost(s.Post).
-			SetRelationship(s.Relationship).Save(context.Background())
+			SetRelationship(s.Relationship).SaveX(context.Background()), nil
 	})
 	return err
 }

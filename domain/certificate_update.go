@@ -6,7 +6,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -54,8 +53,8 @@ func (cu *CertificateUpdate) SetDepartment(s string) *CertificateUpdate {
 }
 
 // SetIssueDate sets the "issue_date" field.
-func (cu *CertificateUpdate) SetIssueDate(t time.Time) *CertificateUpdate {
-	cu.mutation.SetIssueDate(t)
+func (cu *CertificateUpdate) SetIssueDate(s string) *CertificateUpdate {
+	cu.mutation.SetIssueDate(s)
 	return cu
 }
 
@@ -168,7 +167,7 @@ func (cu *CertificateUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.SetField(certificate.FieldDepartment, field.TypeString, value)
 	}
 	if value, ok := cu.mutation.IssueDate(); ok {
-		_spec.SetField(certificate.FieldIssueDate, field.TypeTime, value)
+		_spec.SetField(certificate.FieldIssueDate, field.TypeString, value)
 	}
 	if value, ok := cu.mutation.CertificateType(); ok {
 		_spec.SetField(certificate.FieldCertificateType, field.TypeString, value)
@@ -259,8 +258,8 @@ func (cuo *CertificateUpdateOne) SetDepartment(s string) *CertificateUpdateOne {
 }
 
 // SetIssueDate sets the "issue_date" field.
-func (cuo *CertificateUpdateOne) SetIssueDate(t time.Time) *CertificateUpdateOne {
-	cuo.mutation.SetIssueDate(t)
+func (cuo *CertificateUpdateOne) SetIssueDate(s string) *CertificateUpdateOne {
+	cuo.mutation.SetIssueDate(s)
 	return cuo
 }
 
@@ -403,7 +402,7 @@ func (cuo *CertificateUpdateOne) sqlSave(ctx context.Context) (_node *Certificat
 		_spec.SetField(certificate.FieldDepartment, field.TypeString, value)
 	}
 	if value, ok := cuo.mutation.IssueDate(); ok {
-		_spec.SetField(certificate.FieldIssueDate, field.TypeTime, value)
+		_spec.SetField(certificate.FieldIssueDate, field.TypeString, value)
 	}
 	if value, ok := cuo.mutation.CertificateType(); ok {
 		_spec.SetField(certificate.FieldCertificateType, field.TypeString, value)

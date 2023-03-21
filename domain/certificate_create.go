@@ -6,7 +6,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -46,8 +45,8 @@ func (cc *CertificateCreate) SetDepartment(s string) *CertificateCreate {
 }
 
 // SetIssueDate sets the "issue_date" field.
-func (cc *CertificateCreate) SetIssueDate(t time.Time) *CertificateCreate {
-	cc.mutation.SetIssueDate(t)
+func (cc *CertificateCreate) SetIssueDate(s string) *CertificateCreate {
+	cc.mutation.SetIssueDate(s)
 	return cc
 }
 
@@ -207,7 +206,7 @@ func (cc *CertificateCreate) createSpec() (*Certificate, *sqlgraph.CreateSpec) {
 		_node.Department = value
 	}
 	if value, ok := cc.mutation.IssueDate(); ok {
-		_spec.SetField(certificate.FieldIssueDate, field.TypeTime, value)
+		_spec.SetField(certificate.FieldIssueDate, field.TypeString, value)
 		_node.IssueDate = value
 	}
 	if value, ok := cc.mutation.CertificateType(); ok {

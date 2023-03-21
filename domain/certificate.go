@@ -5,7 +5,6 @@ package domain
 import (
 	"fmt"
 	"strings"
-	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"github.com/devcui/ncepu-cs-project/domain/certificate"
@@ -26,7 +25,7 @@ type Certificate struct {
 	// 颁发部门
 	Department string `json:"department,omitempty"`
 	// 颁发日期
-	IssueDate time.Time `json:"issue_date,omitempty"`
+	IssueDate string `json:"issue_date,omitempty"`
 	// 证书类型
 	CertificateType string `json:"certificate_type,omitempty"`
 	// 证书级别
@@ -74,10 +73,8 @@ func (*Certificate) scanValues(columns []string) ([]any, error) {
 			values[i] = new([]byte)
 		case certificate.FieldID:
 			values[i] = new(sql.NullInt64)
-		case certificate.FieldName, certificate.FieldCode, certificate.FieldDescription, certificate.FieldDepartment, certificate.FieldCertificateType, certificate.FieldCertificateLevel, certificate.FieldCertificateType2, certificate.FieldAwardCategory:
+		case certificate.FieldName, certificate.FieldCode, certificate.FieldDescription, certificate.FieldDepartment, certificate.FieldIssueDate, certificate.FieldCertificateType, certificate.FieldCertificateLevel, certificate.FieldCertificateType2, certificate.FieldAwardCategory:
 			values[i] = new(sql.NullString)
-		case certificate.FieldIssueDate:
-			values[i] = new(sql.NullTime)
 		case certificate.ForeignKeys[0]: // certificate_student
 			values[i] = new(sql.NullInt64)
 		default:
@@ -126,10 +123,10 @@ func (c *Certificate) assignValues(columns []string, values []any) error {
 				c.Department = value.String
 			}
 		case certificate.FieldIssueDate:
-			if value, ok := values[i].(*sql.NullTime); !ok {
+			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field issue_date", values[i])
 			} else if value.Valid {
-				c.IssueDate = value.Time
+				c.IssueDate = value.String
 			}
 		case certificate.FieldCertificateType:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -214,7 +211,7 @@ func (c *Certificate) String() string {
 	builder.WriteString(c.Department)
 	builder.WriteString(", ")
 	builder.WriteString("issue_date=")
-	builder.WriteString(c.IssueDate.Format(time.ANSIC))
+	builder.WriteString(c.IssueDate)
 	builder.WriteString(", ")
 	builder.WriteString("certificate_type=")
 	builder.WriteString(c.CertificateType)

@@ -6,7 +6,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -42,14 +41,14 @@ func (peu *PracticalExperienceUpdate) SetUnit(s string) *PracticalExperienceUpda
 }
 
 // SetStartTime sets the "start_time" field.
-func (peu *PracticalExperienceUpdate) SetStartTime(t time.Time) *PracticalExperienceUpdate {
-	peu.mutation.SetStartTime(t)
+func (peu *PracticalExperienceUpdate) SetStartTime(s string) *PracticalExperienceUpdate {
+	peu.mutation.SetStartTime(s)
 	return peu
 }
 
 // SetEndTime sets the "end_time" field.
-func (peu *PracticalExperienceUpdate) SetEndTime(t time.Time) *PracticalExperienceUpdate {
-	peu.mutation.SetEndTime(t)
+func (peu *PracticalExperienceUpdate) SetEndTime(s string) *PracticalExperienceUpdate {
+	peu.mutation.SetEndTime(s)
 	return peu
 }
 
@@ -132,10 +131,10 @@ func (peu *PracticalExperienceUpdate) sqlSave(ctx context.Context) (n int, err e
 		_spec.SetField(practicalexperience.FieldUnit, field.TypeString, value)
 	}
 	if value, ok := peu.mutation.StartTime(); ok {
-		_spec.SetField(practicalexperience.FieldStartTime, field.TypeTime, value)
+		_spec.SetField(practicalexperience.FieldStartTime, field.TypeString, value)
 	}
 	if value, ok := peu.mutation.EndTime(); ok {
-		_spec.SetField(practicalexperience.FieldEndTime, field.TypeTime, value)
+		_spec.SetField(practicalexperience.FieldEndTime, field.TypeString, value)
 	}
 	if value, ok := peu.mutation.Describe(); ok {
 		_spec.SetField(practicalexperience.FieldDescribe, field.TypeString, value)
@@ -202,14 +201,14 @@ func (peuo *PracticalExperienceUpdateOne) SetUnit(s string) *PracticalExperience
 }
 
 // SetStartTime sets the "start_time" field.
-func (peuo *PracticalExperienceUpdateOne) SetStartTime(t time.Time) *PracticalExperienceUpdateOne {
-	peuo.mutation.SetStartTime(t)
+func (peuo *PracticalExperienceUpdateOne) SetStartTime(s string) *PracticalExperienceUpdateOne {
+	peuo.mutation.SetStartTime(s)
 	return peuo
 }
 
 // SetEndTime sets the "end_time" field.
-func (peuo *PracticalExperienceUpdateOne) SetEndTime(t time.Time) *PracticalExperienceUpdateOne {
-	peuo.mutation.SetEndTime(t)
+func (peuo *PracticalExperienceUpdateOne) SetEndTime(s string) *PracticalExperienceUpdateOne {
+	peuo.mutation.SetEndTime(s)
 	return peuo
 }
 
@@ -322,10 +321,10 @@ func (peuo *PracticalExperienceUpdateOne) sqlSave(ctx context.Context) (_node *P
 		_spec.SetField(practicalexperience.FieldUnit, field.TypeString, value)
 	}
 	if value, ok := peuo.mutation.StartTime(); ok {
-		_spec.SetField(practicalexperience.FieldStartTime, field.TypeTime, value)
+		_spec.SetField(practicalexperience.FieldStartTime, field.TypeString, value)
 	}
 	if value, ok := peuo.mutation.EndTime(); ok {
-		_spec.SetField(practicalexperience.FieldEndTime, field.TypeTime, value)
+		_spec.SetField(practicalexperience.FieldEndTime, field.TypeString, value)
 	}
 	if value, ok := peuo.mutation.Describe(); ok {
 		_spec.SetField(practicalexperience.FieldDescribe, field.TypeString, value)

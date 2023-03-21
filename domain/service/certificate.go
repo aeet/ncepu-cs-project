@@ -11,7 +11,8 @@ func CertificateAdd(s domain.Certificate) error {
 	_, err := HandleByClient(func(client *domain.Client) (interface{}, error) {
 		return client.Certificate.Create().
 			SetStudentID(s.Edges.Student.ID).
-			SetCertificateImage(s.CertificateImage).
+			SetName(s.Name).
+			SetCertificateImage([]byte{}).
 			SetAwardCategory(s.AwardCategory).
 			SetCertificateLevel(s.CertificateLevel).
 			SetCertificateType(s.CertificateType).

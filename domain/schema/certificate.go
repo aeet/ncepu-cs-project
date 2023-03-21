@@ -17,7 +17,7 @@ func (Certificate) Fields() []ent.Field {
 		field.String("code").Comment("证书代码").Unique(),
 		field.String("description").Comment("证书描述"),
 		field.String("department").Comment("颁发部门"),
-		field.Time("issue_date").Comment("颁发日期"),
+		field.String("issue_date").Comment("颁发日期"),
 		field.String("certificate_type").Comment("证书类型"),
 		field.String("certificate_level").Comment("证书级别"),
 		field.String("certificate_type2").Comment("证书类别"),

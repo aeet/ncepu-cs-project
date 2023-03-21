@@ -7,7 +7,6 @@ import (
 	"errors"
 	"fmt"
 	"sync"
-	"time"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
@@ -1291,7 +1290,7 @@ type CertificateMutation struct {
 	code              *string
 	description       *string
 	department        *string
-	issue_date        *time.Time
+	issue_date        *string
 	certificate_type  *string
 	certificate_level *string
 	certificate_type2 *string
@@ -1548,12 +1547,12 @@ func (m *CertificateMutation) ResetDepartment() {
 }
 
 // SetIssueDate sets the "issue_date" field.
-func (m *CertificateMutation) SetIssueDate(t time.Time) {
-	m.issue_date = &t
+func (m *CertificateMutation) SetIssueDate(s string) {
+	m.issue_date = &s
 }
 
 // IssueDate returns the value of the "issue_date" field in the mutation.
-func (m *CertificateMutation) IssueDate() (r time.Time, exists bool) {
+func (m *CertificateMutation) IssueDate() (r string, exists bool) {
 	v := m.issue_date
 	if v == nil {
 		return
@@ -1564,7 +1563,7 @@ func (m *CertificateMutation) IssueDate() (r time.Time, exists bool) {
 // OldIssueDate returns the old "issue_date" field's value of the Certificate entity.
 // If the Certificate object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CertificateMutation) OldIssueDate(ctx context.Context) (v time.Time, err error) {
+func (m *CertificateMutation) OldIssueDate(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldIssueDate is only allowed on UpdateOne operations")
 	}
@@ -1962,7 +1961,7 @@ func (m *CertificateMutation) SetField(name string, value ent.Value) error {
 		m.SetDepartment(v)
 		return nil
 	case certificate.FieldIssueDate:
-		v, ok := value.(time.Time)
+		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -7075,8 +7074,8 @@ type PracticalExperienceMutation struct {
 	id             *int
 	name           *string
 	unit           *string
-	start_time     *time.Time
-	end_time       *time.Time
+	start_time     *string
+	end_time       *string
 	describe       *string
 	clearedFields  map[string]struct{}
 	student        *int
@@ -7257,12 +7256,12 @@ func (m *PracticalExperienceMutation) ResetUnit() {
 }
 
 // SetStartTime sets the "start_time" field.
-func (m *PracticalExperienceMutation) SetStartTime(t time.Time) {
-	m.start_time = &t
+func (m *PracticalExperienceMutation) SetStartTime(s string) {
+	m.start_time = &s
 }
 
 // StartTime returns the value of the "start_time" field in the mutation.
-func (m *PracticalExperienceMutation) StartTime() (r time.Time, exists bool) {
+func (m *PracticalExperienceMutation) StartTime() (r string, exists bool) {
 	v := m.start_time
 	if v == nil {
 		return
@@ -7273,7 +7272,7 @@ func (m *PracticalExperienceMutation) StartTime() (r time.Time, exists bool) {
 // OldStartTime returns the old "start_time" field's value of the PracticalExperience entity.
 // If the PracticalExperience object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PracticalExperienceMutation) OldStartTime(ctx context.Context) (v time.Time, err error) {
+func (m *PracticalExperienceMutation) OldStartTime(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldStartTime is only allowed on UpdateOne operations")
 	}
@@ -7293,12 +7292,12 @@ func (m *PracticalExperienceMutation) ResetStartTime() {
 }
 
 // SetEndTime sets the "end_time" field.
-func (m *PracticalExperienceMutation) SetEndTime(t time.Time) {
-	m.end_time = &t
+func (m *PracticalExperienceMutation) SetEndTime(s string) {
+	m.end_time = &s
 }
 
 // EndTime returns the value of the "end_time" field in the mutation.
-func (m *PracticalExperienceMutation) EndTime() (r time.Time, exists bool) {
+func (m *PracticalExperienceMutation) EndTime() (r string, exists bool) {
 	v := m.end_time
 	if v == nil {
 		return
@@ -7309,7 +7308,7 @@ func (m *PracticalExperienceMutation) EndTime() (r time.Time, exists bool) {
 // OldEndTime returns the old "end_time" field's value of the PracticalExperience entity.
 // If the PracticalExperience object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PracticalExperienceMutation) OldEndTime(ctx context.Context) (v time.Time, err error) {
+func (m *PracticalExperienceMutation) OldEndTime(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldEndTime is only allowed on UpdateOne operations")
 	}
@@ -7514,14 +7513,14 @@ func (m *PracticalExperienceMutation) SetField(name string, value ent.Value) err
 		m.SetUnit(v)
 		return nil
 	case practicalexperience.FieldStartTime:
-		v, ok := value.(time.Time)
+		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetStartTime(v)
 		return nil
 	case practicalexperience.FieldEndTime:
-		v, ok := value.(time.Time)
+		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}

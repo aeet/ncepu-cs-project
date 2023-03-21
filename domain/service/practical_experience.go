@@ -15,7 +15,7 @@ func PracticalAdd(s domain.PracticalExperience) error {
 			SetEndTime(s.EndTime).
 			SetName(s.Name).
 			SetStartTime(s.StartTime).
-			SetUnit(s.Unit).Save(context.Background())
+			SetUnit(s.Unit).SaveX(context.Background()), nil
 	})
 	return err
 }
