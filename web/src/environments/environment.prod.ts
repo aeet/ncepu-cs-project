@@ -3,7 +3,7 @@ import { Environment } from '@yelon/theme';
 export const environment = {
   production: true,
   useHash: true,
-  path: '',
+  path: 'http://localhost:8080',
   api: {
     baseUrl: './',
     refreshTokenEnabled: true,
