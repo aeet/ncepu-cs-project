@@ -55,6 +55,9 @@ export class SimpleService<T extends Simple> implements OnDestroy {
   }
 
   query(): Observable<any> {
+    if (this.t.path === 'user') {
+      return this.http.get(`${environment['path']}/${this.t.path}/query`);
+    }
     return this.http.get(`${environment['path']}/${this.t.path}`);
   }
 

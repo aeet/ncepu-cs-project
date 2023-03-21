@@ -16,5 +16,5 @@ func routes(api *echo.Group) {
 	api.GET("/query", UserQuery)
 	api.POST("", UserAdd)
 	api.PUT("", UserUpdate)
-	api.DELETE(":id", UserDelete)
+	api.DELETE("/:id", UserDelete)
 }

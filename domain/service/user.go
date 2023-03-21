@@ -32,12 +32,7 @@ func UserByID(id int) (data *domain.User, err error) {
 
 func UserAdd(s domain.User) error {
 	_, err := HandleByClient(func(client *domain.Client) (interface{}, error) {
-		return client.User.Create().
-			SetAccount(s.Account).
-			SetPasswd(s.Passwd).
-			SetAvatar(*s.Avatar).
-			SetEmail(s.Email).
-			SetUsername(s.Username).Save(context.Background())
+		return client.User.Create().SetAccount(s.Account).SetAvatar([]byte{}).SetNillableStudentID(nil).SetPasswd(s.Passwd).SetEmail(s.Email).SetUsername(s.Username).Save(context.Background())
 	})
 	return err
 }

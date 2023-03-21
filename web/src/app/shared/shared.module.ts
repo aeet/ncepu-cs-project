@@ -9,6 +9,7 @@ import { YunzaiThemeModule } from '@yelon/theme';
 import { SHARED_YELON_MODULES } from './shared-yelon.module';
 import { SHARED_ZORRO_MODULES } from './shared-zorro.module';
 import { SimpleComponent } from './simple/simple.component';
+import { UsersComponent } from './user/app-user-list.component';
 
 // #region third libs
 
@@ -18,7 +19,7 @@ const THIRDMODULES: Array<Type<void>> = [];
 
 // #region your componets & directives
 
-const COMPONENTS: Array<Type<void>> = [SimpleComponent];
+const COMPONENTS: Array<Type<void>> = [SimpleComponent, UsersComponent];
 const DIRECTIVES: Array<Type<void>> = [];
 
 // #endregion
