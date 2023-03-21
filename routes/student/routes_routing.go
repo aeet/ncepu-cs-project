@@ -28,8 +28,10 @@ func routes(api *echo.Group) {
 	api.DELETE("/practical/:id", PracticalDeleteHandler)
 	api.PUT("/practical", PracticalUpdateHandler)
 	// student
+	api.POST("/batch", StudentBatchAddHandler)
+	api.POST("", StudentAddHandler)
 	api.POST("", StudentAddHandler)
 	api.GET("", StudentListHandler)
-	api.DELETE(":id", StudentDeleteHandler)
+	api.DELETE("/:id", StudentDeleteHandler)
 	api.PUT("", StudentUpdateHandler)
 }

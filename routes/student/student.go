@@ -146,6 +146,16 @@ func StudentAddHandler(c echo.Context) error {
 	return c.JSON(status.Http200("success", nil))
 }
 
+func StudentBatchAddHandler(c echo.Context) error {
+	param := []domain.User{}
+	c.Bind(&param)
+	e := service.StudentBatchAdd(param)
+	if e != nil {
+		return c.JSON(status.Http500(e.Error(), nil))
+	}
+	return c.JSON(status.Http200("success", nil))
+}
+
 func StudentListHandler(c echo.Context) error {
 	data, e := service.StudentQuery()
 	if e != nil {
