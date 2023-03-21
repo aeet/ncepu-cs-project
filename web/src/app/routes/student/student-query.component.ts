@@ -12,7 +12,7 @@ import { map } from 'rxjs';
   template: `
     <page-header [action]="phActionTpl">
       <ng-template #phActionTpl> </ng-template>
-      <sf [schema]="querySchema" layout="inline" (formSubmit)="search($event)"></sf>
+      <sf [schema]="querySchema" layout="inline" (formSubmit)="search($event)" (formReset)="reset()"></sf>
     </page-header>
     <nz-card>
       <st #st [columns]="columns" [data]="data"></st>
@@ -110,6 +110,7 @@ export class StudentQueryComponent implements OnReuseInit, OnInit {
     }
   ];
   data: any = [];
+  temp_data: any = [];
   querySchema: SFSchema = {
     properties: {
       role: {
@@ -192,8 +193,26 @@ export class StudentQueryComponent implements OnReuseInit, OnInit {
   query(search?: any): void {
     this.http.get(`${environment['path']}/student`, search).subscribe(response => {
       this.data = response.body;
+      this.temp_data = response.body;
     });
   }
 
-  search(value: any): void {}
+  search(value: any): void {
+    console.log(value);
+    if (value.department) {
+      this.data = this.data.filter((item: any) => item.edges.department.id === value.department);
+    }
+    if (value.major) {
+      this.data = this.data.filter((item: any) => item.edges.major.id === value.major);
+    }
+    if (value.class) {
+      this.data = this.data.filter((item: any) => item.edges.class.id === value.class);
+    }
+    if (value.name) {
+      this.data = this.data.filter((item: any) => item.name.includes(value.name));
+    }
+  }
+  reset(): void {
+    this.data = this.temp_data;
+  }
 }
