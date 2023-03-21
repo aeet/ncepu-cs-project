@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ncepu-cs-project-v1
+  namespace: cloud
+  labels:
+    app: ncepu-cs-project
+    version: v1
+spec:
+  replicas: 1
+  # 滚动升级
+  minReadySeconds: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%       
+      maxUnavailable: 25% 
+  selector:
+    matchLabels:
+      app: ncepu-cs-project
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ncepu-cs-project
+        version: v1
+      annotations:
+        traffic.sidecar.istio.io/excludeOutboundIPRanges: 0.0.0.0/0
+    spec:
+      serviceAccount: cloud
+      containers:
+        - image: https://hub.docker.com/ncepu-cs-project:v1
+          name: ncepu-cs-project
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "0.1"
+            limits:
+              cpu: "1"
+              memory: "2048Mi"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ncepu-cs-project
+  labels:
+    app: ncepu-cs-project
+  namespace: cloud
+spec:
+  selector:
+    app: ncepu-cs-project
+  ports:
+    - port: 8080
+      name: http

@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: ncepu-cs-project
+  namespace: cloud
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - cloud-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /ncepu-cs-project
+    route:
+    - destination:
+        host: ncepu-cs-project
+        port:
+         number: 8080
