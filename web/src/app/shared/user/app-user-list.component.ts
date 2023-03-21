@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ReuseHookOnReuseInitType } from '@yelon/abc/reuse-tab';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { OnReuseInit, ReuseHookOnReuseInitType } from '@yelon/abc/reuse-tab';
 import { STColumn, STColumnButton } from '@yelon/abc/st';
 import { SFSchema } from '@yelon/form';
 import { NzModalService } from 'ng-zorro-antd/modal';
@@ -9,9 +9,19 @@ import { SimpleService } from '../simple/simple.service';
 
 @Component({
   selector: `users`,
-  template: ` <app-simple #simple [buttons]="buttons" [schema]="schema" [title]="title" [path]="path" [columns]="columns"></app-simple> `
+  template: `
+    <app-simple
+      #simple
+      (onUserSelect)="userSelect($event)"
+      [buttons]="buttons"
+      [schema]="schema"
+      [title]="title"
+      [path]="path"
+      [columns]="columns"
+    ></app-simple>
+  `
 })
-export class UsersComponent {
+export class UsersComponent implements OnReuseInit {
   _onReuseInit(type?: ReuseHookOnReuseInitType | undefined): void {
     this.simple?.ngOnInit();
   }
@@ -59,5 +69,11 @@ export class UsersComponent {
 
   constructor(private service: SimpleService<any>, private modal: NzModalService) {
     this.service.init({ path: this.path, title: this.title, schema: this.schema });
+  }
+
+  @Output() onUserSelect: EventEmitter<any> = new EventEmitter<any>();
+
+  userSelect(users: any): void {
+    this.onUserSelect.emit(users);
   }
 }
