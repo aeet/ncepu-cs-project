@@ -1,38 +1,15 @@
-# Use the official Golang image as the base image
-FROM golang:1.16.5-alpine as build-stage
+FROM golang:1.20 as biulder
 
-# Set environment variables
-ENV APP_NAME ncepu-cs-project
-ENV APP_HOME /app
-ENV STATIC_DIR static
+WORKDIR /build
+COPY . /build/
+RUN go build -o ncepu-cs-project
 
-# Set the working directory for the application
-WORKDIR ${APP_HOME}
 
-# Copy the necessary files into the container
-COPY . ${APP_HOME}
+FROM golang:1.20 as runner
+WORKDIR /app
+COPY --from=biulder /build/ncepu-cs-project /app/
+COPY static /app/static
+COPY config.yaml /app/config.yaml
 
-# Build the application
-RUN go build -o ${APP_NAME}
-
-# Start a new stage to create a lightweight image
-FROM alpine:3.14 as production-stage
-
-# Set environment variables
-ENV APP_NAME ncepu-cs-project
-ENV APP_HOME /app
-ENV STATIC_DIR static
-
-# Set the working directory for the application
-WORKDIR ${APP_HOME}
-
-# Copy the necessary files into the container
-COPY --from=build-stage ${APP_HOME}/${APP_NAME} ${APP_HOME}/
-COPY ${STATIC_DIR} ${APP_HOME}/${STATIC_DIR}/
-COPY config.yaml ${APP_HOME}/
-
-# Expose the port that the application runs on
 EXPOSE 8080
-
-# Start the application
 CMD ["./ncepu-cs-project"]
